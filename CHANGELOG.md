@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Logging: `lt_port_log` function for platform-specific logging mechanism; is used by the logging macros declared in `libtropic_logging.h`.
 - CAL: `lt_sha256_deinit` function to deinitialize the SHA-256 context. It is called after the SHA-256 operation is finalized, so it must do an exhaustive cleanup.
+- ESP-IDF HAL for Espressif SoCs.
 
 ### Fixed
 - `lt_print_bytes` function now returns `LT_PARAM_ERR` when incorrect parameters are passed instead of `LT_FAIL`.
