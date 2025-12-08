@@ -58,7 +58,8 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
                                     .data5_io_num = -1,
                                     .data6_io_num = -1,
                                     .data7_io_num = -1,
-                                    .max_transfer_sz = TR01_L1_LEN_MAX};
+                                    .max_transfer_sz = TR01_L1_LEN_MAX,
+                                    .flags = (SPICOMMON_BUSFLAG_MASTER | SPICOMMON_BUSFLAG_GPIO_PINS)};
 
     // Initialize the SPI bus.
     ret = spi_bus_initialize(dev->spi_host_id, &spi_bus_cfg, SPI_DMA_CH_AUTO);
@@ -71,6 +72,7 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     spi_device_interface_config_t spi_dev_cfg = {.mode = 0,  // TROPIC01 supports only CPOL=0 and CPHA=0.
                                                  .clock_speed_hz = dev->spi_clk_hz,
                                                  .spics_io_num = -1,  // We handle CS ourselves.
+                                                 .queue_size = 7,     // 7 is often used as default.
                                                  .pre_cb = NULL,
                                                  .post_cb = NULL};
 
