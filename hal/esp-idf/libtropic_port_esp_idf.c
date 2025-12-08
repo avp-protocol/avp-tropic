@@ -227,11 +227,7 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
     }
 
     // Release the SPI bus.
-    ret = spi_device_release_bus(dev->spi_handle);
-    if (ret != ESP_OK) {
-        LT_LOG_ERROR("spi_device_release_bus() failed: %s", esp_err_to_name(ret));
-        return LT_FAIL;
-    }
+    spi_device_release_bus(dev->spi_handle);
 
     return LT_OK;
 }
