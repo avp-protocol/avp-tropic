@@ -26,22 +26,24 @@
 #include "libtropic_macros.h"
 #include "libtropic_port.h"
 
+#if LT_USE_INT_PIN
 /**
  * @brief ISR handler for the TROPIC01's interrupt pin.
  *
- * @param arg
+ * @param esp_idf_dev lt_dev_esp_idf_t device structure
  */
-static void IRAM_ATTR int_gpio_pin_isr_handler(void *arg)
+static void IRAM_ATTR int_gpio_pin_isr_handler(void *esp_idf_dev)
 {
-    LT_UNUSED(arg);
+    lt_dev_esp_idf_t *dev = (lt_dev_esp_idf_t *)(esp_idf_dev);
     BaseType_t higher_priority_task_woken = pdFALSE;
 
     // Give the semaphore, signaling the waiting task.
-    xSemaphoreGiveFromISR(gpio_isr_sem, &higher_priority_task_woken);
+    xSemaphoreGiveFromISR(dev->int_gpio_sem, &higher_priority_task_woken);
     // If giving the semaphore unblocked a higher priority task, it is recommended
     // to request a context switch before the interrupt is exited.
     portYIELD_FROM_ISR(higher_priority_task_woken);
 }
+#endif
 
 lt_ret_t lt_port_init(lt_l2_state_t *s2)
 {
@@ -142,7 +144,7 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     }
 
     // Register the ISR handler for the GPIO interrupt pin.
-    ret = gpio_isr_handler_add(dev->int_gpio_pin, int_gpio_pin_isr_handler, NULL);
+    ret = gpio_isr_handler_add(dev->int_gpio_pin, int_gpio_pin_isr_handler, dev);
     if (ret != ESP_OK) {
         LT_LOG_ERROR("gpio_isr_handler_add() failed: %s", esp_err_to_name(ret));
         lt_port_deinit(s2);
