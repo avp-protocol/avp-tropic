@@ -27,6 +27,15 @@
 #include "libtropic_port.h"
 
 #if LT_USE_INT_PIN
+// This macro is needed in portYIELD_FROM_ISR.
+// But for some reason, it is not defined in some ESP-IDF versions.
+// It probably depends on some tracing configuration.
+#ifndef traceISR_EXIT_TO_SCHEDULER
+#define traceISR_EXIT_TO_SCHEDULER() \
+    do {                             \
+    } while (0)
+#endif
+
 /**
  * @brief ISR handler for the TROPIC01's interrupt pin.
  *
