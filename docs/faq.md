@@ -21,7 +21,7 @@ The reason is that we detect the status of the TROPIC01 using a single flag; if 
 Normally, this means the TROPIC01 entered Alarm Mode. However, it can also mean — similarly to `LT_L1_CHIP_BUSY` — that all ones are received on `MISO`. Check your connections.
 
 ### `LT_L2_HSK_ERR`
-This error is caused by a problem during Secure Session estabilishment. See [I cannot establish a Secure Session](#i-cannot-establish-a-secure-session).
+This error is caused by a problem during Secure Session establishment. See [I cannot establish a Secure Session](#i-cannot-establish-a-secure-session).
 
 ### `LT_L3_DATA_LEN_ERROR`
 This error normally means that the L3 packet size we sent to the TROPIC01 is incorrect, which can be caused by a bug or an attack. However, it can also mean that the chip select is connected incorrectly. Check your connections and GPIO assignments.
