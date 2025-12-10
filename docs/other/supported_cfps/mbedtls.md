@@ -29,6 +29,7 @@ PSA Crypto must be configured with the following features:
 
 ## Build Dependencies
 Note that MbedTLS 4.0.0 has the following Python dependencies to build it:
+
 - `jinja2`,
 - `jsonschema`.
 
