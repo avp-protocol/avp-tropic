@@ -28,7 +28,10 @@ PSA Crypto must be configured with the following features:
 - `PSA_WANT_KEY_TYPE_ECC_PUBLIC_KEY` - ECC public key support.
 
 ## Build Dependencies
-Note that MbedTLS 4.0.0 have following Python dependencies for building: `jinja2` and `jsonschema`. Refer to the MbedTLS documentation.
+Note that MbedTLS 4.0.0 has the following Python dependencies for its building:
+- `jinja2`,
+- `jsonschema`.
+Refer to the MbedTLS documentation for more information.
 
 ## Implementation Notes
 ### Including PSA Crypto Headers
