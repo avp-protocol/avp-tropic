@@ -85,7 +85,7 @@ jobs:
 
       - name: Merge coverage and generate markdown report
         run: |
-          gcovr --json-add-tracefile tropic01_model/coverage_trace.json  --json-add-tracefile tests/functional_mock/coverage_trace.json --markdown coverage_report.md
+          gcovr --json-add-tracefile tropic01_model/coverage_trace.json --json-add-tracefile tests/functional_mock/coverage_trace.json --markdown coverage_report.md
 
       - name: Post or update PR comment
         uses: actions/github-script@v7
