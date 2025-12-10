@@ -1,0 +1,75 @@
+name: Run functional mock tests
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+
+jobs:
+  tests_asan:
+    name: Run functional mock tests with AddressSanitizer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential
+            pip install jsonschema jinja2
+
+      - name: Compile functional mock tests with AddressSanitizer
+        run: |
+          cd tests/functional_mock
+          mkdir -p build
+          cd build
+          cmake -DLT_ASAN=1 ..
+          make -j4
+
+      - name: Execute tests with CTest
+        run: |
+            cd tests/functional_mock/build
+            ctest -V
+    
+  tests_valgrind:
+    name: Run tests with Valgrind
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential valgrind
+            pip install jsonschema jinja2
+
+      - name: Compile functional mock tests with Valgrind
+        run: |
+            cd tests/functional_mock
+            mkdir -p build
+            cd build
+            cmake -DLT_VALGRIND=1 ..
+            make -j4
+
+      - name: Execute tests with CTest
+        run: |
+            cd tests/functional_mock/build
+            ctest -V
