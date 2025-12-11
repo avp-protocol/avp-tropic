@@ -233,16 +233,16 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
 
     LT_LOG_DEBUG("------------ DECODED CPU Log BEGIN ------------");
     for (size_t i = 3; i < log_size; i++) {
-        printf("%c", s2->buff[i]);
+        lt_port_log("%c", s2->buff[i]);
     }
-    printf("\n");
+    lt_port_log("\n");
     LT_LOG_DEBUG("------------- DECODED CPU Log END -------------");
 
     LT_LOG_DEBUG("------------ RAW CPU Log BEGIN ------------");
     for (size_t i = 0; i < 256; i++) { // Ignore log size in raw logs.
-        printf("0x%02d ", s2->buff[i]);
+        lt_port_log("0x%02d ", s2->buff[i]);
     }
-    printf("\n");
+    lt_port_log("\n");
     LT_LOG_DEBUG("------------- RAW CPU Log END -------------");
 
     ret = lt_l1_spi_csn_high(s2);
