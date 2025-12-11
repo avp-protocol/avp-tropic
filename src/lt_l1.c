@@ -224,6 +224,8 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
 
     ret = lt_l1_spi_transfer(s2, 0, TR01_L2_MAX_FRAME_SIZE, timeout_ms);
     if (ret != LT_OK) {
+        lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
+        LT_UNUSED(ret_unused);  // We don't care about it, we return ret from SPI transfer.
         LT_LOG_ERROR("Failed to transfer SPI data while retrieving alarm log.");
         return ret;
     }
