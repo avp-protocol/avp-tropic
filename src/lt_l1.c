@@ -222,25 +222,25 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
         return ret;
     }
 
-    ret = lt_l1_spi_transfer(s2, 0, 256, timeout_ms);
+    ret = lt_l1_spi_transfer(s2, 0, TR01_L2_MAX_FRAME_SIZE, timeout_ms);
     if (ret != LT_OK) {
         LT_LOG_ERROR("Failed to transfer SPI data while retrieving alarm log.");
         return ret;
     }
 
-    uint8_t log_size = s2->buff[2];
+    uint8_t log_size = s2->buff[TR01_L2_RSP_LEN_OFFSET];
     LT_LOG_DEBUG("LOG SIZE: %" PRIu8, log_size);
 
     LT_LOG_DEBUG("------------ DECODED CPU Log BEGIN ------------");
-    for (size_t i = 3; i < log_size; i++) {
+    for (size_t i = TR01_L2_RSP_DATA_RSP_CRC_OFFSET; i < log_size; i++) {
         lt_port_log("%c", s2->buff[i]);
     }
     lt_port_log("\n");
     LT_LOG_DEBUG("------------- DECODED CPU Log END -------------");
 
     LT_LOG_DEBUG("------------ RAW CPU Log BEGIN ------------");
-    for (size_t i = 0; i < 256; i++) {  // Ignore log size in raw logs.
-        lt_port_log("0x%02d ", s2->buff[i]);
+    for (size_t i = 0; i < TR01_L2_MAX_FRAME_SIZE; i++) {  // Ignore log size in raw logs.
+        lt_port_log("0x%02x ", s2->buff[i]);
     }
     lt_port_log("\n");
     LT_LOG_DEBUG("------------- RAW CPU Log END -------------");
