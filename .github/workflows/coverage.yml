@@ -60,29 +60,39 @@ jobs:
             pip install ${{ env.WHEEL_FILE_NAME }}
             pip install gcovr jsonschema
 
-      - name: Compile libtropic with tests and coverage enabled
+      - name: Compile and run functional tests with coverage enabled, export trace
         run: |
             cd tropic01_model/
             cmake ./ -B build -DLT_CAL=mbedtls_v4 -DLT_BUILD_TESTS=1 -DLT_TEST_COVERAGE=1
             cd build/
             make
-
-      - name: Execute tests with CTest
-        run: |
-            cd tropic01_model/build/
             ctest -V
 
-      - name: Export Markdown report
+            cd ..
+            gcovr --json coverage_trace.json --exclude 'build/_deps/.*|\.\./tests/.*|\.\./vendor/.*|\.\./hal/.*|\.\./cal/.*'
+
+      - name: Compile and run functional mock tests with coverage enabled, export trace
         run: |
-            cd tropic01_model
-            gcovr --markdown coverage_report.md --exclude 'build/_deps/.*|\.\./tests/.*|\.\./vendor/.*'
+          cd tests/functional_mock
+          mkdir -p build
+          cd build
+          cmake -DLT_TEST_COVERAGE=1 ..
+          make
+          ctest -V
+
+          cd ..
+          gcovr --json coverage_trace.json --exclude 'build/_deps/.*|\.\./tests/.*|\.\./vendor/.*|\.\./\.\./hal/.*|\.\./\.\./cal/.*'
+
+      - name: Merge coverage and generate markdown report
+        run: |
+          gcovr --json-add-tracefile tropic01_model/coverage_trace.json --json-add-tracefile tests/functional_mock/coverage_trace.json --markdown coverage_report.md
 
       - name: Post or update PR comment
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require("fs");
-            const path = "tropic01_model/coverage_report.md";
+            const path = "./coverage_report.md";
             const marker = "<!-- coverage-bot-comment -->";
 
             let commentBody;

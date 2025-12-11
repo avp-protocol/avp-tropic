@@ -122,16 +122,17 @@ foreach(test_name IN LISTS LIBTROPIC_MOCK_TEST_LIST)
 
     set(exe_name ${test_name})
     set(LIBTROPIC_MOCK_TEST_FUNCTION ${test_name})
+    set(TEST_SPECIFIC_MAIN main.${test_name}.c)
 
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/main.c.in
-        ${CMAKE_CURRENT_BINARY_DIR}/main.c
+        ${CMAKE_CURRENT_BINARY_DIR}/${TEST_SPECIFIC_MAIN}
         @ONLY
     )
 
     # Define executable (separate for each test) and link dependencies.
     add_executable(${exe_name} 
-        ${CMAKE_CURRENT_BINARY_DIR}/main.c
+        ${CMAKE_CURRENT_BINARY_DIR}/${TEST_SPECIFIC_MAIN}
     )
     target_link_libraries(${exe_name} PUBLIC libtropic_functional_mock_tests_objs)
     
