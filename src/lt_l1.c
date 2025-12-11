@@ -8,10 +8,10 @@
 #include "lt_l1.h"
 
 #include <inttypes.h>
-#include <string.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "libtropic_common.h"
 #include "libtropic_logging.h"
@@ -239,7 +239,7 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
     LT_LOG_DEBUG("------------- DECODED CPU Log END -------------");
 
     LT_LOG_DEBUG("------------ RAW CPU Log BEGIN ------------");
-    for (size_t i = 0; i < 256; i++) { // Ignore log size in raw logs.
+    for (size_t i = 0; i < 256; i++) {  // Ignore log size in raw logs.
         lt_port_log("0x%02d ", s2->buff[i]);
     }
     lt_port_log("\n");
