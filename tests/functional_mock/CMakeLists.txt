@@ -155,7 +155,7 @@ foreach(test_name IN LISTS LIBTROPIC_MOCK_TEST_LIST)
 
     # Add CTest entry.
     if (LT_VALGRIND)
-        add_test(NAME ${test_name} COMMAND valgrind ./${exe_name})
+        add_test(NAME ${test_name} COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --error-exitcode=1 ./${exe_name})
     else()
         add_test(NAME ${test_name} COMMAND ./${exe_name})
     endif()
