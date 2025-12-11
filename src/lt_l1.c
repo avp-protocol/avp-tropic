@@ -229,7 +229,7 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
     }
 
     uint8_t log_size = s2->buff[2];
-    LT_LOG_DEBUG("LOG SIZE: %" PRId8, log_size);
+    LT_LOG_DEBUG("LOG SIZE: %" PRIu8, log_size);
 
     LT_LOG_DEBUG("------------ DECODED CPU Log BEGIN ------------");
     for (size_t i = 3; i < log_size; i++) {
