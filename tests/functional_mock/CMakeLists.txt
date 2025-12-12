@@ -26,6 +26,10 @@ option(LT_STRICT_COMPILATION "Enable strict compilation flags" ON)
 option(LT_VALGRIND "Run tests with Valgrind" OFF)
 option(LT_ASAN "Enable static AddressSanitizer (ASan)" OFF)
 
+if (LT_ASAN and LT_VALGRIND)
+    message(WARNING "Using Valgrind with ASan enabled may lead to unexpected behavior.")
+endif()
+
 ###########################################################################
 #                                                                         #
 #   Add libtropic library and set it up                                   #
