@@ -212,10 +212,12 @@ lt_ret_t lt_l1_write(lt_l2_state_t *s2, const uint16_t len, const uint32_t timeo
 lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
 {
     LT_LOG_DEBUG("Retrieving alarm log from TROPIC01...");
+    
+    // Transfer full L2 frame to get the alarm log
 
     memset(s2->buff, 0, sizeof(s2->buff));
     s2->buff[0] = TR01_L1_GET_RESPONSE_REQ_ID;
-
+    
     lt_ret_t ret = lt_l1_spi_csn_low(s2);
     if (ret != LT_OK) {
         LT_LOG_ERROR("Failed to set CSN low while retrieving alarm log.");
@@ -229,6 +231,14 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
         LT_LOG_ERROR("Failed to transfer SPI data while retrieving alarm log.");
         return ret;
     }
+
+    ret = lt_l1_spi_csn_high(s2);
+    if (ret != LT_OK) {
+        LT_LOG_ERROR("Failed to set CSN high after retrieving alarm log.");
+        return ret;
+    }
+
+    // Decode and print the alarm log
 
     uint8_t log_size = lt_min(s2->buff[TR01_L2_RSP_LEN_OFFSET], TR01_L2_CHUNK_MAX_DATA_SIZE);
     LT_LOG_DEBUG("LOG SIZE: %" PRIu8, log_size);
@@ -246,12 +256,6 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
     }
     lt_port_log("\n");
     LT_LOG_DEBUG("------------- RAW CPU Log END -------------");
-
-    ret = lt_l1_spi_csn_high(s2);
-    if (ret != LT_OK) {
-        LT_LOG_ERROR("Failed to set CSN high after retrieving alarm log.");
-        return ret;
-    }
 
     return LT_OK;
 }
