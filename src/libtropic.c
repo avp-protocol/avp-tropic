@@ -1912,7 +1912,7 @@ lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id, int (*pr
             print_func("    Reading header from SPECT's firmware bank 1:\r\n");
             break;
         case TR01_FW_BANK_SPECT2:
-            print_func("    Reading header from SPECT's foirmware bank 2:\r\n");
+            print_func("    Reading header from SPECT's firmware bank 2:\r\n");
             break;
         default:
             print_func("    Reading header: Unknown bank ID: %d\r\n", (int)bank_id);
