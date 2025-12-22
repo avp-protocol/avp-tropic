@@ -122,7 +122,9 @@ int lt_port_log(const char *format, ...)
     ret = vsnprintf(log_buff, sizeof(log_buff), format, args);
     va_end(args);
 
-    Serial.print(log_buff);
+    if (ret > 0) {
+        Serial.print(log_buff);
+    }
 
     return ret;
 }
