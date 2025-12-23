@@ -321,9 +321,9 @@ void lt_test_rev_param_check(lt_handle_t *h)
         char out_small[1];
         uint8_t bb[1] = {0};
         char out_ok[3];
-        LT_TEST_ASSERT(LT_FAIL, lt_print_bytes(NULL, 0, out_ok, sizeof(out_ok)));
-        LT_TEST_ASSERT(LT_FAIL, lt_print_bytes(bb, sizeof(bb), NULL, sizeof(out_ok)));
-        LT_TEST_ASSERT(LT_FAIL, lt_print_bytes(bb, sizeof(bb), out_small, sizeof(out_small)));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_bytes(NULL, 0, out_ok, sizeof(out_ok)));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_bytes(bb, sizeof(bb), NULL, sizeof(out_ok)));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_bytes(bb, sizeof(bb), out_small, sizeof(out_small)));
     }
 
     {
