@@ -131,8 +131,11 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count);
  *
  * @param format      Pointer to a null-terminated byte string specifying how to interpret the data
  * @param ...         Arguments specifying data to print
+ *
+ * @return The number of characters printed (like printf), or a negative
+ *         value on encoding/printing error.
  */
-void lt_port_log(const char *format, ...);
+int lt_port_log(const char *format, ...);
 
 /** @} */  // end of group_port_functions
 

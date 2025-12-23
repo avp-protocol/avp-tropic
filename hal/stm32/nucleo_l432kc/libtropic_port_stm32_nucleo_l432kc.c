@@ -149,11 +149,14 @@ lt_ret_t lt_port_delay(lt_l2_state_t *h, uint32_t ms)
     return LT_OK;
 }
 
-void lt_port_log(const char *format, ...)
+int lt_port_log(const char *format, ...)
 {
     va_list args;
+    int ret;
 
     va_start(args, format);
-    vprintf(format, args);
+    ret = vprintf(format, args);
     va_end(args);
+
+    return ret;
 }

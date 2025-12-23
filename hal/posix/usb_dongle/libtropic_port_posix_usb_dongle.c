@@ -279,11 +279,14 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_dat
     return LT_OK;
 }
 
-void lt_port_log(const char *format, ...)
+int lt_port_log(const char *format, ...)
 {
     va_list args;
+    int ret;
 
     va_start(args, format);
-    vfprintf(stderr, format, args);
+    ret = vfprintf(stderr, format, args);
     va_end(args);
+
+    return ret;
 }

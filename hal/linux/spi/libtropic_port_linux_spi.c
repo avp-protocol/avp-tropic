@@ -308,11 +308,14 @@ lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms)
 }
 #endif
 
-void lt_port_log(const char *format, ...)
+int lt_port_log(const char *format, ...)
 {
     va_list args;
+    int ret;
 
     va_start(args, format);
-    vfprintf(stderr, format, args);
+    ret = vfprintf(stderr, format, args);
     va_end(args);
+
+    return ret;
 }

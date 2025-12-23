@@ -110,16 +110,21 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     return LT_OK;
 }
 
-void lt_port_log(const char *format, ...)
+int lt_port_log(const char *format, ...)
 {
     // 1 KiB should be enough.
     // Using static to avoid stack overflow.
     static char log_buff[1024];
     va_list args;
+    int ret;
 
     va_start(args, format);
-    vsnprintf(log_buff, sizeof(log_buff), format, args);
+    ret = vsnprintf(log_buff, sizeof(log_buff), format, args);
     va_end(args);
 
-    Serial.print(log_buff);
+    if (ret > 0) {
+        Serial.print(log_buff);
+    }
+
+    return ret;
 }
