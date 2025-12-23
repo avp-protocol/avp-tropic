@@ -1753,15 +1753,13 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     uint16_t parsed_fab_id = ((chip_id->prov_ver_fab_id_pn[1] << 4) | (chip_id->prov_ver_fab_id_pn[2] >> 4)) & 0xfff;
     switch (parsed_fab_id) {
         case TR01_FAB_ID_TROPIC_SQUARE_LAB:
-            if (0
-                > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "Tropic Square Lab")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "Tropic Square Lab")) {
                 return LT_FAIL;
             }
             break;
 
         case TR01_FAB_ID_EPS_BRNO:
-            if (0
-                > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "EPS Global - Brno")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "EPS Global - Brno")) {
                 return LT_FAIL;
             }
             break;
@@ -1935,15 +1933,15 @@ lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id, int (*pr
         struct lt_header_boot_v1_t *p_h = (struct lt_header_boot_v1_t *)header;
 
         print_func("      Type:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->type[3], p_h->type[2],
-               p_h->type[1], p_h->type[0]);
+                   p_h->type[1], p_h->type[0]);
         print_func("      Version:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->version[3],
-               p_h->version[2], p_h->version[1], p_h->version[0]);
+                   p_h->version[2], p_h->version[1], p_h->version[0]);
         print_func("      Size:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->size[3], p_h->size[2],
-               p_h->size[1], p_h->size[0]);
+                   p_h->size[1], p_h->size[0]);
         print_func("      Git hash:  %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->git_hash[3],
-               p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
+                   p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
         print_func("      FW hash:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->hash[3], p_h->hash[2],
-               p_h->hash[1], p_h->hash[0]);
+                   p_h->hash[1], p_h->hash[0]);
     }
     else if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2) {
         print_func("    Bootloader v2.0.1 detected, reading %dB header\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2);
