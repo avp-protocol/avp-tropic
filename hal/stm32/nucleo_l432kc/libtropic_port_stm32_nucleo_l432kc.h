@@ -41,7 +41,7 @@ typedef struct lt_dev_stm32_nucleo_l432kc_t {
     GPIO_TypeDef *int_gpio_bank;
 #endif
 
-    /** @brief @private Random number generator handle. */
+    /** @brief @public Random number generator handle. */
     RNG_HandleTypeDef *rng_handle;
 
     /** @brief @private SPI handle. */
