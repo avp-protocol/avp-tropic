@@ -328,7 +328,7 @@ void lt_test_rev_param_check(lt_handle_t *h)
 
     {
         lt_chip_id_t chip_id = {0};
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_chip_id(NULL, printf));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_chip_id(NULL, lt_port_log));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_chip_id(&chip_id, NULL));
     }
 
@@ -340,8 +340,8 @@ void lt_test_rev_param_check(lt_handle_t *h)
     }
 
     {
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_fw_header(NULL, TR01_FW_BANK_FW1, printf));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_fw_header(h, 0xFFFFFFFF, printf));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_fw_header(NULL, TR01_FW_BANK_FW1, lt_port_log));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_fw_header(h, 0xFFFFFFFF, lt_port_log));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_print_fw_header(h, TR01_FW_BANK_FW1, NULL));
     }
 #endif
