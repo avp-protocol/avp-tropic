@@ -55,7 +55,7 @@ lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_RESET);
 
-    for (uint8_t read_attempts; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
         if (!HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
@@ -71,7 +71,7 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
 
-    for (uint8_t read_attempts; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
         if (HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
