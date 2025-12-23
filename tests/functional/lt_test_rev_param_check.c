@@ -216,7 +216,6 @@ void lt_test_rev_param_check(lt_handle_t *h)
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(NULL, TR01_ECC_SLOT_0, msg, sizeof(msg), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), msg, sizeof(msg), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, TR01_ECC_SLOT_0, NULL, sizeof(msg), sig));
-        // LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, TR01_ECC_SLOT_0, msg, TR01_L3_ECDSA_SIGN_CMD_MSG_LEN_MAX + 1, sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, TR01_ECC_SLOT_0, msg, sizeof(msg), NULL));
     }
 
