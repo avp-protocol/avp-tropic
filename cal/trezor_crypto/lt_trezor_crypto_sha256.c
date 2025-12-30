@@ -11,7 +11,6 @@
 #include "hasher.h"
 #include "libtropic_common.h"
 #include "libtropic_trezor_crypto.h"
-#include "lt_secure_memzero.h"
 #include "lt_sha256.h"
 
 lt_ret_t lt_sha256_init(void *ctx)
@@ -43,5 +42,12 @@ lt_ret_t lt_sha256_finish(void *ctx, uint8_t *output)
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
     hasher_Final(&_ctx->sha256_ctx, output);
+    return LT_OK;
+}
+
+lt_ret_t lt_sha256_deinit(void *ctx)
+{
+    // Nothing to do, hasher_Final (called by lt_sha256_finish) already cleans up the context.
+    LT_UNUSED(ctx);
     return LT_OK;
 }
