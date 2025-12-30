@@ -61,7 +61,13 @@ lt_ret_t lt_sha256_finish(void *ctx, uint8_t *output)
         lt_ret = LT_CRYPTO_ERR;
     }
 
-    wc_Sha256Free(&_ctx->sha256_ctx);
-
     return lt_ret;
+}
+
+lt_ret_t lt_sha256_deinit(void *ctx)
+{
+    lt_ctx_wolfcrypt_t *_ctx = (lt_ctx_wolfcrypt_t *)ctx;
+
+    wc_Sha256Free(&_ctx->sha256_ctx);
+    return LT_OK;
 }
