@@ -26,7 +26,7 @@ The following table outlines the tested and supported compatibility between rele
 
 | Libtropic | Application FW | SPECT FW | Bootloader FW |  Tests                                    |
 |:---------:|:--------------:|:--------:|:-------------:|:----------------------------------------: |
-| 1.0.0     | 1.0.0          | 1.0.0    | 1.0.1         | <code style="color : green">Passed</code> |
+| 1.0.0     | 1.0.0          | 1.0.0    | 1.0.1-2.0.1   | <code style="color : green">Passed</code> |
 | 2.0.0     | 1.0.0–1.0.1    | 1.0.0    | 2.0.1         | <code style="color : green">Passed</code> |
 | 2.0.1     | 1.0.0–1.0.1    | 1.0.0    | 2.0.1         | <code style="color : green">Passed</code> |
 | 3.0.0     | 1.0.0–2.0.0    | 1.0.0    | 2.0.1         | <code style="color : green">Passed</code> |
