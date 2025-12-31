@@ -70,7 +70,7 @@ int chip_id_printf_wrapper(const char *format, ...)
     }
     va_end(args);
 
-    // Strip trailing \r\n
+    // Strip trailing newline(s)
     size_t len = strlen(buff);
     while (len > 0 && (buff[len - 1] == '\n' || buff[len - 1] == '\r')) {
         buff[--len] = '\0';

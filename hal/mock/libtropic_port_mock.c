@@ -207,6 +207,7 @@ int lt_port_log(const char *format, ...)
 
     va_start(args, format);
     ret = vfprintf(stderr, format, args);
+    fflush(stderr);
     va_end(args);
 
     return ret;

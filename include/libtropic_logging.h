@@ -30,25 +30,25 @@ extern "C" {
     } while (0)
 
 #if LT_LOG_ENABLE_INFO
-#define LT_LOG_INFO(f_, ...) lt_port_log("INFO    [%4d] " f_ "\r\n", __LINE__, ##__VA_ARGS__)
+#define LT_LOG_INFO(f_, ...) lt_port_log("INFO    [%4d] " f_ "\n", __LINE__, ##__VA_ARGS__)
 #else
 #define LT_LOG_INFO(f_, ...) LT_LOG_DISABLED(f_, ##__VA_ARGS__)
 #endif
 
 #if LT_LOG_ENABLE_WARN
-#define LT_LOG_WARN(f_, ...) lt_port_log("WARNING [%4d] " f_ "\r\n", __LINE__, ##__VA_ARGS__)
+#define LT_LOG_WARN(f_, ...) lt_port_log("WARNING [%4d] " f_ "\n", __LINE__, ##__VA_ARGS__)
 #else
 #define LT_LOG_WARN(f_, ...) LT_LOG_DISABLED(f_, ##__VA_ARGS__)
 #endif
 
 #if LT_LOG_ENABLE_ERROR
-#define LT_LOG_ERROR(f_, ...) lt_port_log("ERROR   [%4d] " f_ "\r\n", __LINE__, ##__VA_ARGS__)
+#define LT_LOG_ERROR(f_, ...) lt_port_log("ERROR   [%4d] " f_ "\n", __LINE__, ##__VA_ARGS__)
 #else
 #define LT_LOG_ERROR(f_, ...) LT_LOG_DISABLED(f_, ##__VA_ARGS__)
 #endif
 
 #if LT_LOG_ENABLE_DEBUG
-#define LT_LOG_DEBUG(f_, ...) lt_port_log("DEBUG   [%4d] " f_ "\r\n", __LINE__, ##__VA_ARGS__)
+#define LT_LOG_DEBUG(f_, ...) lt_port_log("DEBUG   [%4d] " f_ "\n", __LINE__, ##__VA_ARGS__)
 #else
 #define LT_LOG_DEBUG(f_, ...) LT_LOG_DISABLED(f_, ##__VA_ARGS__)
 #endif

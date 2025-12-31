@@ -12,6 +12,7 @@
 #include <SPI.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "libtropic_port.h"
 
@@ -123,7 +124,16 @@ int lt_port_log(const char *format, ...)
     va_end(args);
 
     if (ret > 0) {
-        Serial.print(log_buff);
+        size_t len = strnlen(log_buff, sizeof(log_buff));
+        for (size_t i = 0; i < len; ++i) {
+            char c = log_buff[i];
+            if (c == '\n') {
+                Serial.println(); // Let Arduino Library handle newlines properly.
+            } else {
+                Serial.write(c);
+            }
+        }
+        Serial.flush();
     }
 
     return ret;
