@@ -137,6 +137,7 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_sha256_start(h->l3.crypto_ctx));
         LT_TEST_ASSERT(LT_OK, lt_sha256_update(h->l3.crypto_ctx, msg_to_sign, msg_to_sign_len));
         LT_TEST_ASSERT(LT_OK, lt_sha256_finish(h->l3.crypto_ctx, msg_hash));
+        LT_TEST_ASSERT(LT_OK, lt_sha256_deinit(h->l3.crypto_ctx));
 
         LT_LOG_INFO("Verifying signature...");
         LT_TEST_ASSERT(1, uECC_verify(read_pub_key, msg_hash, sizeof(msg_hash), rs, uECC_secp256r1()));
@@ -178,6 +179,7 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_sha256_start(h->l3.crypto_ctx));
         LT_TEST_ASSERT(LT_OK, lt_sha256_update(h->l3.crypto_ctx, msg_to_sign, msg_to_sign_len));
         LT_TEST_ASSERT(LT_OK, lt_sha256_finish(h->l3.crypto_ctx, msg_hash));
+        LT_TEST_ASSERT(LT_OK, lt_sha256_deinit(h->l3.crypto_ctx));
 
         LT_LOG_INFO("Verifying signature...");
         LT_TEST_ASSERT(1, uECC_verify(read_pub_key, msg_hash, sizeof(msg_hash), rs, uECC_secp256r1()));
