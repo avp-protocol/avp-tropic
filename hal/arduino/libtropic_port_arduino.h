@@ -28,8 +28,7 @@ typedef struct lt_dev_arduino_t {
 #endif
     /** @public @brief SPI settings. */
     SPISettings spi_settings;
-
-    /** @private @brief Pointer to the SPI class. */
+    /** @public @brief Pointer to the SPI class. */
     SPIClass *spi;
 } lt_dev_arduino_t;
 
