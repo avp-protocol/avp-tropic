@@ -129,6 +129,9 @@ int lt_test_mock_hardware_fail(lt_handle_t *h)
 
     // ----------------------------------------------------------------------------------------------------------
 
+    LT_LOG_INFO("Terminating the Secure Sesion...");
+    LT_TEST_ASSERT(LT_OK, mock_session_abort(h));
+
     LT_LOG_INFO("Deinitializing handle");
     LT_TEST_ASSERT(LT_OK, lt_deinit((lt_handle_t *)h));
     

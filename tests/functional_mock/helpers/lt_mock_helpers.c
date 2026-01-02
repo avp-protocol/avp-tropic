@@ -102,6 +102,13 @@ lt_ret_t mock_session_start(lt_handle_t *h, const uint8_t kcmd[TR01_AES256_KEY_L
     return LT_OK;
 }
 
+lt_ret_t mock_session_abort(lt_handle_t *h) {
+
+    lt_l3_invalidate_host_session_data(&h->l3);
+
+    return LT_OK;
+}
+
 lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const size_t result_plaintext_size)
 {
     uint8_t l2_frame[TR01_L2_MAX_FRAME_SIZE];
