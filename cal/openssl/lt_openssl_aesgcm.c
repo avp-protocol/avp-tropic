@@ -121,8 +121,7 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Process AAD (Additional Authenticated Data).
     if (!EVP_EncryptUpdate(_ctx->aesgcm_encrypt_ctx, NULL, &out_len, add, (int)add_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
     // Check that all AAD data was processed.
@@ -187,8 +186,7 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Process AAD (Additional Authenticated Data).
     if (!EVP_DecryptUpdate(_ctx->aesgcm_decrypt_ctx, NULL, &out_len, add, (int)add_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
