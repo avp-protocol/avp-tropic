@@ -50,7 +50,7 @@ int lt_test_mock_hardware_fail(lt_handle_t *h)
     // ----------------------------------------------------------------------------------------------------------
 
     LT_LOG_INFO("Mocking HARDWARE_FAIL in Pairing_Key_Write reply...");
-    uint8_t dummy_key[4];
+    uint8_t dummy_key[TR01_SHIPUB_LEN];
     for (int slot = TR01_PAIRING_KEY_SLOT_INDEX_0; slot <= TR01_PAIRING_KEY_SLOT_INDEX_3; slot++){
         LT_LOG_INFO("Mocking for slot %d...", slot);
         // Mock replies to the command.
