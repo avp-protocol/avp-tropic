@@ -23,7 +23,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     // Setup SPI
     pinMode(device->spi_cs_pin, OUTPUT);
     digitalWrite(device->spi_cs_pin, HIGH);
-    device->spi->begin();
 
     // Setup interrupt pin
 #if LT_USE_INT_PIN
@@ -38,7 +37,6 @@ lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
     lt_dev_arduino_t *device = (lt_dev_arduino_t *)(s2->device);
 
     digitalWrite(device->spi_cs_pin, HIGH);
-    device->spi->end();
 
     return LT_OK;
 }
@@ -128,8 +126,9 @@ int lt_port_log(const char *format, ...)
         for (size_t i = 0; i < len; ++i) {
             char c = log_buff[i];
             if (c == '\n') {
-                Serial.println(); // Let Arduino Library handle newlines properly.
-            } else {
+                Serial.println();  // Let Arduino Library handle newlines properly.
+            }
+            else {
                 Serial.write(c);
             }
         }
