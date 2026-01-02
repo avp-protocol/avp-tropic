@@ -56,7 +56,7 @@ lt_ret_t mock_init_communication(lt_handle_t *h, const uint8_t riscv_fw_ver[4]);
  * supplied AES-256 keys for L3 Result encryption. This does not simulate
  * comunication of Secure Session handshake, just prepares the handle.
  *
- * On success, *h is initialized as if the Secure Session handshake occured.
+ * On success, *h is initialized as if the Secure Session handshake occurred.
  *
  * @param h
  *     Pointer to an lt_handle_t that will be initialized. Must be non-NULL.
