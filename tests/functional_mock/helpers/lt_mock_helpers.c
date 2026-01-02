@@ -158,9 +158,6 @@ lt_ret_t mock_l3_command_responses(lt_handle_t *h, size_t chunk_count) {
     }
 
     uint8_t chip_ready = TR01_L1_CHIP_MODE_READY_bit;
-    // Enqueue replies to L3 Command. There are actually two replies for each chunk sent:
-    //  - reply to writing the chunk (using Encrypted_Cmd_Req L2 Request) -> only CHIP_READY (as to other L2 Requests)
-    //  - reply to Get_Response -> L2 Response with status REQ_OK (last chunk) or REQ_CONT (not the last chunk)
     lt_ret_t ret = lt_mock_hal_enqueue_response(&h->l2, &chip_ready, sizeof(chip_ready));
     if (LT_OK != ret) {
         LT_LOG_ERROR("Failed to enqueue L3 Command response 1/2 (CHIP_READY).");
