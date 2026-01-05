@@ -47,6 +47,30 @@ Notes about lengths and CRC
 - Do not assume `sizeof()` matches the transmitted length — some reply structures are overlayed or have variable-length fields. Use the helper `calc_mocked_resp_len()` (found in the mock helpers) to produce correct mocked lengths including CRC.
 - The CRC bytes may not always sit in a named `crc` field in the C struct; if the data are shorter the CRC can appear earlier in the layout. Use the `add_resp_crc()` helper or compute the CRC manually when constructing the frame bytes.
 
+### Secure Session mocking
+We support mocking of Secure Session using several provided helper functions. There are two limitations to be aware of:
+
+- No handshake is actually done (between Libtropic and mock HAL), provided helper functions only set up internal state of Libtropic (state flags and encryption).
+- Command encryption key and result encryption key have to match. This is a simplification to be able to use existing CAL interface for both Libtropic and mock HAL purposes without a need to reinitialize AES contexts every time.
+
+There are several helper functions to help you mock the Secure Session:
+
+- `mock_session_start()`, which will start a mocked Secure Session,
+- `mock_l3_command_responses()` to mock reply to L3 Command (not the L3 Result yet, just confirmations),
+- `mock_l3_result()` to mock the L3 Result,
+- `mock_session_abort()` to abort mocked Secure Session.
+
+As you can see, there are two functions for mocking replies. Normally, you have to use both. To understand why, you need to understand how the L3 communication works. For example, you will call `lt_ping`. Let's assume a small payload, so it'll fit into a single chunk. From a communication perspective, Libtropic will:
+
+1. Write a L2 Request with L3 Command as a payload. It will receive single `CHIP_STATUS` as a response.
+2. Read a confirmation response (using `Get_Response`) to confirm that the chunk was received OK. It will receive a short frame with `STATUS=REQ_OK`.
+3. After confirmation that the chunk was received OK, Libtropic will send another `Get_Response` to get the L3 Result itself.
+
+Steps 1. and 2. are mocked using the `mock_l3_command_responses()`, step 3. using `mock_l3_result()`.
+
+!!! info "Chunking"
+    Commands with large payloads (which will not fit into a single chunk) are not supported yet, as chunking is not implemented in the mock HAL.
+
 ### Creating the Test
 To add a new test, do the following:
 
@@ -97,3 +121,6 @@ int lt_test_mock_my_test(lt_handle_t *h)
     return 0;
 }
 ```
+
+!!! info "Mock helpers usage"
+    Refer to already existing tests for examples on mock helpers usage.
