@@ -125,7 +125,7 @@ lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const s
 
     // This will happen only if the internal macros are implemented incorrectly.
     if (frame_size > TR01_L2_MAX_FRAME_SIZE) {
-        LT_LOG_ERROR("Implementation error! Total frame size won't fit to the buffer.  Need at least: %zu", frame_size);
+        LT_LOG_ERROR("Implementation error! Total frame size won't fit to the buffer. Need at least: %zu", frame_size);
         return LT_FAIL;
     }
 
