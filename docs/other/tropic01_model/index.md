@@ -36,7 +36,7 @@ Next, you can initialize the model with data so it behaves like a real provision
     When running tests using CTest, no manual steps for creating the model configuration or initializing the model are necessary — CTest handles this. When running examples (or tests without CTest), start the model manually and apply a configuration so at least pairing key slot 0 is written to enable establishing a Secure Channel Session.
 
 ### Create a Model Configuration for Use with Libtropic
-To create a model configuration that will initialize the model to the state which is almost identical to the provisioned chip, use the `tropic01_model/create_model_cfg.py` script. Run `--help` to see available options and their explanation:
+To create a model configuration that will initialize the model to the state which is almost identical to a provisioned chip, use the `tropic01_model/create_model_cfg.py` script. Run `--help` to see available options and their explanation:
 ```shell
 cd tropic01_model/
 python3 create_model_cfg.py --help
