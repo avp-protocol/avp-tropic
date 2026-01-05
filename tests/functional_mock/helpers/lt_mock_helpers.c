@@ -145,6 +145,7 @@ lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const s
         LT_LOG_ERROR("Encryption failed! ret=%d", ret);
         return ret;
     }
+    // As the mock helpers share CAL interface with Libtropic (simplification), IV is handled in the Libtropic itself -> no need to increment here.
 
     uint16_t crc
         = crc16(&l2_frame[TR01_L2_STATUS_OFFSET], TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE + packet_size);
