@@ -80,7 +80,7 @@ lt_ret_t mock_session_start(lt_handle_t *h, const uint8_t kcmd[TR01_AES256_KEY_L
     // This is needed so we can reuse AES-GCM functions currently provided by CAL and not having to reinitialize AES
     // with swapped encryption and decryption keys every time.
     if (memcmp(kcmd, kres, TR01_AES256_KEY_LEN) != 0) {
-        LT_LOG_ERROR("kcmd and kres has to match for L3 mocking to work (simplification).");
+        LT_LOG_ERROR("kcmd and kres have to match for L3 mocking to work (simplification).");
         return LT_PARAM_ERR;
     }
 
