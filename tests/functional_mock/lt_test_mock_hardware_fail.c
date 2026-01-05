@@ -27,7 +27,7 @@
 #include "lt_port_wrap.h"
 #include "lt_test_common.h"
 
-int lt_test_mock_hardware_fail(lt_handle_t *h)
+void lt_test_mock_hardware_fail(lt_handle_t *h)
 {
     LT_LOG_INFO("----------------------------------------------");
     LT_LOG_INFO("lt_test_mock_hardware_fail()");
@@ -136,6 +136,4 @@ int lt_test_mock_hardware_fail(lt_handle_t *h)
 
     LT_LOG_INFO("Deinitializing handle");
     LT_TEST_ASSERT(LT_OK, lt_deinit((lt_handle_t *)h));
-
-    return 0;
 }

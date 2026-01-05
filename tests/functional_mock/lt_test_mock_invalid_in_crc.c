@@ -17,7 +17,7 @@
 #include "lt_mock_helpers.h"
 #include "lt_test_common.h"
 
-int lt_test_mock_invalid_in_crc(lt_handle_t *h)
+void lt_test_mock_invalid_in_crc(lt_handle_t *h)
 {
     LT_LOG_INFO("----------------------------------------------");
     LT_LOG_INFO("lt_test_mock_invalid_in_crc()");
@@ -47,6 +47,4 @@ int lt_test_mock_invalid_in_crc(lt_handle_t *h)
 
     LT_LOG_INFO("Deinitializing handle");
     LT_TEST_ASSERT(LT_OK, lt_deinit(h));
-
-    return 0;
 }

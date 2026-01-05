@@ -21,8 +21,6 @@
 
 int main(void)
 {
-    int ret = 0;
-
     // Disable buffering on stdout/stderr to simplify CI logs.
     LT_UNUSED(setvbuf(stdout, NULL, _IONBF, 0));
     LT_UNUSED(setvbuf(stderr, NULL, _IONBF, 0));
@@ -55,14 +53,11 @@ int main(void)
     LT_LOG_INFO("PRNG initialized with seed=%u", prng_seed);
 
     // Call the test function (each test will call lt_init() itself).
-    ret = @LIBTROPIC_MOCK_TEST_FUNCTION@(&__lt_handle__);
+    @LIBTROPIC_MOCK_TEST_FUNCTION@(&__lt_handle__);
 
     mbedtls_psa_crypto_free();
 
-    if (!ret) {
-        LT_LOG_INFO("Test successful!");
-    } else {
-        LT_LOG_ERROR("Test unsuccessful!");
-    }
-    return ret;
+    LT_LOG_INFO("Test finished!");
+
+    return 0;
 }
