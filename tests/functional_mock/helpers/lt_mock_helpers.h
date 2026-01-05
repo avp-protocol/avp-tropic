@@ -106,7 +106,7 @@ lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const s
  *   2. reply to Get_Response -> L2 Response with status REQ_OK (last chunk) or REQ_CONT (not the last chunk)
  *
  * @param h Pointer to an lt_handle_t to use (for encryption and enqueuing).
- * @param chunk_count Count of the L3 Result chunks.
+ * @param chunk_count Count of the L3 Command chunks. Only single chunk supported now.
  */
 lt_ret_t mock_l3_command_responses(lt_handle_t *h, size_t chunk_count);
 
