@@ -69,7 +69,7 @@ As you can see, there are two functions for mocking replies. Normally, you have 
 Steps 1. and 2. are mocked using the `mock_l3_command_responses()`, step 3. using `mock_l3_result()`.
 
 !!! info "Chunking"
-    Commands with large payloads (which will not fit into a single chunk) are not supported yet, as chunking is not implemented in the mock HAL.
+    Commands with large payloads that do not fit into a single chunk are not supported yet, because chunking is not implemented in the mock HAL.
 
 ### Creating the Test
 To add a new test, do the following:
