@@ -45,7 +45,7 @@ int lt_test_mock_hardware_fail(lt_handle_t *h)
     uint8_t kres[TR01_AES256_KEY_LEN];
     LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, kcmd, sizeof(kcmd)));
     memcpy(kres, kcmd, TR01_AES256_KEY_LEN);
-    mock_session_start(h, kcmd, kres);
+    LT_TEST_ASSERT(LT_OK, mock_session_start(h, kcmd, kres));
 
     // ----------------------------------------------------------------------------------------------------------
 
