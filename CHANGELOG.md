@@ -70,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - STM32 F439ZI HAL: Changed `rng_handle` type in `lt_dev_stm32_nucleo_f439zi_t` to a pointer (`RNG_HandleTypeDef*`).
 - New return value `LT_REBOOT_UNSUCCESSFUL` returned by `lt_reboot` function, which now checks if TROPIC01 is in correct mode after the reboot.
 - Examples: Refactored and cleaned up `lt_ex_show_chip_id_and_fwver` and `lt_ex_fw_update` logic to use the new version of the `lt_reboot` function.
-- Meaning of `lt_tr01_mode_t` enum values. Now, this enum is supposed to be used with the new `lt_get_tr01_mode` function.
+- Meaning and names of `lt_tr01_mode_t` enum values. Now, this enum is supposed to be used with the new `lt_get_tr01_mode` function.
 - CMake: Renamed `LT_CPU_FW_VERSION` to `LT_CPU_FW_UPDATE_DATA_VER` to make it more clear that it is used for the FW version to update to.
 
 ### Added
@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Signature verification was removed from the HW wallet example.
     - Users should verify the signatures themselves e.g., using functions provided by their crypto library.
 - `lt_update_mode` function.
-
+- `R_MEM_DATA_SIZE_MAX` macro because its value differs between Application FW versions. Use the appropriate [User API or datasheet](https://github.com/tropicsquare/tropic01?tab=readme-ov-file#datasheet-and-user-api) (based on the Application FW in use) as the source of truth for such constants.
 ## [2.0.1]
 
 ### Added
@@ -138,7 +138,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `pkey_index_t` to `lt_pkey_index_t`.
 - Renamed `session_state_t` to `lt_session_state_t`.
 - Renamed `LT_L2_SLEEP_KIND_SLEEP` to `TR01_L2_SLEEP_KIND_SLEEP`.
-- Renamed `LT_MODE_APP` to `TR01_MODE_APP`.
 - Renamed `LT_MODE_APP` to `TR01_MODE_APP`.
 - Renamed `LT_MODE_MAINTENANCE` to `TR01_MODE_MAINTENANCE`.
 - Renamed `GET_LOG_MAX_MSG_LEN` to `TR01_GET_LOG_MAX_MSG_LEN`.
