@@ -30,12 +30,17 @@
 #endif
 
 /**
- * @brief Sends all data in the buffer through the socket.
+ * @brief Attempts to send all data in the buffer through the socket.
+ *
+ * This function may perform multiple send attempts (up to LT_TCP_TX_ATTEMPTS)
+ * if the initial send is incomplete, and fails if the full buffer cannot be
+ * sent within this limit.
  *
  * @param socket_fd   Socket file descriptor
  * @param buffer      Buffer to send
  * @param buffer_len  Length of the buffer
- * @return            0 on success, non-zero on failure
+ * @return            0 on success, non-zero on failure if not all data is sent
+ *                    after LT_TCP_TX_ATTEMPTS attempts
  */
 static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buffer_len)
 {
