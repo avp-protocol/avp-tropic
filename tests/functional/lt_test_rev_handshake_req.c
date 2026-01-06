@@ -40,4 +40,7 @@ void lt_test_rev_handshake_req(lt_handle_t *h)
         LT_LOG_INFO("Aborting Secure Session using lt_session_abort()...");
         LT_TEST_ASSERT(LT_OK, lt_session_abort(h));
     }
+
+    LT_LOG_INFO("Deinitializing handle");
+    LT_TEST_ASSERT(LT_OK, lt_deinit(h));
 }
