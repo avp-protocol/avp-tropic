@@ -47,7 +47,7 @@ static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buf
     int nb_bytes_sent;
     int nb_bytes_sent_total = 0;
     int nb_bytes_to_send = buffer_len;
-    uint8_t *ptr = (uint8_t *)buffer;
+    const uint8_t *ptr = buffer;
 
     // attempt several times to send the data
     for (int i = 0; i < LT_TCP_TX_ATTEMPTS; i++) {
