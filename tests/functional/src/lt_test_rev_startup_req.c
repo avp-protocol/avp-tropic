@@ -74,6 +74,13 @@ static lt_ret_t lt_test_rev_startup_req_cleanup(void)
         return LT_FAIL;
     }
 
+    LT_LOG_INFO("Deinitializing handle");
+    ret = lt_deinit(g_h);
+    if (LT_OK != ret) {
+        LT_LOG_ERROR("Failed to deinitialize handle.");
+        return ret;
+    }
+
     return LT_OK;
 }
 
@@ -124,4 +131,10 @@ void lt_test_rev_startup_req(lt_handle_t *h)
     LT_TEST_ASSERT(LT_OK, lt_reboot(h, TR01_REBOOT));
     LT_LOG_INFO("Checking the chip is in the app mode...");
     LT_TEST_ASSERT(APPLICATION_MODE, check_current_state());
+
+    // Call cleanup function, but don't call it from LT_TEST_ASSERT anymore.
+    lt_test_cleanup_function = NULL;
+    LT_LOG_INFO("Starting post-test cleanup");
+    LT_TEST_ASSERT(LT_OK, lt_test_rev_startup_req_cleanup());
+    LT_LOG_INFO("Post-test cleanup was successful");
 }
