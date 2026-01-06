@@ -59,21 +59,32 @@ lt_ret_t lt_init(lt_handle_t *h)
 
     ret = lt_crypto_ctx_init(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        return ret;
+        goto lt_init_error_cleanup_1;
     }
 
     // Prevent usage of insufficient buffer.
     if (h->l3.buff_len < LT_SIZE_OF_L3_BUFF) {
-        return LT_L3_BUFFER_TOO_SMALL;
+        ret = LT_L3_BUFFER_TOO_SMALL;
+        goto lt_init_error_cleanup_2;
     }
 
     // Initialize the TROPIC01 attributes based on its Application FW.
     ret = lt_init_tr01_attrs(h);
     if (ret != LT_OK) {
-        return ret;
+        goto lt_init_error_cleanup_2;
     }
 
     return LT_OK;
+
+    lt_ret_t ret_unused;
+lt_init_error_cleanup_2:
+    ret_unused = lt_crypto_ctx_deinit(&h->l3.crypto_ctx);
+
+lt_init_error_cleanup_1:
+    ret_unused = lt_l1_deinit(&h->l2);
+    LT_UNUSED(ret_unused);
+
+    return ret;
 }
 
 lt_ret_t lt_deinit(lt_handle_t *h)
