@@ -975,6 +975,9 @@ lt_ret_t lt_in__ecc_key_generate(lt_handle_t *h)
     if (!h) {
         return LT_PARAM_ERR;
     }
+    if (h->l3.session_status != LT_SECURE_SESSION_ON) {
+        return LT_HOST_NO_SESSION;
+    }
 
     lt_ret_t ret = lt_l3_decrypt_response(&h->l3);
     if (ret != LT_OK) {
