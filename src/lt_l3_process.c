@@ -70,9 +70,6 @@ lt_ret_t lt_l3_encrypt_request(lt_l3_state_t *s3)
         return LT_PARAM_ERR;
     }
 #endif
-    if (s3->session_status != LT_SECURE_SESSION_ON) {
-        return LT_HOST_NO_SESSION;
-    }
 
     struct lt_l3_gen_frame_t *p_frame = (struct lt_l3_gen_frame_t *)s3->buff;
 
