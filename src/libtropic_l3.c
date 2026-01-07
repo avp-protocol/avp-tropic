@@ -223,7 +223,7 @@ lt_in__session_start_sha256_cleanup:
     if (ret != LT_OK) {
         goto lt_in__session_start_key_derivation_cleanup;
     }
-    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(output_2), 1, output_1, output_2);
+    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 1, output_1, output_2);
     if (ret != LT_OK) {
         goto lt_in__session_start_key_derivation_cleanup;
     }
