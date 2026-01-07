@@ -19,15 +19,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Logging: `lt_port_log` function for platform-specific logging mechanism; is used by the logging macros declared in `libtropic_logging.h`.
 - CAL: `lt_sha256_deinit` function to deinitialize the SHA-256 context. It is called after the SHA-256 operation is finalized, so it must do an exhaustive cleanup.
+- Missing secure memory zeroing to `lt_in__session_start()` and `lt_hkdf()` (internal function).
+- Missing check of `lt_handle_t.l3.session_status` in `lt_in__ecc_key_generate()`.
 
 ### Fixed
 - `lt_print_bytes` function now returns `LT_PARAM_ERR` when incorrect parameters are passed instead of `LT_FAIL`.
 - `lt_print_fw_header` function now returns `LT_PARAM_ERR` when incorrect bank ID is used instead of `LT_FAIL`.
+- If `lt_init()` fails, it performs the needed cleanup itself -> the user should call `lt_deinit()` only after `lt_init()` succeeds.
 
 ### Removed
 - Logging: Redundant/unused macros `LT_LOG`, `LT_LOG_RESULT`, `LT_LOG_VALUE`.
 - Arduino HAL: Removed `rng_seed` from `lt_dev_arduino_t`, as it should be user's responsibility to initialize the PRNG.
 - Arduino HAL: Removed `SPI.begin()` and `SPI.end()` calls (fixes [this](https://github.com/tropicsquare/libtropic-arduino/issues/15) issue). It is now expected that users initialize SPI in their code themselves.
+- Redundant checks of `lt_handle_t.l3.session_status` in `lt_l3_encrypt_request()` and `lt_l3_decrypt_response()`.
 
 ## [3.0.0]
 
