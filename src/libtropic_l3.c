@@ -1042,8 +1042,6 @@ lt_ret_t lt_in__ecc_key_store(lt_handle_t *h)
     return LT_OK;
 }
 
-// lt_ret_t lt_ecc_key_read(lt_handle_t *h, const lt_ecc_slot_t slot, uint8_t *key, const uint8_t keylen,
-// lt_ecc_curve_type_t *curve, lt_ecc_key_origin_t *origin)
 lt_ret_t lt_out__ecc_key_read(lt_handle_t *h, const lt_ecc_slot_t slot)
 {
     if (!h || (slot > TR01_ECC_SLOT_31)) {
@@ -1123,8 +1121,6 @@ lt_ret_t lt_in__ecc_key_read(lt_handle_t *h, uint8_t *key, const uint8_t key_max
 
     return LT_OK;
 }
-
-// lt_ret_t lt_ecc_key_erase(lt_handle_t *h, const lt_ecc_slot_t slot)
 
 lt_ret_t lt_out__ecc_key_erase(lt_handle_t *h, const lt_ecc_slot_t slot)
 {
