@@ -240,29 +240,29 @@ lt_in__session_start_sha256_cleanup:
 
     ret = lt_aesgcm_decrypt_init(h->l3.crypto_ctx, kauth, sizeof(kauth));
     if (ret != LT_OK) {
-        goto exit;
+        goto lt_in__session_start_aesgcm_error;
     }
 
     ret = lt_aesgcm_decrypt(h->l3.crypto_ctx, h->l3.decryption_IV, sizeof(h->l3.decryption_IV), hash, sizeof(hash),
                             p_rsp->t_tauth, sizeof(p_rsp->t_tauth), (uint8_t *)"", 0);
     if (ret != LT_OK) {
-        goto exit;
+        goto lt_in__session_start_aesgcm_error;
     }
 
     // Deinit kauth, not needed anymore
     ret = lt_aesgcm_decrypt_deinit(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto exit;
+        goto lt_in__session_start_aesgcm_error;
     }
 
     ret = lt_aesgcm_encrypt_init(h->l3.crypto_ctx, kcmd, sizeof(kcmd));
     if (ret != LT_OK) {
-        goto exit;
+        goto lt_in__session_start_aesgcm_error;
     }
 
     ret = lt_aesgcm_decrypt_init(h->l3.crypto_ctx, kres, sizeof(kres));
     if (ret != LT_OK) {
-        goto exit;
+        goto lt_in__session_start_aesgcm_error;
     }
 
     h->l3.session_status = LT_SECURE_SESSION_ON;
@@ -270,7 +270,7 @@ lt_in__session_start_sha256_cleanup:
     return LT_OK;
 
     // If something went wrong during session keys establishment, better clean up AES GCM contexts
-exit:
+lt_in__session_start_aesgcm_error:
     ret_unused = lt_aesgcm_encrypt_deinit(h->l3.crypto_ctx);
     ret_unused = lt_aesgcm_decrypt_deinit(h->l3.crypto_ctx);
     LT_UNUSED(ret_unused);
