@@ -280,7 +280,6 @@ lt_ret_t lt_port_delay(lt_l2_state_t *s2, uint32_t ms)
     LT_LOG_DEBUG("-- Waiting for the target.");
     dev->tx_buffer.tag = LT_TCP_TAG_WAIT;
     int payload_length = sizeof(uint32_t);
-    //*(uint32_t *)(&tx_buffer.PAYLOAD) = wait_time_usecs;
     dev->rx_buffer.payload[0] = ms & 0x000000ff;
     dev->rx_buffer.payload[1] = (ms & 0x0000ff00) >> 8;
     dev->rx_buffer.payload[2] = (ms & 0x00ff0000) >> 16;
