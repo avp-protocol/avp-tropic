@@ -39,10 +39,10 @@
  * @param socket_fd   Socket file descriptor
  * @param buffer      Buffer to send
  * @param buffer_len  Length of the buffer
- * @return            0 on success, non-zero on failure if not all data is sent
+ * @return            LT_OK on success, LT_FAIL on failure if not all data is sent
  *                    after LT_TCP_TX_ATTEMPTS attempts
  */
-static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buffer_len)
+static lt_ret_t send_all(const int socket_fd, const uint8_t *buffer, const size_t buffer_len)
 {
     int nb_bytes_sent;
     int nb_bytes_sent_total = 0;
@@ -55,13 +55,13 @@ static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buf
         nb_bytes_sent = send(socket_fd, ptr, nb_bytes_to_send, 0);
         if (nb_bytes_sent <= 0) {
             LT_LOG_ERROR("Send failed: %s (%d).", strerror(errno), errno);
-            return -1;
+            return LT_FAIL;
         }
 
         nb_bytes_to_send -= nb_bytes_sent;
         if (nb_bytes_to_send == 0) {
             LT_LOG_DEBUG("All %zu bytes sent successfully.", buffer_len);
-            return 0;
+            return LT_OK;
         }
 
         ptr += nb_bytes_sent;
@@ -72,7 +72,7 @@ static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buf
     LT_LOG_ERROR("%d bytes sent instead of expected %zu ", nb_bytes_sent_total, buffer_len);
     LT_LOG_ERROR("after %d attempts.", LT_TCP_TX_ATTEMPTS);
 
-    return -1;
+    return LT_FAIL;
 }
 
 /**
@@ -81,9 +81,9 @@ static int send_all(const int socket_fd, const uint8_t *buffer, const size_t buf
  * @param dev TCP HAL Device structure
  * @param tx_payload_length_ptr Pointer to the length of the payload to send (excluding tag and length fields)
  * @param rx_payload_length_ptr Pointer to the length of the payload to receive (excluding tag and length fields)
- * @return 0 on success, non-zero on failure
+ * @return LT_OK on success, LT_FAIL otherwise
  */
-static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int *rx_payload_length_ptr)
+static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int *rx_payload_length_ptr)
 {
     int nb_bytes_received;
     int nb_bytes_received_total = 0;
@@ -91,7 +91,6 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
     uint8_t *rx_ptr = dev->rx_buffer.buff;
     // number of bytes to send
     int nb_bytes_to_send = LT_TCP_TAG_AND_LENGTH_SIZE;
-    int ret = 0;
 
     if (tx_payload_length_ptr != NULL) {
         nb_bytes_to_send += *tx_payload_length_ptr;
@@ -100,9 +99,8 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
     // update payload length field
     dev->tx_buffer.len = nb_bytes_to_send - LT_TCP_TAG_AND_LENGTH_SIZE;
 
-    ret = send_all(dev->socket_fd, dev->tx_buffer.buff, nb_bytes_to_send);
-    if (ret != 0) {
-        return ret;
+    if (send_all(dev->socket_fd, dev->tx_buffer.buff, nb_bytes_to_send) != LT_OK) {
+        return LT_FAIL;
     }
 
     // receive data
@@ -111,11 +109,11 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
 
     if (nb_bytes_received < 0) {
         LT_LOG_ERROR("Receive failed: %s (%d).", strerror(errno), errno);
-        return -1;
+        return LT_FAIL;
     }
     else if (nb_bytes_received < nb_bytes_to_receive) {
         LT_LOG_ERROR("At least %d bytes are expected: %d.", nb_bytes_to_receive, nb_bytes_received);
-        return -1;
+        return LT_FAIL;
     }
 
     LT_LOG_DEBUG("Length field: %" PRIu16 ".", dev->rx_buffer.len);
@@ -132,7 +130,7 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
 
             if (nb_bytes_received < 0) {
                 LT_LOG_ERROR("Receive failed: %s (%d).", strerror(errno), errno);
-                return -1;
+                return LT_FAIL;
             }
 
             nb_bytes_received_total += nb_bytes_received;
@@ -146,23 +144,23 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
 
     if (nb_bytes_received_total != nb_bytes_to_receive) {
         LT_LOG_ERROR("Received %d bytes in total instead of %d.", nb_bytes_received_total, nb_bytes_to_receive);
-        return -1;
+        return LT_FAIL;
     }
 
     // server does not know the sent tag
     if ((lt_posix_tcp_tag_t)dev->rx_buffer.tag == LT_TCP_TAG_INVALID) {
         LT_LOG_ERROR("Tag %" PRIu8 " is not known by the server.", dev->tx_buffer.tag);
-        return -1;
+        return LT_FAIL;
     }
     // server does not know what to do with the sent tag
     else if ((lt_posix_tcp_tag_t)dev->rx_buffer.tag == LT_TCP_TAG_UNSUPPORTED) {
         LT_LOG_ERROR("Tag %" PRIu8 " is not supported by the server.", dev->tx_buffer.tag);
-        return -1;
+        return LT_FAIL;
     }
     // RX tag and TX tag should be identical
     else if (dev->rx_buffer.tag != dev->tx_buffer.tag) {
         LT_LOG_ERROR("Expected tag %" PRIu8 ", received %" PRIu8 ".", dev->rx_buffer.tag, dev->tx_buffer.tag);
-        return -1;
+        return LT_FAIL;
     }
 
     LT_LOG_DEBUG("Rx tag and tx tag match: %" PRIu8 ".", dev->rx_buffer.tag);
@@ -170,7 +168,7 @@ static int communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int 
         *rx_payload_length_ptr = nb_bytes_received_total - LT_TCP_TAG_AND_LENGTH_SIZE;
     }
 
-    return 0;
+    return LT_OK;
 }
 
 lt_ret_t lt_port_init(lt_l2_state_t *s2)
@@ -226,7 +224,7 @@ lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
 
     LT_LOG_DEBUG("-- Driving Chip Select to Low.");
     dev->tx_buffer.tag = LT_TCP_TAG_SPI_DRIVE_CSN_LOW;
-    if (communicate(dev, NULL, NULL) != 0) {
+    if (communicate(dev, NULL, NULL) != LT_OK) {
         return LT_FAIL;
     }
 
@@ -239,7 +237,7 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 
     LT_LOG_DEBUG("-- Driving Chip Select to High.");
     dev->tx_buffer.tag = LT_TCP_TAG_SPI_DRIVE_CSN_HIGH;
-    if (communicate(dev, NULL, NULL) != 0) {
+    if (communicate(dev, NULL, NULL) != LT_OK) {
         return LT_FAIL;
     }
 
@@ -266,7 +264,7 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_dat
     // copy tx_data to tx payload
     memcpy(&dev->tx_buffer.payload, s2->buff, tx_payload_length);
 
-    if (communicate(dev, &tx_payload_length, &rx_payload_length) != 0) {
+    if (communicate(dev, &tx_payload_length, &rx_payload_length) != LT_OK) {
         return LT_FAIL;
     }
 
@@ -288,7 +286,7 @@ lt_ret_t lt_port_delay(lt_l2_state_t *s2, uint32_t ms)
     dev->rx_buffer.payload[2] = (ms & 0x00ff0000) >> 16;
     dev->rx_buffer.payload[3] = (ms & 0xff000000) >> 24;
 
-    if (communicate(dev, &payload_length, NULL) != 0) {
+    if (communicate(dev, &payload_length, NULL) != LT_OK) {
         return LT_FAIL;
     }
 
