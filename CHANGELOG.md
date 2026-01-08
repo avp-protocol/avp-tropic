@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   need to modify the behavior yourself (e.g., by modifiying `_write` syscall on STM32), or (in the case of the embedded platforms)
   you just need to configure your serial monitor correctly, so it expects only LF character (and not CR+LF pair).
 - TCP HAL: Fixed `lt_port_init()` cleanup, refactored local functions.
+- Moved TROPIC01 Model related files to `scripts/tropic01_model`.
 
 ### Added
 - Logging: `lt_port_log` function for platform-specific logging mechanism; is used by the logging macros declared in `libtropic_logging.h`.
