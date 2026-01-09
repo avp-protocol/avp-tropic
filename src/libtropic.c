@@ -43,6 +43,7 @@ lt_ret_t lt_init(lt_handle_t *h)
     }
 
     lt_ret_t ret;
+    lt_ret_t ret_unused;
 
     // When compiling libtropic with l3 buffer embedded into handle,
     // define buffer's length here (later used to prevent overflow during communication).
@@ -76,7 +77,6 @@ lt_ret_t lt_init(lt_handle_t *h)
 
     return LT_OK;
 
-    lt_ret_t ret_unused;
 crypto_ctx_cleanup:
     ret_unused = lt_crypto_ctx_deinit(&h->l3.crypto_ctx);
 
