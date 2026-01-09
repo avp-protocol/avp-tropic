@@ -7,7 +7,6 @@ include (FetchContent)
 #                                                                         #
 ###########################################################################
 project(libtropic_hello_world
-        VERSION 0.1.0
         DESCRIPTION "Libtropic Hello World example on Linux using SPI driver."
         LANGUAGES C)
 

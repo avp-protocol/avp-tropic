@@ -7,7 +7,6 @@ include (FetchContent)
 #                                                                         #
 ###########################################################################
 project(libtropic_identify_chip
-        VERSION 0.1.0
         DESCRIPTION "Libtropic chip identification example on Linux using USB devkit driver."
         LANGUAGES C)
 

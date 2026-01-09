@@ -7,7 +7,6 @@ include (FetchContent)
 #                                                                         #
 ###########################################################################
 project(libtropic_fw_update
-        VERSION 0.1.0
         DESCRIPTION "Libtropic Firmware Update example on Linux using USB devkit driver."
         LANGUAGES C)
 
