@@ -1197,23 +1197,17 @@ lt_ret_t lt_out__ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t slot, const 
     if (ret != LT_OK) {
         return ret;
     }
-
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_out__ecc_ecdsa_sign_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, (uint8_t *)msg, msg_len);
     if (ret != LT_OK) {
-        goto lt_out__ecc_ecdsa_sign_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, msg_hash);
-
-    // Deinitialize SHA-256 context.
-lt_out__ecc_ecdsa_sign_sha256_cleanup:
-    ret_unused = lt_sha256_deinit(h->l3.crypto_ctx);
-    LT_UNUSED(ret_unused);
     if (ret != LT_OK) {
-        return ret;
+        goto sha256_cleanup;
     }
 
     // Pointer to access l3 buffer when it contains command data
@@ -1225,7 +1219,14 @@ lt_out__ecc_ecdsa_sign_sha256_cleanup:
     p_l3_cmd->slot = slot;
     memcpy(p_l3_cmd->msg_hash, msg_hash, sizeof(p_l3_cmd->msg_hash));
 
-    return lt_l3_encrypt_request(&h->l3);
+    ret = lt_l3_encrypt_request(&h->l3);
+
+sha256_cleanup:
+    ret_unused = lt_sha256_deinit(h->l3.crypto_ctx);
+    lt_secure_memzero(msg_hash, sizeof(msg_hash));
+    LT_UNUSED(ret_unused);
+
+    return ret;
 }
 
 lt_ret_t lt_in__ecc_ecdsa_sign(lt_handle_t *h, uint8_t *rs)
