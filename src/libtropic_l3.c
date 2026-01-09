@@ -93,111 +93,105 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
     // h = SHA_256(protocol_name)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, protocol_name, sizeof(protocol_name));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
 
     // h = SHA256(h||SHiPUB)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, hash, sizeof(hash));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, shipub, TR01_SHIPUB_LEN);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
 
     // h = SHA256(h||STPUB)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, hash, sizeof(hash));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, stpub, TR01_STPUB_LEN);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
 
     // h = SHA256(h||EHPUB)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, hash, sizeof(hash));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, host_eph_keys->ehpub, TR01_EHPUB_LEN);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
 
     // h = SHA256(h||PKEY_INDEX)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, hash, sizeof(hash));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, (uint8_t *)&pkey_index, 1);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
 
     // h = SHA256(h||ETPUB)
     ret = lt_sha256_start(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, hash, sizeof(hash));
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_update(h->l3.crypto_ctx, p_rsp->e_tpub, TR01_ETPUB_LEN);
     if (ret != LT_OK) {
-        goto lt_in__session_start_sha256_cleanup;
+        goto sha256_cleanup;
     }
     ret = lt_sha256_finish(h->l3.crypto_ctx, hash);
-
-    // Deinitialize SHA-256 context, not needed anymore.
-lt_in__session_start_sha256_cleanup:
-    ret_unused = lt_sha256_deinit(h->l3.crypto_ctx);
-    LT_UNUSED(ret_unused);
     if (ret != LT_OK) {
-        lt_secure_memzero(hash, sizeof(hash));
-        return ret;
+        goto sha256_cleanup;
     }
 
     // Derivate the keys (ECDH)
@@ -212,84 +206,81 @@ lt_in__session_start_sha256_cleanup:
     // ck = HKDF (ck, X25519(EHPRIV, ETPUB), 1)
     ret = lt_X25519(host_eph_keys->ehpriv, p_rsp->e_tpub, shared_secret);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     ret = lt_hkdf(protocol_name, sizeof(protocol_name), shared_secret, sizeof(shared_secret), 1, output_1, output_2);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     // ck = HKDF (ck, X25519(SHiPRIV, ETPUB), 1)
     ret = lt_X25519(shipriv, p_rsp->e_tpub, shared_secret);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 1, output_1, output_2);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     // ck, kAUTH = HKDF (ck, X25519(EHPRIV, STPUB), 2)
     ret = lt_X25519(host_eph_keys->ehpriv, stpub, shared_secret);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 2, output_1, kauth);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
+        goto key_derivation_cleanup;
     }
     // kCMD, kRES = HKDF (ck, emptystring, 2)
     ret = lt_hkdf(output_1, sizeof(output_1), (uint8_t *)"", 0, 2, kcmd, kres);
     if (ret != LT_OK) {
-        goto lt_in__session_start_key_derivation_cleanup;
-    }
-
-lt_in__session_start_key_derivation_cleanup:
-    lt_secure_memzero(output_1, sizeof(output_1));
-    lt_secure_memzero(output_2, sizeof(output_2));
-    lt_secure_memzero(shared_secret, sizeof(shared_secret));
-    if (ret != LT_OK) {
-        goto lt_in__session_start_final_cleanup;
+        goto key_derivation_cleanup;
     }
 
     ret = lt_aesgcm_decrypt_init(h->l3.crypto_ctx, kauth, sizeof(kauth));
     if (ret != LT_OK) {
-        goto lt_in__session_start_aesgcm_error;
+        goto aesgcm_error;
     }
 
     ret = lt_aesgcm_decrypt(h->l3.crypto_ctx, h->l3.decryption_IV, sizeof(h->l3.decryption_IV), hash, sizeof(hash),
                             p_rsp->t_tauth, sizeof(p_rsp->t_tauth), (uint8_t *)"", 0);
     if (ret != LT_OK) {
-        goto lt_in__session_start_aesgcm_error;
+        goto aesgcm_error;
     }
 
     ret = lt_aesgcm_decrypt_deinit(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        goto lt_in__session_start_aesgcm_error;
+        goto aesgcm_error;
     }
 
     ret = lt_aesgcm_encrypt_init(h->l3.crypto_ctx, kcmd, sizeof(kcmd));
     if (ret != LT_OK) {
-        goto lt_in__session_start_aesgcm_error;
+        goto aesgcm_error;
     }
 
     ret = lt_aesgcm_decrypt_init(h->l3.crypto_ctx, kres, sizeof(kres));
     if (ret != LT_OK) {
-        goto lt_in__session_start_aesgcm_error;
+        goto aesgcm_error;
     }
 
     h->l3.session_status = LT_SECURE_SESSION_ON;
-    goto lt_in__session_start_final_cleanup;
+    goto key_derivation_cleanup;
 
-    // If something went wrong during session keys establishment, better clean up AES GCM contexts
-lt_in__session_start_aesgcm_error:
+aesgcm_error:
     ret_unused = lt_aesgcm_encrypt_deinit(h->l3.crypto_ctx);
     ret_unused = lt_aesgcm_decrypt_deinit(h->l3.crypto_ctx);
-    LT_UNUSED(ret_unused);
 
-lt_in__session_start_final_cleanup:
-    lt_secure_memzero(hash, sizeof(hash));
+key_derivation_cleanup:
+    lt_secure_memzero(output_1, sizeof(output_1));
+    lt_secure_memzero(output_2, sizeof(output_2));
+    lt_secure_memzero(shared_secret, sizeof(shared_secret));
     lt_secure_memzero(kcmd, sizeof(kcmd));
     lt_secure_memzero(kres, sizeof(kres));
     lt_secure_memzero(kauth, sizeof(kauth));
+
+sha256_cleanup:
+    ret_unused = lt_sha256_deinit(h->l3.crypto_ctx);
+    LT_UNUSED(ret_unused);
+    lt_secure_memzero(hash, sizeof(hash));
 
     return ret;
 }
