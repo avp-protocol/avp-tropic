@@ -27,21 +27,21 @@ lt_ret_t lt_hkdf(const uint8_t *ck, const uint32_t ck_len, const uint8_t *input,
 
     ret = lt_hmac_sha256(ck, ck_len, input, input_len, tmp);
     if (ret != LT_OK) {
-        goto lt_hkdf_cleanup;
+        goto cleanup;
     }
 
     ret = lt_hmac_sha256(tmp, sizeof(tmp), &one, 1, output_1);
     if (ret != LT_OK) {
-        goto lt_hkdf_cleanup;
+        goto cleanup;
     }
 
     memcpy(helper, output_1, LT_HMAC_SHA256_HASH_LEN);  // Copy whole output of SHA256 HMAC.
     helper[LT_HMAC_SHA256_HASH_LEN] = 2;
 
     ret = lt_hmac_sha256(tmp, sizeof(tmp), helper, sizeof(helper), output_2);
-
     lt_secure_memzero(helper, sizeof(helper));
-lt_hkdf_cleanup:
+
+cleanup:
     lt_secure_memzero(tmp, sizeof(tmp));
 
     return ret;
