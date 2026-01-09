@@ -426,21 +426,21 @@ lt_ret_t lt_session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pkey_in
 
     lt_ret_t ret = lt_out__session_start(h, pkey_index, &host_eph_keys);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_l2_send(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
     ret = lt_l2_receive(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_in__session_start(h, stpub, pkey_index, shipriv, shipub, &host_eph_keys);
 
-lt_session_start_cleanup:
+cleanup:
     lt_secure_memzero(&host_eph_keys, sizeof(lt_host_eph_keys_t));
     return ret;
 }
