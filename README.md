@@ -34,21 +34,20 @@ The following table outlines the tested and supported compatibility between rele
 > [!WARNING]
 > Using mismatched versions of the components may result in unpredictable behavior or errors. It is strongly advised to use the latest compatible versions of all components to ensure proper functionality. 
 
-For retrieving firmware versions from TROPIC01, check the [lt_ex_show_chip_id_and_fw_ver](https://tropicsquare.github.io/libtropic/latest/get_started/examples/reversible_examples/#lt_ex_show_chip_id_and_fwverc) example. For updating firmware, please follow code example in [lt_ex_fw_update](https://tropicsquare.github.io/libtropic/latest/get_started/examples/irreversible_examples/#lt_ex_fw_updatec).
+For retrieving firmware versions from TROPIC01 and updating its firmware, refer to the [Tutorials](https://tropicsquare.github.io/libtropic/latest/get_started/tutorials/) and select your platform. Follow the instructions for **Chip Identification** and **Firmware Update** example.
 
 ## Repository structure
 * `CMakeLists.txt` Root CMake project file
 * `cmake/` CMake related files
 * `cal/` Implementation of Crypto Abstraction Layers (CAL) for supported Cryptographic Functionality Providers (CFP)
 * `docs/` [MkDocs](https://www.mkdocs.org/) Documentation deployed [here](https://tropicsquare.github.io/libtropic/latest/)
-* `examples/` A few examples of how Libtropic might be used
+* `examples/` Example projects for each supported platform
 * `hal/` Implementation of Hardware Abstraction Layers (HAL) for supported host platforms
 * `include/` Public API header files
 * `scripts/` Build and config scripts
 * `src/` Library's source files
 * `tests/` Functional tests
 * `TROPIC01_fw_update_files/` Files used for updating TROPIC01's firmware
-* `tropic01_model/` Project for the TROPIC01's model, utilizing the TCP HAL
 * `vendor/` Third party libraries and tools
 
 ## Get started!
