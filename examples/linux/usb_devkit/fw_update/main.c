@@ -1,5 +1,6 @@
 /**
  * @file main.c
+ * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic with the USB devkit.
  * @author Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
