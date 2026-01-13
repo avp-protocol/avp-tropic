@@ -1,7 +1,7 @@
 # Functional Mock Tests
 Functional Mock Tests run against the *mock HAL* (not a real target or a model). They are used to verify behavior that is difficult or impossible to reproduce on a real device (for example, rare hardware error conditions or unusual timing). These tests live in `tests/functional_mock` and require you to explicitly mock the data that would appear on the MISO line.
 
-## Compiling and Running Tests
+## Compilation and Running
 These tests are compiled standalone in the `tests/functional_mock` directory. The tests can be compiled and run as follows:
 
 ```shell
