@@ -10,7 +10,7 @@ You will learn about the following functions:
 - `lt_r_mem_data_erase()`: L3 command to erase R-memory data slot,
 - `lt_r_mem_data_write()`: L3 command to write R-memory data slot,
 - `lt_r_mem_data_read()`: L3 command to read R-memory data slot,
-- `lt_random_bytes()`: function to generate random number using platform's RNG (not TROPIC01's),
+- `lt_random_value_get()`: function to generate random number using TROPIC01's TRNG.
 
 In this example, we also define two functions to implement PIN verification functionality:
 
