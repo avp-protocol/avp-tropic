@@ -40,6 +40,9 @@ if (NOT DEFINED CTEST_PREFIX)
     set(CTEST_PREFIX "")
 endif()
 
+# This option will make CTest execute test binaries with Valgrind.
+option(LT_VALGRIND "Enable Valgrind" OFF)
+
 ###########################################################################
 #                                                                         #
 #   Add libtropic library and set it up                                   #
@@ -105,7 +108,13 @@ foreach(test_name IN LISTS LIBTROPIC_TEST_LIST)
     endif()
 
     # Add CTest entry.
-    add_test(NAME ${TEST_NAME_WITH_PREFIX}
-            COMMAND stdbuf -oL -eL ${CMAKE_CURRENT_BINARY_DIR}/${exe_name}
-    )
+    if (LT_VALGRIND)
+        add_test(NAME ${TEST_NAME_WITH_PREFIX}
+                COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --error-exitcode=1 stdbuf -oL -eL ${CMAKE_CURRENT_BINARY_DIR}/${exe_name}
+        )
+    else()
+        add_test(NAME ${TEST_NAME_WITH_PREFIX}
+                COMMAND stdbuf -oL -eL ${CMAKE_CURRENT_BINARY_DIR}/${exe_name}
+        )
+    endif()
 endforeach()
