@@ -1,7 +1,7 @@
 # 4. Mac-And-Destroy Example
 This example illustrates MAC-And-Destroy, the flagship feature of TROPIC01.
 
-!!! success "Prerequisities"
+!!! success "Prerequisites"
     It is assumed that you have already completed the previous TROPIC01 Model tutorials. If not, start [here](../model/index.md).
 
 You will learn about the following functions:
