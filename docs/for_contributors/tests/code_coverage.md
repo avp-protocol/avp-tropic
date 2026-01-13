@@ -12,11 +12,11 @@ We support collecting coverage only against [TROPIC01 Model](../../other/tropic0
 
 To activate coverage collection, add the switch `-DLT_TEST_COVERAGE=1` when invoking `cmake`. Follow these steps:
 ```shell
-cd tropic01_model
+cd tests/functional/model
 mkdir -p build
 cd build
-cmake -DLT_BUILD_TESTS=1 -DLT_TEST_COVERAGE=1 -DLT_CAL="mbedtls_v4" ..
-make
+cmake -DLT_TEST_COVERAGE=1 -DLT_CAL="mbedtls_v4" ..
+make -j
 ctest -V
 ```
 
@@ -34,7 +34,7 @@ cd tests/functional_mock
 mkdir -p build
 cd build
 cmake -DLT_TEST_COVERAGE=1 ..
-make
+make -j
 ctest -V
 ```
 
