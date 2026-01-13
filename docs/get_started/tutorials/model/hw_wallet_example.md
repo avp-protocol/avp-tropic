@@ -1,7 +1,7 @@
 # 3. Hardware Wallet Example
 This example demonstrates how to use configuration objects and different pairing keys to manage access to TROPIC01 features. A hardware wallet device scenario is used as a model for this example.
 
-!!! success "Prerequisities"
+!!! success "Prerequisites"
     It is assumed that you have already completed the previous TROPIC01 Model tutorials. If not, start [here](../model/index.md).
 
 In this example, you will:
