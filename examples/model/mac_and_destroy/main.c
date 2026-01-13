@@ -83,7 +83,7 @@ static void encrypt(const uint8_t *data, const uint8_t *key, uint8_t *destinatio
 static void decrypt(const uint8_t *data, const uint8_t *key, uint8_t *destination)
 {
     for (uint8_t i = 0; i < 32; i++) {
-        destination[i] = data[i] ^ key[i];  //*(data + i) ^= *(key + i);
+        destination[i] = data[i] ^ key[i];
     }
 }
 
