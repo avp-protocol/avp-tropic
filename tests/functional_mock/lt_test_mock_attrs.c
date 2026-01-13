@@ -12,7 +12,6 @@
 
 #include "libtropic.h"
 #include "libtropic_common.h"
-#include "libtropic_functional_tests.h"
 #include "libtropic_l2.h"
 #include "libtropic_logging.h"
 #include "libtropic_macros.h"
@@ -27,6 +26,11 @@
 
 void lt_test_mock_attrs(lt_handle_t *h)
 {
+    char *p = malloc(10);
+    if (!p) return;
+    p[10] = 'X';  // one-past-end heap buffer write -> ASan should report
+    free(p);
+
     LT_LOG_INFO("----------------------------------------------");
     LT_LOG_INFO("lt_test_mock_attrs()");
     LT_LOG_INFO("----------------------------------------------");
