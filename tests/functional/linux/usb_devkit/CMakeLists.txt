@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.21.0)
+cmake_policy(SET CMP0152 OLD) # Path resolution policy
 
 ###########################################################################
 #                                                                         #
