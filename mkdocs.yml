@@ -95,6 +95,7 @@ nav:
       - STM32: other/supported_host_platforms/stm32.md
       - Linux: other/supported_host_platforms/linux.md
       - POSIX: other/supported_host_platforms/posix.md
+      - ESP-IDF: other/supported_host_platforms/esp_idf.md
       - Arduino: other/supported_host_platforms/arduino.md
     - Supported Cryptographic Functionality Providers:
       - other/supported_cfps/index.md
