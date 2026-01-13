@@ -10,8 +10,8 @@ on:
       - 'develop'
 
 jobs:
-  examples_asan:
-    name: Compile and run examples for TROPIC01 model with Valgrind
+  hello_world_valgrind:
+    name: Compile and run Hello World with Valgrind
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -49,5 +49,89 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: valgrind_run_logs
+          name: hello_world_valgrind_run_logs
           path: examples/model/hello_world/build/run_logs/
+
+  hw_wallet_valgrind:
+    name: Compile and run HW Wallet with Valgrind
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential valgrind ninja-build
+            ./tests/functional/model/download_deps.sh
+            ./scripts/tropic01_model/install_linux.sh
+            source ./scripts/tropic01_model/.venv/bin/activate
+            pip install jsonschema
+
+      - name: Compile and run HW Wallet example
+        run: |
+            source ./scripts/tropic01_model/.venv/bin/activate
+            cd examples/model/hw_wallet
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_hw_wallet \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload run logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hw_wallet_valgrind_run_logs
+          path: examples/model/hw_wallet/build/run_logs/
+
+  macandd_valgrind:
+    name: Compile and run Mac-And-Destroy with Valgrind
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+        with:
+          submodules: recursive
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential valgrind ninja-build
+            ./tests/functional/model/download_deps.sh
+            ./scripts/tropic01_model/install_linux.sh
+            source ./scripts/tropic01_model/.venv/bin/activate
+            pip install jsonschema
+
+      - name: Compile and run Mac-And-Destroy example
+        run: |
+            source ./scripts/tropic01_model/.venv/bin/activate
+            cd examples/model/mac_and_destroy
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_mac_and_destroy \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload run logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macandd_valgrind_run_logs
+          path: examples/model/mac_and_destroy/build/run_logs/
