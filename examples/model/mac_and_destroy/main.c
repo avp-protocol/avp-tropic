@@ -158,8 +158,8 @@ cleanup:
  * @param final_key      Buffer into which final key will be placed when all went successfully
  * @return lt_ret_t   LT_OK if correct, otherwise LT_FAIL
  */
-static lt_ret_t lt_new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, const uint8_t *PIN,
-                                 const uint8_t PIN_size, const uint8_t *add, const uint8_t add_size, uint8_t *final_key)
+static lt_ret_t new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, const uint8_t *PIN, const uint8_t PIN_size,
+                              const uint8_t *add, const uint8_t add_size, uint8_t *final_key)
 {
     if (!h || !master_secret || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) || (PIN_size > MACANDD_PIN_SIZE_MAX)
         || (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
@@ -215,7 +215,7 @@ static lt_ret_t lt_new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, c
     // Store number of attempts.
     nvm.i = MACANDD_ROUNDS;
     // Compute tag t = KDF(s, 0x00), save into nvm struct.
-    // Tag will be later used during lt_PIN_entry_check() to verify validity of final_key.
+    // Tag will be later used during PIN_entry_check() to verify validity of final_key.
     psa_ret = hmac_sha256(master_secret, TR01_MAC_AND_DESTROY_DATA_SIZE, (uint8_t[]){0x00}, 1, nvm.t);
     if (psa_ret != PSA_SUCCESS) {
         fprintf(stderr, "\tt = KDF(s, 0x00) failed, psa_status_t=%d\n", psa_ret);
@@ -331,8 +331,8 @@ exit:
  * @param final_key   Buffer into which final_key will be saved
  * @return lt_ret_t   LT_OK if correct, otherwise LT_FAIL
  */
-static lt_ret_t lt_PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_t PIN_size, const uint8_t *add,
-                                   const uint8_t add_size, uint8_t *final_key)
+static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_t PIN_size, const uint8_t *add,
+                                const uint8_t add_size, uint8_t *final_key)
 {
     if (!h || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) || (PIN_size > MACANDD_PIN_SIZE_MAX)
         || (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
@@ -640,8 +640,8 @@ int main(void)
 
     // Set the PIN and log out the final_key
     printf("Setting the user PIN...\n");
-    ret = lt_new_PIN_setup(&lt_handle, master_secret, pin, sizeof(pin), additional_data, sizeof(additional_data),
-                           final_key_initialized);
+    ret = new_PIN_setup(&lt_handle, master_secret, pin, sizeof(pin), additional_data, sizeof(additional_data),
+                        final_key_initialized);
     if (ret != LT_OK) {
         fprintf(stderr, "\nFailed to set the user PIN, ret=%s\n", lt_ret_verbose(ret));
         lt_session_abort(&lt_handle);
@@ -665,8 +665,8 @@ int main(void)
     printf("\nWill do %d PIN check attempts with wrong PIN:\n", MACANDD_ROUNDS);
     for (int i = 1; i < MACANDD_ROUNDS; i++) {
         printf("\tInputting wrong PIN -> slot #%d will be destroyed...\n", i);
-        ret = lt_PIN_entry_check(&lt_handle, pin_wrong, sizeof(pin_wrong), additional_data, sizeof(additional_data),
-                                 final_key_exported);
+        ret = PIN_entry_check(&lt_handle, pin_wrong, sizeof(pin_wrong), additional_data, sizeof(additional_data),
+                              final_key_exported);
         if (ret != LT_FAIL) {
             fprintf(stderr, "\nReturn value is not LT_FAIL, ret=%s\n", lt_ret_verbose(ret));
             lt_session_abort(&lt_handle);
@@ -687,8 +687,7 @@ int main(void)
     }
 
     printf("Doing final PIN attempt with correct PIN, slots are reinitialized again...\n");
-    ret = lt_PIN_entry_check(&lt_handle, pin, sizeof(pin), additional_data, sizeof(additional_data),
-                             final_key_exported);
+    ret = PIN_entry_check(&lt_handle, pin, sizeof(pin), additional_data, sizeof(additional_data), final_key_exported);
     if (ret != LT_OK) {
         fprintf(stderr, "\nAttempt with correct PIN failed, ret=%s\n", lt_ret_verbose(ret));
         lt_session_abort(&lt_handle);

@@ -14,8 +14,8 @@ You will learn about the following functions:
 
 In this example, we also define two functions to implement PIN verification functionality:
 
-- `lt_new_PIN_setup()`: setups the PIN,
-- `lt_PIN_entry_check()`: checks the PIN.
+- `new_PIN_setup()`: setups the PIN,
+- `PIN_entry_check()`: checks the PIN.
 
 You can use these functions as an inspiration for your project.
 
