@@ -47,7 +47,7 @@ option(LT_ASAN "Enable static AddressSanitizer (ASan)" OFF)
 
 # Select CAL
 set(LT_CAL "" CACHE STRING "Set a CAL (Crypto Abstraction Layer)")
-set_property(CACHE LT_CAL PROPERTY STRINGS "trezor_crypto" "mbedtls_v4")
+set_property(CACHE LT_CAL PROPERTY STRINGS "trezor_crypto" "mbedtls_v4" "openssl")
 
 # Select pairing keys written during manufacturing into your TROPIC01
 set(LT_SH0_KEYS "prod0" CACHE STRING "Choose which pairing keys in slot 0 will be used in this example")
@@ -115,6 +115,7 @@ target_compile_definitions(tropic PUBLIC
 # It's used in main.c to switch crypto contexts without manual changes
 set(LT_USE_TREZOR_CRYPTO 0 CACHE INTERNAL "")
 set(LT_USE_MBEDTLS_V4 0 CACHE INTERNAL "")
+set(LT_USE_OPENSSL 0 CACHE INTERNAL "")
 
 # Handle LT_CAL
 if(LT_CAL STREQUAL "trezor_crypto")
@@ -145,6 +146,16 @@ elseif(LT_CAL STREQUAL "mbedtls_v4")
     add_subdirectory("${PATH_DEPS}/mbedtls_v4/" "mbedtls_v4")
 
     target_link_libraries(tropic PUBLIC mbedtls)
+elseif(LT_CAL STREQUAL "openssl")
+    message(STATUS "Crypto provider set to openssl")
+    add_subdirectory("${PATH_LIBTROPIC}/cal/openssl" "openssl_cal")
+
+    # Developers who integrate Libtropic do not have to use this variable
+    # It's used in model's main.c to switch crypto contexts without manual changes
+    set(LT_USE_OPENSSL 1)
+
+    find_package(OpenSSL REQUIRED)
+    target_link_libraries(tropic PUBLIC OpenSSL::Crypto)
 else()
     get_property(lt_cal_choices CACHE LT_CAL PROPERTY STRINGS)
     message(FATAL_ERROR "Incorrect CAL set to LT_CAL!\nSupported CALs: ${lt_cal_choices}")
@@ -306,4 +317,5 @@ target_link_libraries(libtropic_functional_tests PRIVATE micro_ecc_lib)
 target_compile_definitions(libtropic_functional_tests PUBLIC
     LT_USE_TREZOR_CRYPTO=${LT_USE_TREZOR_CRYPTO}
     LT_USE_MBEDTLS_V4=${LT_USE_MBEDTLS_V4}
+    LT_USE_OPENSSL=${LT_USE_OPENSSL}
 )

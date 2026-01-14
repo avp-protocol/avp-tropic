@@ -19,6 +19,8 @@
 #elif LT_USE_MBEDTLS_V4
 #include "libtropic_mbedtls_v4.h"
 #include "psa/crypto.h"
+#elif LT_USE_OPENSSL
+#include "libtropic_openssl.h"
 #endif
 
 int main(void)
@@ -53,6 +55,8 @@ int main(void)
     lt_ctx_trezor_crypto_t
 #elif LT_USE_MBEDTLS_V4
     lt_ctx_mbedtls_v4_t
+#elif LT_USE_OPENSSL
+    lt_ctx_openssl_t
 #endif
         crypto_ctx;
     lt_handle.l3.crypto_ctx = &crypto_ctx;
