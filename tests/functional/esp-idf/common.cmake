@@ -52,16 +52,8 @@ add_subdirectory(${PATH_FN_TESTS} "libtropic_functional_tests")
 #                                                                         #
 ###########################################################################
 
-# Developers who integrate Libtropic do not have to use these variables
-# It's used in main.c to switch crypto contexts without manual changes
-set(LT_USE_MBEDTLS_V4 0 CACHE INTERNAL "")
-
 # Handle CAL
 if(LT_CAL STREQUAL "mbedtls_v4")
-    # Developers who integrate Libtropic do not have to use this variable
-    # It's used in main.c to switch crypto contexts without manual changes
-    set(LT_USE_MBEDTLS_V4 1)
-
     target_link_libraries(tropic PUBLIC idf::mbedtls)
 else()
     message(FATAL_ERROR "Unsupported CAL ${LT_CAL} for ESP-IDF builds!")
@@ -207,11 +199,6 @@ foreach(test_name IN LISTS LIBTROPIC_TEST_LIST)
 
     # Choose correct test for the binary.
     target_compile_definitions(${exe_name} PRIVATE ${test_macro})
-
-    # Pass CAL selection to the binary.
-    target_compile_definitions(${exe_name} PUBLIC 
-        LT_USE_MBEDTLS_V4=${LT_USE_MBEDTLS_V4}
-    )
 
     if(CTEST_PREFIX STREQUAL "")
         set(TEST_NAME_WITH_PREFIX ${test_name})
