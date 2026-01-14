@@ -8,8 +8,20 @@ rm -rf "$SCRIPT_DIR/_deps"
 mkdir -p "$SCRIPT_DIR/_deps"
 
 echo "Downloading ed25519..."
-git clone https://github.com/orlp/ed25519.git "$SCRIPT_DIR/_deps/ed25519"
-git -C "$SCRIPT_DIR/_deps/ed25519" checkout b1f19fab4aebe607805620d25a5e42566ce46a0e 
+curl -L -o "$SCRIPT_DIR/_deps/ed25519.zip" "https://github.com/orlp/ed25519/archive/b1f19fab4aebe607805620d25a5e42566ce46a0e.zip"
+
+# Verify ed25519 zip checksum
+echo "Verifying ed25519.zip checksum..."
+EXPECTED_ED25519="75f39e64f22ec7474e7881315a3f9135afe6c990737388fb16a6950911b55721"
+ACTUAL_ED25519=$(sha256sum "$SCRIPT_DIR/_deps/ed25519.zip" | awk '{print $1}')
+if [ "$EXPECTED_ED25519" != "$ACTUAL_ED25519" ]; then
+  echo "Checksum mismatch for ed25519.zip: expected $EXPECTED_ED25519, got $ACTUAL_ED25519" >&2
+  exit 1
+fi
+
+unzip "$SCRIPT_DIR/_deps/ed25519.zip" -d "$SCRIPT_DIR/_deps"
+mv "$SCRIPT_DIR/_deps/ed25519-b1f19fab4aebe607805620d25a5e42566ce46a0e" "$SCRIPT_DIR/_deps/ed25519"
+rm "$SCRIPT_DIR/_deps/ed25519.zip"
 
 echo "Downloading Micro ECC..."
 curl -L -o "$SCRIPT_DIR/_deps/micro-ecc.zip" "https://github.com/kmackay/micro-ecc/archive/refs/tags/v1.1.zip"
