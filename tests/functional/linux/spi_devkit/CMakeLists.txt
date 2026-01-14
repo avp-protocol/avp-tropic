@@ -16,7 +16,7 @@ project(libtropic_functional_tests_linux_spi
 #   Paths and setup                                                       #
 #                                                                         #
 ###########################################################################
-file(REAL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/_deps/ PATH_DEPS)
+file(REAL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../_deps/ PATH_DEPS)
 file(REAL_PATH ../../../../ PATH_LIBTROPIC)
 file(REAL_PATH ../../src PATH_FN_TESTS)
 
