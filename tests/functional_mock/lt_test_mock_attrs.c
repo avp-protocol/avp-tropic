@@ -26,11 +26,6 @@
 
 void lt_test_mock_attrs(lt_handle_t *h)
 {
-    char *p = malloc(10);
-    if (!p) return;
-    p[10] = 'X';  // one-past-end heap buffer write -> ASan should report
-    free(p);
-
     LT_LOG_INFO("----------------------------------------------");
     LT_LOG_INFO("lt_test_mock_attrs()");
     LT_LOG_INFO("----------------------------------------------");
