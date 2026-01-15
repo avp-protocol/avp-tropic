@@ -21,6 +21,8 @@
 
 #define TAG "identify_chip"
 
+// Some libtropic helper functions expect a printf-like function for logging.
+// We provide a simple wrapper around ESP_LOGI to adapt it.
 int my_esp_logi_wrapper(const char *format, ...)
 {
     // Add the log timestamp and TAG prefix so idf.py colors it.
