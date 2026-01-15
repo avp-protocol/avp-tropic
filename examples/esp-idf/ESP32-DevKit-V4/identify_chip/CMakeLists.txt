@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 idf_build_set_property(MINIMAL_BUILD ON)
-project(hello_world)
+project(identify_chip)
 
 # Add libtropic top-level project so its 'tropic' target is available to components.
 # Add it after including IDF's project.cmake so IDF toolchain variables are configured.
