@@ -83,27 +83,27 @@ static HAL_StatusTypeDef DBG_UART_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-    // Enable the HSI clock
+    /* Enable the HSI clock */
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
     RCC_OscInitStruct.HSIState = RCC_HSI_ON;
     RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
     if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-        // Error
+        /* Error */
         while (1);
     }
 
-    // Configure HSI as USART clock source
+    /* Configure HSI as USART clock source */
     USARTx_RCC_CONFIG(RCC_USARTxCLKSOURCE_HSI);
 
-    // Enable peripherals and GPIO Clocks
-    // Enable GPIO TX/RX clock
+    /* Enable peripherals and GPIO Clocks */
+    /* Enable GPIO TX/RX clock */
     USART_DBG_TX_GPIO_CLK_ENABLE();
     USART_DBG_RX_GPIO_CLK_ENABLE();
-    // Enable USART_DBG clock
+    /* Enable USART_DBG clock */
     USART_DBG_CLK_ENABLE();
 
-    // Configure UART pins
+    /* Configure UART pins */
     GPIO_InitStruct.Pin = USART_DBG_TX_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
