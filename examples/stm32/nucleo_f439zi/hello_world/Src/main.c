@@ -156,9 +156,9 @@ int main(void)
         Error_Handler();
     }
 
-     /* IMPORTANT: Initialize RNG peripheral.
-         Do not forget to do this in your application, as the
-         Libtropic HAL uses RNG for entropy source! */
+    /* IMPORTANT: Initialize RNG peripheral.
+        Do not forget to do this in your application, as the
+        Libtropic HAL uses RNG for entropy source! */
     RNGHandle.Instance = RNG;
     if (HAL_RNG_Init(&RNGHandle) != HAL_OK) {
         Error_Handler();
@@ -174,48 +174,48 @@ int main(void)
     printf("==== TROPIC01 Hello World Example ====\n");
     printf("======================================\n");
 
-     /* Cryptographic function provider initialization.
+    /* Cryptographic function provider initialization.
 
-         In production, this would typically be done only once,
-         usually at the start of the application or before
-         the first use of cryptographic functions but no later than
-         the first occurrence of any Libtropic function */
+        In production, this would typically be done only once,
+        usually at the start of the application or before
+        the first use of cryptographic functions but no later than
+        the first occurrence of any Libtropic function */
     psa_status_t status = psa_crypto_init();
     if (status != PSA_SUCCESS) {
         fprintf(stderr, "PSA Crypto initialization failed, status=%ld (psa_status_t)\n", status);
         return -1;
     }
 
-     /* Libtropic handle.
+    /* Libtropic handle.
 
-         It is declared here (on stack) for
-         simplicity. In production, you put it on heap if needed. */
+        It is declared here (on stack) for
+        simplicity. In production, you put it on heap if needed. */
     lt_handle_t lt_handle = {0};
 
-     /* Device structure.
+    /* Device structure.
 
-         Modify this according to your environment. Default values
-         are compatible with RPi and our RPi shield.
+        Modify this according to your environment. Default values
+        are compatible with RPi and our RPi shield.
 
-         The device structure has to be zero initialized!
-         STM32 HAL depends on zero init values. */
+        The device structure has to be zero initialized!
+        STM32 HAL depends on zero init values. */
     lt_dev_stm32_nucleo_f439zi_t device = {0};
 
     device.spi_instance = LT_SPI_INSTANCE;
     device.baudrate_prescaler = SPI_BAUDRATEPRESCALER_16;
 
     /* Enable clock of the GPIO bank where our custom chip select output is present. */
-    LT_SPI_CS_CLK_ENABLE();  /* Defined in main.h. */
+    LT_SPI_CS_CLK_ENABLE(); /* Defined in main.h. */
     device.spi_cs_gpio_bank = LT_SPI_CS_BANK;
     device.spi_cs_gpio_pin = LT_SPI_CS_PIN;
 
-     /* IMPORTANT: Do not forget to initialize RNG peripheral
-         at the beginning of your application using HAL_RNG_Init()! */
+    /* IMPORTANT: Do not forget to initialize RNG peripheral
+        at the beginning of your application using HAL_RNG_Init()! */
     device.rng_handle = &RNGHandle;
 
 #ifdef LT_USE_INT_PIN
     /* Enable clock of the GPIO bank where interrupt input is present. */
-    LT_INT_CLK_ENABLE();  /* Defined in main.h. */
+    LT_INT_CLK_ENABLE(); /* Defined in main.h. */
     device.int_gpio_bank = LT_INT_BANK;
     device.int_gpio_pin = LT_INT_PIN;
 #endif
@@ -236,7 +236,8 @@ int main(void)
     }
     printf("OK\n");
 
-    /* We need to ensure we are not in the Startup Mode, as L3 commands are available only in the Application Firmware. */
+    /* We need to ensure we are not in the Startup Mode, as L3 commands are available only in the Application Firmware.
+     */
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -295,11 +296,11 @@ int main(void)
     }
     printf("OK\n");
 
-     /* Cryptographic function provider deinitialization.
+    /* Cryptographic function provider deinitialization.
 
-         In production, this would be done only once, typically
-         during termination of the application. */
-     mbedtls_psa_crypto_free();
+        In production, this would be done only once, typically
+        during termination of the application. */
+    mbedtls_psa_crypto_free();
 
     /* libtropic related code END */
     /* libtropic related code END */
@@ -307,8 +308,8 @@ int main(void)
     /* libtropic related code END */
     /* libtropic related code END */
 
-     /* Not strictly necessary, but we deinitialize RNG here to
-         demonstrate proper usage. */
+    /* Not strictly necessary, but we deinitialize RNG here to
+        demonstrate proper usage. */
     if (HAL_RNG_DeInit(&RNGHandle) != HAL_OK) {
         Error_Handler();
     }
