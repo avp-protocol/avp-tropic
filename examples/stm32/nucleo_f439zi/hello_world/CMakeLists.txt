@@ -140,13 +140,13 @@ set(SOURCES
     ${PATH_TO_STM32CUBEF4}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c
 
     # Project sources
-    Src/main.c
-    Src/stm32f4xx_it.c
-    Src/stm32f4xx_hal_msp.c
-    Src/system_stm32f4xx.c
-    Src/startup_stm32f429zitx.s
-    Src/syscalls.c
-    Src/sysmem.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/stm32f4xx_it.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/stm32f4xx_hal_msp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/system_stm32f4xx.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/startup_stm32f429zitx.s
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/syscalls.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/sysmem.c
 
     # MbedTLS platform-specific implementations
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/mbedtls_v4/mbedtls_platform.c
@@ -164,22 +164,21 @@ set(INCLDE_DIRS
     ${PATH_TO_STM32CUBEF4}/STM32F4xx_HAL_Driver/Inc/
 
     # Project includes
-    Inc/
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc/
 
     # STM32 HAL
     ${LT_HAL_INC_DIRS}
 )
 
-# Configure target MCU (used by STM32 HAL)
-add_definitions(-D${STM32_DEVICE})
 
-# Define executable, pass defines, and link dependencies.
+# Define executable and configure (pass defines, includes and link dependencies).
 set(EXE_NAME ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${EXE_NAME} ${SOURCES})
 target_compile_definitions(${EXE_NAME} PRIVATE LT_USE_SH0_ENG_SAMPLE=${LT_USE_SH0_ENG_SAMPLE})
 target_compile_definitions(${EXE_NAME} PRIVATE LT_USE_SH0_PROD0=${LT_USE_SH0_PROD0})
-target_link_libraries(${EXE_NAME} PRIVATE tropic)
+target_compile_definitions(${EXE_NAME} PRIVATE -D${STM32_DEVICE}) # Configure target MCU (used by STM32 HAL)
 target_include_directories(${EXE_NAME} PRIVATE ${INCLDE_DIRS})
+target_link_libraries(${EXE_NAME} PRIVATE tropic)
 
 # Use INT pin to check whether TROPIC01 has some response
 # (If not set, by default host will poll every few ms)
