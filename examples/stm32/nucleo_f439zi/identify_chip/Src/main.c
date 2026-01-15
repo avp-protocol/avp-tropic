@@ -284,7 +284,8 @@ int main(void)
 
     printf("Reading data from chip...\n");
 
-    /* When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version. */
+    /* When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version.
+     */
     ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
         fprintf(stderr, "Failed to get RISC-V bootloader version, ret=%s\n", lt_ret_verbose(ret));
