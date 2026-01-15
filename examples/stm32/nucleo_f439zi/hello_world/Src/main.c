@@ -24,11 +24,10 @@
 #include <string.h>
 
 #include "libtropic.h"
-#include "libtropic_port_stm32_nucleo_f439zi.h"
-#include "syscalls.h"
-
 #include "libtropic_mbedtls_v4.h"
+#include "libtropic_port_stm32_nucleo_f439zi.h"
 #include "psa/crypto.h"
+#include "syscalls.h"
 
 /** @addtogroup STM32F4xx_HAL_Examples
  * @{
@@ -120,7 +119,8 @@ PUTCHAR_PROTOTYPE
     */
     if (ch == '\n') {
         HAL_UART_Transmit(&UartHandle, (uint8_t *)"\r\n", 2, 0xFFFF);
-    } else {
+    }
+    else {
         HAL_UART_Transmit(&UartHandle, (uint8_t *)&ch, 1, 0xFFFF);
     }
 
@@ -205,7 +205,7 @@ int main(void)
     device.baudrate_prescaler = SPI_BAUDRATEPRESCALER_16;
 
     // Enable clock of the GPIO bank where our custom chip select output is present.
-    LT_SPI_CS_CLK_ENABLE(); // Defined in main.h.
+    LT_SPI_CS_CLK_ENABLE();  // Defined in main.h.
     device.spi_cs_gpio_bank = LT_SPI_CS_BANK;
     device.spi_cs_gpio_pin = LT_SPI_CS_PIN;
 
@@ -215,7 +215,7 @@ int main(void)
 
 #ifdef LT_USE_INT_PIN
     // Enable clock of the GPIO bank where interrupt input is present.
-    LT_INT_CLK_ENABLE(); // Defined in main.h.
+    LT_INT_CLK_ENABLE();  // Defined in main.h.
     device.int_gpio_bank = LT_INT_BANK;
     device.int_gpio_pin = LT_INT_PIN;
 #endif
