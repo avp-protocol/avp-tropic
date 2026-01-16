@@ -42,7 +42,7 @@ lt_ret_t lt_init(lt_handle_t *h)
         return LT_PARAM_ERR;
     }
 
-    lt_ret_t ret;
+    lt_ret_t ret, ret_unused;
 
     // When compiling libtropic with l3 buffer embedded into handle,
     // define buffer's length here (later used to prevent overflow during communication).
@@ -59,21 +59,31 @@ lt_ret_t lt_init(lt_handle_t *h)
 
     ret = lt_crypto_ctx_init(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        return ret;
+        goto l1_cleanup;
     }
 
     // Prevent usage of insufficient buffer.
     if (h->l3.buff_len < LT_SIZE_OF_L3_BUFF) {
-        return LT_L3_BUFFER_TOO_SMALL;
+        ret = LT_L3_BUFFER_TOO_SMALL;
+        goto crypto_ctx_cleanup;
     }
 
     // Initialize the TROPIC01 attributes based on its Application FW.
     ret = lt_init_tr01_attrs(h);
     if (ret != LT_OK) {
-        return ret;
+        goto crypto_ctx_cleanup;
     }
 
     return LT_OK;
+
+crypto_ctx_cleanup:
+    ret_unused = lt_crypto_ctx_deinit(&h->l3.crypto_ctx);
+
+l1_cleanup:
+    ret_unused = lt_l1_deinit(&h->l2);
+    LT_UNUSED(ret_unused);
+
+    return ret;
 }
 
 lt_ret_t lt_deinit(lt_handle_t *h)
@@ -415,21 +425,21 @@ lt_ret_t lt_session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pkey_in
 
     lt_ret_t ret = lt_out__session_start(h, pkey_index, &host_eph_keys);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_l2_send(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
     ret = lt_l2_receive(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_in__session_start(h, stpub, pkey_index, shipriv, shipub, &host_eph_keys);
 
-lt_session_start_cleanup:
+cleanup:
     lt_secure_memzero(&host_eph_keys, sizeof(lt_host_eph_keys_t));
     return ret;
 }
