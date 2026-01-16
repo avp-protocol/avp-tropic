@@ -19,7 +19,12 @@
 
 lt_ret_t lt_aesgcm_encrypt_init(void *ctx, const uint8_t *key, const uint32_t key_len)
 {
-    LT_UNUSED(key_len);
+    if (key_len != TR01_AES256_KEY_LEN) {
+        LT_LOG_ERROR("Invalid AES-GCM key length: got %" PRIu32 " bytes, expected %d bytes", key_len,
+                     TR01_AES256_KEY_LEN);
+        return LT_PARAM_ERR;
+    }
+
     lt_ctx_openssl_t *_ctx = (lt_ctx_openssl_t *)ctx;
     unsigned long err_code;
 
@@ -61,7 +66,12 @@ lt_ret_t lt_aesgcm_encrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
 
 lt_ret_t lt_aesgcm_decrypt_init(void *ctx, const uint8_t *key, const uint32_t key_len)
 {
-    LT_UNUSED(key_len);
+    if (key_len != TR01_AES256_KEY_LEN) {
+        LT_LOG_ERROR("Invalid AES-GCM key length: got %" PRIu32 " bytes, expected %d bytes", key_len,
+                     TR01_AES256_KEY_LEN);
+        return LT_PARAM_ERR;
+    }
+
     lt_ctx_openssl_t *_ctx = (lt_ctx_openssl_t *)ctx;
     unsigned long err_code;
 
