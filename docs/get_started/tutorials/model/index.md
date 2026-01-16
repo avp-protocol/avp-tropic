@@ -51,6 +51,8 @@ See below for instructions based on your OS.
 
 1. [Your First Steps with Libtropic](./first_steps.md)
 2. [Understanding Libtropic](./understanding_libtropic.md)
+3. [Hardware Wallet Example](./hw_wallet_example.md)
+4. [Mac-And-Destroy Example](./macandd_example.md)
 
 ---
 

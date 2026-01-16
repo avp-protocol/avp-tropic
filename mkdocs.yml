@@ -60,6 +60,8 @@ nav:
         - get_started/tutorials/model/index.md
         - 1. Your First Steps: get_started/tutorials/model/first_steps.md
         - 2. Understanding Libtropic: get_started/tutorials/model/understanding_libtropic.md
+        - 3. HW Wallet Example: get_started/tutorials/model/hw_wallet_example.md
+        - 4. Mac-And-Destroy Example: get_started/tutorials/model/macandd_example.md
       - Linux:
         - RPi / Arduino Devkit: get_started/tutorials/linux/arduino_rpi_shield.md
         - USB Devkit: get_started/tutorials/linux/usb_devkit.md
