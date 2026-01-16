@@ -73,6 +73,17 @@ void app_main(void)
 #endif
     lt_handle.l2.device = &device;
 
+#if LT_USE_INT_PIN
+    // This function has to be called only once.
+    // The call is needed because the Libtropic ESP-IDF HAL uses GPIO interrupts.
+    esp_err_t esp_ret = gpio_install_isr_service(0);
+    if (esp_ret != ESP_OK) {
+        ESP_LOGE(TAG, "gpio_install_isr_service() failed: %s", esp_err_to_name(esp_ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+    }
+#endif
+
     // Crypto abstraction layer (CAL) context.
     lt_ctx_mbedtls_v4_t crypto_ctx;
     lt_handle.l3.crypto_ctx = &crypto_ctx;
