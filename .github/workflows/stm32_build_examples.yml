@@ -40,3 +40,17 @@ jobs:
           cd ../../fw_update
           cmake ./ -B build -G Ninja
           cd build && ninja
+
+      - name: Compile L432KC examples
+        run: |
+          cd examples/stm32/nucleo_l432kc/hello_world
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../identify_chip
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../fw_update
+          cmake ./ -B build -G Ninja
+          cd build && ninja
