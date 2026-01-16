@@ -105,7 +105,11 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
                            const uint32_t add_len, const uint8_t *plaintext, const uint32_t plaintext_len,
                            uint8_t *ciphertext, const uint32_t ciphertext_len)
 {
-    LT_UNUSED(iv_len);
+    if (iv_len != TR01_L3_IV_SIZE) {
+        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len, TR01_L3_IV_SIZE);
+        return LT_PARAM_ERR;
+    }
+
     lt_ctx_openssl_t *_ctx = (lt_ctx_openssl_t *)ctx;
     unsigned long err_code;
     int out_len;
@@ -170,7 +174,11 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
                            const uint32_t add_len, const uint8_t *ciphertext, const uint32_t ciphertext_len,
                            uint8_t *plaintext, const uint32_t plaintext_len)
 {
-    LT_UNUSED(iv_len);
+    if (iv_len != TR01_L3_IV_SIZE) {
+        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len, TR01_L3_IV_SIZE);
+        return LT_PARAM_ERR;
+    }
+
     lt_ctx_openssl_t *_ctx = (lt_ctx_openssl_t *)ctx;
     unsigned long err_code;
     int out_len;
