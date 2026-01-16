@@ -15,16 +15,17 @@ set(OPENOCD_CFG "/usr/share/openocd/scripts/board/stm32f429discovery.cfg")
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/STM32F429ZITX_FLASH.ld)
 # Path to toolchain file
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/toolchain.cmake)
-# Paths to stm32 drivers (added as a submodule)
+# Paths to STM32 drivers.
+# We provide a stripped-down snapshot of STM32CubeF4 repo in this example.
 set(PATH_TO_STM32CUBEF4 ${CMAKE_CURRENT_SOURCE_DIR}/Vendor/STM32CubeF4/Drivers )
 
-# Path to Libtropic (added as a submodule)
+# Path to Libtropic repository root
 if(NOT DEFINED PATH_LIBTROPIC)
     set(PATH_LIBTROPIC "../../../../")
 endif()
 
 project(
-    libtropic_hello_world
+    libtropic_identify_chip
     DESCRIPTION "Libtropic chip identification example on STM32 Nucleo F439ZI board"
     LANGUAGES C ASM)
 
@@ -47,24 +48,23 @@ endif()
 set(LT_SH0_KEYS "prod0" CACHE STRING "Choose which pairing keys in slot 0 will be used in this example")
 set_property(CACHE LT_SH0_KEYS PROPERTY STRINGS "eng_sample" "prod0")
 
-# These are internal macros for selecting SH0 keys (examples/tests)
+# These are internal macros for selecting SH0 keys
 set(LT_USE_SH0_ENG_SAMPLE 0 CACHE INTERNAL "")
 set(LT_USE_SH0_PROD0      0 CACHE INTERNAL "")
 
-# Define SH0 macros based on selected string (examples/tests)
+# Define SH0 macros based on selected string
 if(LT_SH0_KEYS STREQUAL "eng_sample")
-    message(STATUS "Using Engineering sample keys in examples/tests")
+    message(STATUS "Using Engineering sample keys")
     set(LT_USE_SH0_ENG_SAMPLE 1)
     set(LT_USE_SH0_PROD0      0)
 elseif(LT_SH0_KEYS STREQUAL "prod0")
-    message(STATUS "Using Production 0 keys in examples/tests")
+    message(STATUS "Using Production 0 keys")
     set(LT_USE_SH0_ENG_SAMPLE 0)
     set(LT_USE_SH0_PROD0      1)
 else()
     get_property(lt_sh0_keys_choices CACHE LT_SH0_KEYS PROPERTY STRINGS)
-    message(FATAL_ERROR "Incorrect SH0 keys for examples/tests specified: '${LT_SH0_KEYS}'\nAvailable SH0 keys: ${lt_sh0_keys_choices}")
+    message(FATAL_ERROR "Incorrect SH0 keys specified: '${LT_SH0_KEYS}'\nAvailable SH0 keys: ${lt_sh0_keys_choices}")
 endif()
-
 
 ###########################################################################
 #                                                                         #
@@ -78,7 +78,7 @@ endif()
 # Add path to Libtropic source
 add_subdirectory(${PATH_LIBTROPIC} "libtropic")
 
-# Customize libtropic's compilation
+# Customize Libtropic compilation
 target_compile_options(tropic PRIVATE -ffunction-sections -fdata-sections)
 
 # ------------------------------------------------------------------------
@@ -156,7 +156,7 @@ set(SOURCES
 )
 
 # Include path for directories containing header files
-set(INCLDE_DIRS
+set(INCLUDE_DIRS
     # STM32 vendor HAL, BSP
     ${PATH_TO_STM32CUBEF4}/CMSIS/Core/Include/
     ${PATH_TO_STM32CUBEF4}/CMSIS/Device/ST/STM32F4xx/Include/
@@ -170,14 +170,13 @@ set(INCLDE_DIRS
     ${LT_HAL_INC_DIRS}
 )
 
-
 # Define executable and configure (pass defines, includes and link dependencies).
 set(EXE_NAME ${CMAKE_PROJECT_NAME}.elf)
 add_executable(${EXE_NAME} ${SOURCES})
 target_compile_definitions(${EXE_NAME} PRIVATE LT_USE_SH0_ENG_SAMPLE=${LT_USE_SH0_ENG_SAMPLE})
 target_compile_definitions(${EXE_NAME} PRIVATE LT_USE_SH0_PROD0=${LT_USE_SH0_PROD0})
 target_compile_definitions(${EXE_NAME} PRIVATE -D${STM32_DEVICE}) # Configure target MCU (used by STM32 HAL)
-target_include_directories(${EXE_NAME} PRIVATE ${INCLDE_DIRS})
+target_include_directories(${EXE_NAME} PRIVATE ${INCLUDE_DIRS})
 target_link_libraries(${EXE_NAME} PRIVATE tropic)
 
 # Use INT pin to check whether TROPIC01 has some response
