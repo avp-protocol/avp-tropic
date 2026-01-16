@@ -1,4 +1,6 @@
-cmake_policy(SET CMP0152 OLD) # Path resolution policy
+if (${CMAKE_VERSION} VERSION_GREATER "3.27")
+    cmake_policy(SET CMP0152 OLD) # Path resolution policy
+endif()
 
 file(REAL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../_deps/ PATH_DEPS)
 file(REAL_PATH ../../../../ PATH_LIBTROPIC)
