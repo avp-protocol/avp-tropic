@@ -26,7 +26,8 @@ extern "C" {
 #endif
 
 /**
- * @brief Initialize handle and transport layer
+ * @brief Initialize handle and transport layer.
+ * @note If the function fails, `lt_deinit` must not be called. In this case, the function handles the cleanup itself.
  *
  * @param h           Handle for communication with TROPIC01
  *
