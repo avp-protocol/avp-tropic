@@ -55,7 +55,7 @@ void app_main(void)
 #if LT_SEPARATE_L3_BUFF
     l3_buffer = (uint8_t *)malloc(LT_SIZE_OF_L3_BUFF);
     if (!l3_buffer) {
-        LT_LOG_ERROR("malloc() failed when allocationg L3 buffer!");
+        LT_LOG_ERROR("malloc() failed when allocating L3 buffer!");
         goto app_main_cleanup;
     }
     __lt_handle__->l3.buff = l3_buffer;
