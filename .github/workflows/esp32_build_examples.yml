@@ -20,22 +20,12 @@ jobs:
 
       - name: Build ESP32-DevKit-V4 examples
         run: |
-            cd examples/ESP32-DevKit-V4/hello_world/
-            idf.py build
-
-            cd ../identify_chip/
-            idf.py build
-
-            cd ../fw_update/
-            idf.py build
+            idf.py -C examples/ESP32-DevKit-V4/hello_world/ build
+            idf.py -C examples/ESP32-DevKit-V4/identify_chip/ build
+            idf.py -C examples/ESP32-DevKit-V4/fw_update/ build
 
       - name: Build ESP32-S3-DevKitC-1 examples
         run: |
-            cd examples/ESP32-S3-DevKitC-1/hello_world/
-            idf.py build
-
-            cd ../identify_chip/
-            idf.py build
-
-            cd ../fw_update/
-            idf.py build
+            idf.py -C examples/ESP32-S3-DevKitC-1/hello_world/ build
+            idf.py -C examples/ESP32-S3-DevKitC-1/identify_chip/ build
+            idf.py -C examples/ESP32-S3-DevKitC-1/fw_update/ build
