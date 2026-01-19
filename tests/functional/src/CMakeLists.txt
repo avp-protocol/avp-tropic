@@ -47,7 +47,7 @@ option(LT_ASAN "Enable static AddressSanitizer (ASan)" OFF)
 
 # Select CAL
 set(LT_CAL "" CACHE STRING "Set a CAL (Crypto Abstraction Layer)")
-set_property(CACHE LT_CAL PROPERTY STRINGS "trezor_crypto" "mbedtls_v4" "openssl")
+set_property(CACHE LT_CAL PROPERTY STRINGS "trezor_crypto" "mbedtls_v4" "openssl" "wolfcrypt")
 option(LT_CAL_LINK_DEPS "Link CAL dependencies to libtropic consumers" ON)
 
 # Select pairing keys written during manufacturing into your TROPIC01
@@ -117,6 +117,7 @@ target_compile_definitions(tropic PUBLIC
 set(LT_USE_TREZOR_CRYPTO 0 CACHE INTERNAL "")
 set(LT_USE_MBEDTLS_V4 0 CACHE INTERNAL "")
 set(LT_USE_OPENSSL 0 CACHE INTERNAL "")
+set(LT_USE_WOLFCRYPT 0 CACHE INTERNAL "")
 
 # Handle LT_CAL
 if(LT_CAL STREQUAL "trezor_crypto")
@@ -161,6 +162,30 @@ elseif(LT_CAL STREQUAL "openssl")
 
     find_package(OpenSSL REQUIRED)
     target_link_libraries(tropic PUBLIC OpenSSL::Crypto)
+elseif(LT_CAL STREQUAL "wolfcrypt")
+    message(STATUS "Crypto provider set to wolfcrypt")
+    message(WARNING "You are building Libtropic with wolfSSL enabled, which will create a GPLv3 licensed binary. If you require a non-GPL binary, you must obtain a commercial license from wolfSSL Inc.")
+    add_subdirectory("${PATH_LIBTROPIC}/cal/wolfcrypt" "wolfcrypt_cal")
+
+    # Developers who integrate Libtropic do not have to use this variable
+    # It's used in model's main.c to switch crypto contexts without manual changes
+    set(LT_USE_WOLFCRYPT 1)
+
+    # Set wolfSSL configuration BEFORE MakeAvailable
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL "Disable building shared libraries for wolfSSL.")
+    set(WOLFSSL_EXAMPLES OFF CACHE BOOL "Disable wolfSSL example building.")
+    set(WOLFSSL_CRYPT_TESTS OFF CACHE BOOL "Disable wolfSSL crypt tests building.")
+    set(WOLFSSL_AESGCM ON CACHE BOOL "Enable wolfSSL AES-GCM support.")
+    set(WOLFSSL_SHA256 ON CACHE BOOL "Enable wolfSSL SHA-256 support.")
+    set(WOLFSSL_CURVE25519 ON CACHE BOOL "Enable wolfSSL Curve25519 support.")
+    add_subdirectory("${PATH_DEPS}/wolfssl/" "wolfssl")
+
+    target_link_libraries(tropic PUBLIC wolfssl)
+    # Avoid warning treated as error when application includes wolfSSL headers
+    # without providing an options header. Application builds can opt into
+    # custom configuration; for the model we disable automatic options.h
+    # inclusion by defining WOLFSSL_NO_OPTIONS_H.
+    target_compile_definitions(tropic PUBLIC WOLFSSL_NO_OPTIONS_H)
 else()
     get_property(lt_cal_choices CACHE LT_CAL PROPERTY STRINGS)
     message(FATAL_ERROR "Incorrect CAL set to LT_CAL!\nSupported CALs: ${lt_cal_choices}")
@@ -201,6 +226,51 @@ add_library(ed25519_lib STATIC
 target_include_directories(ed25519_lib PUBLIC # PUBLIC as it is also used in tropic target
     ${PATH_DEPS}/ed25519/src/
 )
+
+# Solve name collisions with WolfCrypt, as they both derive from the original Ref10 Ed25519 implementation.
+if(LT_CAL STREQUAL "wolfcrypt")
+    target_compile_definitions(ed25519_lib PRIVATE
+        ge_p3_tobytes=ed25519_ge_p3_tobytes
+        ge_tobytes=ed25519_ge_tobytes
+        ge_frombytes_negate_vartime=ed25519_ge_frombytes_negate_vartime
+        ge_add=ed25519_ge_add
+        ge_sub=ed25519_ge_sub
+        ge_double_scalarmult_vartime=ed25519_ge_double_scalarmult_vartime
+        ge_madd=ed25519_ge_madd
+        ge_msub=ed25519_ge_msub
+        ge_scalarmult_base=ed25519_ge_scalarmult_base
+        ge_p1p1_to_p2=ed25519_ge_p1p1_to_p2
+        ge_p1p1_to_p3=ed25519_ge_p1p1_to
+        ge_p2_0=ed25519_ge_p2_0
+        ge_p2_dbl=ed25519_ge_p2_dbl
+        ge_p3_0=ed25519_ge_p3_0
+        ge_p3_dbl=ed25519_ge_p3_dbl
+        ge_p3_to_cached=ed25519_ge_p3_to_cached
+        ge_p3_to_p2=ed25519_ge_p3_to_p2
+
+        fe_0=ed25519_fe_0
+        fe_1=ed25519_fe_1
+        fe_frombytes=ed25519_fe_frombytes
+        fe_tobytes=ed25519_fe_tobytes
+        fe_copy=ed25519_fe_copy
+        fe_isnegative=ed25519_fe_isnegative
+        fe_isnonzero=ed25519_fe_isnonzero
+        fe_cmov=ed25519_fe_cmov
+        fe_cswap=ed25519_fe_cswap
+        fe_neg=ed25519_fe_neg
+        fe_add=ed25519_fe_add
+        fe_invert=ed25519_fe_invert
+        fe_sq=ed25519_fe_sq
+        fe_sq2=ed25519_fe_sq2
+        fe_mul=ed25519_fe_mul
+        fe_mul121666=ed25519_fe_mul121666
+        fe_pow22523=ed25519_fe_pow22523
+        fe_sub=ed25519_fe_sub
+
+        sc_reduce=ed25519_sc_reduce
+        sc_muladd=ed25519_sc_muladd
+    )
+endif()
 
 ###########################################################################
 #                                                                         #
@@ -323,4 +393,5 @@ target_compile_definitions(libtropic_functional_tests PUBLIC
     LT_USE_TREZOR_CRYPTO=${LT_USE_TREZOR_CRYPTO}
     LT_USE_MBEDTLS_V4=${LT_USE_MBEDTLS_V4}
     LT_USE_OPENSSL=${LT_USE_OPENSSL}
+    LT_USE_WOLFCRYPT=${LT_USE_WOLFCRYPT}
 )
