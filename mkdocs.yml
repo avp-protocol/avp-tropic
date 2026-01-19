@@ -65,6 +65,7 @@ nav:
       - Linux:
         - RPi / Arduino Devkit: get_started/tutorials/linux/arduino_rpi_shield.md
         - USB Devkit: get_started/tutorials/linux/usb_devkit.md
+      - ESP32: get_started/tutorials/esp32/index.md
     - Libtropic Architecture: get_started/libtropic_architecture.md
     - Integrating Libtropic:
       - get_started/integrating_libtropic/index.md
