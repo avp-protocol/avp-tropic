@@ -1,0 +1,41 @@
+name: Build examples for supported ESP32 boards
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+
+jobs:
+  build_examples:
+    name: Build examples for ESP32 boards
+    runs-on: ubuntu-latest
+    container: espressif/idf:v5.5.1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      - name: Build ESP32-DevKit-V4 examples
+        run: |
+            cd examples/ESP32-DevKit-V4/hello_world/
+            idf.py build
+
+            cd ../identify_chip/
+            idf.py build
+
+            cd ../fw_update/
+            idf.py build
+
+      - name: Build ESP32-S3-DevKitC-1 examples
+        run: |
+            cd examples/ESP32-S3-DevKitC-1/hello_world/
+            idf.py build
+
+            cd ../identify_chip/
+            idf.py build
+
+            cd ../fw_update/
+            idf.py build
