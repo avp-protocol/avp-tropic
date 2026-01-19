@@ -54,8 +54,8 @@ After this, you should see a colored output in your terminal.
 
 After this, you should see a colored output in your terminal.
 
-### Build and Run an Firmware Update Example
-!!! example "Building and running the Identify Chip example"
+### Build and Run a Firmware Update Example
+!!! example "Building and running the Firmware Update example"
     === ":fontawesome-brands-linux: Linux"
         ```bash
         cd examples/esp32/<your_board>/fw_update/
