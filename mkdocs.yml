@@ -110,6 +110,7 @@ nav:
       - Trezor Crypto: other/supported_cfps/trezor_crypto.md
       - MbedTLS: other/supported_cfps/mbedtls.md
       - OpenSSL: other/supported_cfps/openssl.md
+      - WolfCrypt: other/supported_cfps/wolfcrypt.md
 
 plugins:
   - search

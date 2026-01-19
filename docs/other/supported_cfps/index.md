@@ -5,6 +5,7 @@ These are the currently supported CFPs (Cryptographic Functionality Providers):
     - [Trezor Crypto](trezor_crypto.md)
     - [MbedTLS](mbedtls.md)
     - [OpenSSL](openssl.md)
+    - [WolfCrypt](wolfcrypt.md)
 
 All CAL (Crypto Abstraction Layer) files can be found in the `libtropic/cal/` directory.
 
