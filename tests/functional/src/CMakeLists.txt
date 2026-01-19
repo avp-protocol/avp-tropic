@@ -240,7 +240,7 @@ if(LT_CAL STREQUAL "wolfcrypt")
         ge_msub=ed25519_ge_msub
         ge_scalarmult_base=ed25519_ge_scalarmult_base
         ge_p1p1_to_p2=ed25519_ge_p1p1_to_p2
-        ge_p1p1_to_p3=ed25519_ge_p1p1_to
+        ge_p1p1_to_p3=ed25519_ge_p1p1_to_p3
         ge_p2_0=ed25519_ge_p2_0
         ge_p2_dbl=ed25519_ge_p2_dbl
         ge_p3_0=ed25519_ge_p3_0
