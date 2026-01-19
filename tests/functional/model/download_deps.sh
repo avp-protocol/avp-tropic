@@ -55,7 +55,7 @@ tar -xjf "$SCRIPT_DIR/_deps/mbedtls.tar.bz2" -C "$SCRIPT_DIR/_deps"
 rm "$SCRIPT_DIR/_deps/mbedtls.tar.bz2"
 mv "$SCRIPT_DIR/_deps/mbedtls-4.0.0" "$SCRIPT_DIR/_deps/mbedtls_v4"
 
-echo "Downloading WolfCrypt..."
+echo "Downloading WolfSSL..."
 curl -L -o "$SCRIPT_DIR/_deps/wolfssl.zip" "https://github.com/wolfSSL/wolfssl/archive/refs/tags/v5.8.4-stable.zip"
 
 echo "Verifying wolfssl.zip checksum..."
