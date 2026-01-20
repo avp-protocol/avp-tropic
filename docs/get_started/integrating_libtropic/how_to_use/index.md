@@ -89,7 +89,6 @@ int main(void) {
     // first.
     lt_ret_t ret = lt_init(h);
     if (LT_OK != ret) {
-        lt_deinit(h);
         return -1;
     }
 
