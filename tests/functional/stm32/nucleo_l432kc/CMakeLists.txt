@@ -45,6 +45,14 @@ project(
 #                                                                         #
 ###########################################################################
 
+if(LT_USE_INT_PIN)
+    message(FATAL_ERROR "Using interrupt pin is currently not supported on Nucleo L432KC board")
+endif()
+
+if (LT_CAL STREQUAL "openssl")
+    message(FATAL_ERROR "OpenSSL is not supported on STM32!")
+endif()
+
 # Serial number of the STLink device which will be used for flashing.
 # You need to define this only if you have multiple STM32s connected using built-in STLink or 
 # problems with OpenOCD's autodetection.
