@@ -126,12 +126,17 @@ set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/syscalls.c
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/sysmem.c
 
-    # MbedTLS platform-specific implementations
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src/mbedtls_v4/mbedtls_platform.c
-
     # STM32 HAL
     ${LT_HAL_SRCS}
 )
+
+# Append special sources.
+if (LT_CAL STREQUAL "mbedtls_v4")
+    set(SOURCES ${SOURCES}
+        # MbedTLS platform-specific implementations
+        ${CMAKE_CURRENT_SOURCE_DIR}/Src/mbedtls_v4/mbedtls_platform.c
+    )
+endif()
 
 # Include path for directories containing header files
 set(INCLUDE_DIRS
