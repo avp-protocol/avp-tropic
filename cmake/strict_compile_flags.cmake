@@ -17,7 +17,7 @@ set(LT_STRICT_COMPILATION_FLAGS
     "-Wunused-result"
     "-Wmissing-prototypes"
     "-fstack-protector-strong"
-    CACHE STRING "Compile flags for Static ASan")
+    CACHE STRING "Strict compile flags")
 
 # Create the INTERFACE library with the requested name.
 add_library(libtropic_strict_comp_flags INTERFACE)
