@@ -77,7 +77,7 @@ lt_ret_t lt_init(lt_handle_t *h)
     return LT_OK;
 
 crypto_ctx_cleanup:
-    ret_unused = lt_crypto_ctx_deinit(&h->l3.crypto_ctx);
+    ret_unused = lt_crypto_ctx_deinit(h->l3.crypto_ctx);
 
 l1_cleanup:
     ret_unused = lt_l1_deinit(&h->l2);
