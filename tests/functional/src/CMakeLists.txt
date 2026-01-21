@@ -48,6 +48,7 @@ option(LT_ASAN "Enable static AddressSanitizer (ASan)" OFF)
 # Select CAL
 set(LT_CAL "" CACHE STRING "Set a CAL (Crypto Abstraction Layer)")
 set_property(CACHE LT_CAL PROPERTY STRINGS "trezor_crypto" "mbedtls_v4" "openssl")
+option(LT_CAL_LINK_DEPS "Link CAL dependencies to libtropic consumers" ON)
 
 # Select pairing keys written during manufacturing into your TROPIC01
 set(LT_SH0_KEYS "prod0" CACHE STRING "Choose which pairing keys in slot 0 will be used in this example")
@@ -126,13 +127,15 @@ if(LT_CAL STREQUAL "trezor_crypto")
     # It's used in main.c to switch crypto contexts without manual changes
     set(LT_USE_TREZOR_CRYPTO 1)
 
-    add_subdirectory("${PATH_LIBTROPIC}/vendor/trezor_crypto/" "trezor_crypto")
-    target_compile_definitions(trezor_crypto PRIVATE
-        AES_VAR
-        USE_INSECURE_PRNG
-        ed25519_verify=trezor_crypto_ed25519_verify  # Solves name collisions with the ed25519_lib target.
-    )
-    target_link_libraries(tropic PUBLIC trezor_crypto)
+    if(LT_CAL_LINK_DEPS)
+        add_subdirectory("${PATH_LIBTROPIC}/vendor/trezor_crypto/" "trezor_crypto")
+        target_compile_definitions(trezor_crypto PRIVATE
+            AES_VAR
+            USE_INSECURE_PRNG
+            ed25519_verify=trezor_crypto_ed25519_verify  # Solves name collisions with the ed25519_lib target.
+        )
+        target_link_libraries(tropic PUBLIC trezor_crypto)
+    endif()
 elseif(LT_CAL STREQUAL "mbedtls_v4")
     message(STATUS "Crypto provider set to mbedtls_v4")
     add_subdirectory("${PATH_LIBTROPIC}/cal/mbedtls_v4" "mbedtls_v4_cal")
@@ -141,11 +144,13 @@ elseif(LT_CAL STREQUAL "mbedtls_v4")
     # It's used in main.c to switch crypto contexts without manual changes
     set(LT_USE_MBEDTLS_V4 1)
 
-    set(ENABLE_TESTING OFF CACHE BOOL "Disable mbedtls_v4 test building.")
-    set(ENABLE_PROGRAMS OFF CACHE BOOL "Disable mbedtls_v4 examples building.")
-    add_subdirectory("${PATH_DEPS}/mbedtls_v4/" "mbedtls_v4")
+    if(LT_CAL_LINK_DEPS)
+        set(ENABLE_TESTING OFF CACHE BOOL "Disable mbedtls_v4 test building.")
+        set(ENABLE_PROGRAMS OFF CACHE BOOL "Disable mbedtls_v4 examples building.")
+        add_subdirectory("${PATH_DEPS}/mbedtls_v4/" "mbedtls_v4")
 
-    target_link_libraries(tropic PUBLIC mbedtls)
+        target_link_libraries(tropic PUBLIC mbedtls)
+    endif()
 elseif(LT_CAL STREQUAL "openssl")
     message(STATUS "Crypto provider set to openssl")
     add_subdirectory("${PATH_LIBTROPIC}/cal/openssl" "openssl_cal")

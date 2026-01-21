@@ -1,0 +1,74 @@
+# ESP32 Tutorial
+This tutorial will guide you through the building of the examples in the `examples/esp32/` directory. In this directory, there are multiple subdirectories for each supported ESP32 board. Instructions in this tutorial are common for all of the boards.
+
+## Install Dependencies and Prepare the Repository
+See below for instructions based on your OS.
+
+!!! example "Installation instructions"
+    === ":fontawesome-brands-linux: Linux"
+        1. Setup ESP-IDF and its dependencies:
+            - Complete the first 4 steps in the [official ESP-IDF setup guide](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/linux-macos-setup.html).
+            - We recommend getting the 5.5.1 version, but any 5.x.x version should work.
+        2. Get the Libtropic repository:
+            - Using git: `git clone https://github.com/tropicsquare/libtropic.git`
+            - Or you can download the [latest release](https://github.com/tropicsquare/libtropic/releases/latest).
+
+    === ":fontawesome-brands-apple: macOS"
+        TBA
+
+    === ":fontawesome-brands-windows: Windows"
+        TBA
+
+## Start with our Examples!
+Now, let's build and flash the available examples.
+
+### Build and Run Hello World Example
+!!! example "Building and running the Hello World example"
+    === ":fontawesome-brands-linux: Linux"
+        ```bash
+        cd examples/esp32/<your_board>/hello_world/
+        idf.py build flash monitor
+        ```
+
+    === ":fontawesome-brands-apple: macOS"
+        TBA
+
+    === ":fontawesome-brands-windows: Windows"
+        TBA
+
+After this, you should see a colored output in your terminal.
+
+### Build and Run Chip Identification Example
+!!! example "Building and running the Identify Chip example"
+    === ":fontawesome-brands-linux: Linux"
+        ```bash
+        cd examples/esp32/<your_board>/identify_chip/
+        idf.py build flash monitor
+        ```
+
+    === ":fontawesome-brands-apple: macOS"
+        TBA
+
+    === ":fontawesome-brands-windows: Windows"
+        TBA
+
+After this, you should see a colored output in your terminal.
+
+### Build and Run a Firmware Update Example
+!!! example "Building and running the Firmware Update example"
+    === ":fontawesome-brands-linux: Linux"
+        ```bash
+        cd examples/esp32/<your_board>/fw_update/
+        idf.py build flash monitor
+        ```
+
+    === ":fontawesome-brands-apple: macOS"
+        TBA
+
+    === ":fontawesome-brands-windows: Windows"
+        TBA
+
+After this, you should see a colored output in your terminal.
+
+## FAQ
+If you encounter any issues, please check the [FAQ](../../../faq.md) before filing an issue or reaching out to our [support](https://support.desk.tropicsquare.com/).

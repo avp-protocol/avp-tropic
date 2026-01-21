@@ -16,3 +16,4 @@ Pick a tutorial based on your host platform and a development kit you want to us
 - :fontawesome-brands-linux: Linux
     - [:fontawesome-solid-microchip: Raspberry Pi / Arduino devkit (raw SPI interface)](linux/arduino_rpi_shield.md)
     - [:fontawesome-brands-usb: USB devkit](linux/usb_devkit.md)
+- [ESP32](esp32/index.md)
