@@ -28,6 +28,9 @@ set(LT_BAUD_MONITOR "115200" CACHE STRING "Baud rate for serial monitor during t
 
 set(LT_CAL_LINK_DEPS OFF)
 
+# ESP-IDF does not compile with strict flags.
+set(LT_STRICT_COMPILATION OFF)
+
 ###########################################################################
 #                                                                         #
 #   Paths and setup                                                       #
