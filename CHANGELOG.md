@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Arduino HAL: Removed `rng_seed` from `lt_dev_arduino_t`, as it should be user's responsibility to initialize the PRNG.
 - Arduino HAL: Removed `SPI.begin()` and `SPI.end()` calls (fixes [this](https://github.com/tropicsquare/libtropic-arduino/issues/15) issue). It is now expected that users initialize SPI in their code themselves.
 - Redundant checks of `lt_handle_t.l3.session_status` in `lt_l3_encrypt_request()` and `lt_l3_decrypt_response()`.
+- Legacy internal scripts in `scripts/test_runner`.
 
 ## [3.0.0]
 
