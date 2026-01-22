@@ -74,14 +74,15 @@ void app_main(void)
     // Device structure.
     //
     // Warning: using GPIO pins that conflict with ADC and I2C pins.
-    device->spi_host_id = SPI2_HOST;
-    device->spi_cs_gpio_pin = GPIO_NUM_8; // I2C SCL
-    device->spi_miso_pin = GPIO_NUM_0;    // ADC1_0
-    device->spi_mosi_pin = GPIO_NUM_1;    // ADC1_1
-    device->spi_clk_pin = GPIO_NUM_3;     // ADC1_3
-    device->spi_clk_hz = 5000000;         // 5 MHz
+    lt_dev_esp_idf_t device = {0};
+    device.spi_host_id = SPI2_HOST;
+    device.spi_cs_gpio_pin = GPIO_NUM_8;  // I2C SCL
+    device.spi_miso_pin = GPIO_NUM_0;     // ADC1_0
+    device.spi_mosi_pin = GPIO_NUM_1;     // ADC1_1
+    device.spi_clk_pin = GPIO_NUM_3;      // ADC1_3
+    device.spi_clk_hz = 5000000;          // 5 MHz
 #if LT_USE_INT_PIN
-    device->int_gpio_pin = GPIO_NUM_10;   // I2C SDA
+    device.int_gpio_pin = GPIO_NUM_10;  // I2C SDA
 #endif
     lt_handle.l2.device = &device;
 
