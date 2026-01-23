@@ -31,3 +31,10 @@ jobs:
             idf.py -C examples/esp32/ESP32-S3-DevKitC-1/hello_world/ build
             idf.py -C examples/esp32/ESP32-S3-DevKitC-1/identify_chip/ build
             idf.py -C examples/esp32/ESP32-S3-DevKitC-1/fw_update/ build
+
+      - name: Build ESP32-C3-DevKit-RUST-1 examples
+        run: |
+            . /opt/esp/idf/export.sh
+            idf.py -C examples/esp32/ESP32-C3-DevKit-RUST-1/hello_world/ build
+            idf.py -C examples/esp32/ESP32-C3-DevKit-RUST-1/identify_chip/ build
+            idf.py -C examples/esp32/ESP32-C3-DevKit-RUST-1/fw_update/ build
