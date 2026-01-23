@@ -85,6 +85,7 @@ void app_main(void)
         ESP_LOGE(TAG, "gpio_install_isr_service() failed: %s", esp_err_to_name(esp_ret));
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
+        return;
     }
 #endif
 
