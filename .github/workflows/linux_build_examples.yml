@@ -54,3 +54,7 @@ jobs:
           cd ../../fw_update
           cmake ./ -B build -G Ninja
           cd build && ninja
+
+          cd ../../full_chain_verification
+          cmake ./ -B build -G Ninja
+          cd build && ninja
