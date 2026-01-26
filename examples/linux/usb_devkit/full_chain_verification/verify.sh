@@ -10,7 +10,8 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # Location of certs downloaded from TROPIC01.
-T01_CERTS_DIR="$1"
+T01_CERTS_DIR=${1%/} # Remove last trailing slash (if any present)
+
 # Check if files exist.
 if ! { \
     ls "$T01_CERTS_DIR/t01_ese_cert.der" >/dev/null && \
