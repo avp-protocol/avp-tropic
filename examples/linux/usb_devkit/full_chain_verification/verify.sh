@@ -45,8 +45,8 @@ curl $L3 -o "$TMPDIR/t01-Tv1.crl" # Downloads t01-Tv1.crl
 curl $L2 -o "$TMPDIR/t01v1.crl" # Downloads t01v1.crl
 curl $L1 -o "$TMPDIR/tsrv1.crl" # Downloads tsrv1.crl
 
-# Validate (chip) device certificate
-echo "Validating (chip) device certificate..."
+# Verify (chip) device certificate
+echo "Verificating (chip) device certificate..."
 cat "$TMPDIR/tropic01_xxxx_ca_certificate_sn_30001.pem" \
     "$TMPDIR/t01-Tv1.crl" \
     "$TMPDIR/tropic01_ca_certificate_sn_3001.pem" \
@@ -55,22 +55,22 @@ cat "$TMPDIR/tropic01_xxxx_ca_certificate_sn_30001.pem" \
     "$TMPDIR/tsrv1.crl" > "$TMPDIR/chain.pem"
 openssl verify -verbose -crl_check -CAfile "$TMPDIR/chain.pem" "$T01_CERTS_DIR/t01_ese_cert.der"
 
-# Validate the "Part Number (group)" certificate
-echo "Validating 'Part Number (group)' certificate..."
+# Verify the "Part Number (group)" certificate
+echo "Verificating 'Part Number (group)' certificate..."
 cat "$TMPDIR/tropic01_ca_certificate_sn_3001.pem" \
     "$TMPDIR/t01v1.crl" \
     "$TMPDIR/tropicsquare_root_ca_certificate_sn_301.pem" \
     "$TMPDIR/tsrv1.crl" > "$TMPDIR/chain.pem"
 openssl verify -verbose -crl_check -CAfile "$TMPDIR/chain.pem" "$T01_CERTS_DIR/t01_xxxx_ca_cert.der"
 
-# Validate the "Product (\PartName{})" certificate
-echo "Validating 'Product (\PartName{})' certificate..."
+# Verify the "Product (\PartName{})" certificate
+echo "Verificating 'Product (\PartName{})' certificate..."
 cat "$TMPDIR/tropicsquare_root_ca_certificate_sn_301.pem" "$TMPDIR/tsrv1.crl" > "$TMPDIR/chain.pem"
 openssl verify -verbose -crl_check -CAfile "$TMPDIR/chain.pem" "$T01_CERTS_DIR/t01_ca_cert.der"
 
-# Validate Tropic Square Root Certificate
-echo "Validating Tropic Square Root certificate..."
-# Out-of-band validation of Root Certificate is not included
+# Verify Tropic Square Root Certificate
+echo "Verificating Tropic Square Root certificate..."
+# Out-of-band verification of Root Certificate is not included
 openssl verify -verbose -CAfile "$TMPDIR/tropicsquare_root_ca_certificate_sn_301.pem" "$TMPDIR/tropicsquare_root_ca_certificate_sn_301.pem"
 
 echo "All certificates verified successfully!"
