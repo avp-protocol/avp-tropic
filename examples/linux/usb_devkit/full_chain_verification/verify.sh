@@ -22,7 +22,7 @@ if ! { \
     ls "$T01_CERTS_DIR/t01_xxxx_ca_cert.der" >/dev/null && \
     ls "$T01_CERTS_DIR/t01_ca_cert.der" >/dev/null; \
 }; then
-    echo "Missing required cert(s) in '$T01_CERTS_DIR!' Make sure to run the provided C application to download the certificates from the TROPIC01. Check the tutorials."
+    echo "Missing required cert(s) in '$T01_CERTS_DIR'. Make sure to run the provided C application to download the certificates from the TROPIC01. Check the tutorials."
     exit 1
 fi
 
