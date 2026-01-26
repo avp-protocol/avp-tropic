@@ -90,8 +90,16 @@ int main(void)
     // Modify this according to your environment. Default values
     // are compatible with RPi and our RPi shield.
     lt_dev_posix_usb_dongle_t device = {0};
-    strcpy(device.dev_path, LT_USB_DEVKIT_PATH);  // LT_USB_DEVKIT_PATH is defined in CMakeLists.txt. Pass
-                                                  // -DLT_USB_DEVKIT_PATH=<path> to cmake if you want to change it.
+
+    // LT_USB_DEVKIT_PATH is defined in CMakeLists.txt. Pass -DLT_USB_DEVKIT_PATH=<path>
+    // to cmake if you want to change it.
+    int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH); 
+    if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {  
+        fprintf(stderr, "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n", sizeof(device.dev_path));
+        mbedtls_psa_crypto_free();  
+        return -1;  
+    }
+
     device.baud_rate = 115200;
     lt_handle.l2.device = &device;
 
