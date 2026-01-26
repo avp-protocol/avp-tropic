@@ -26,10 +26,12 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
 
     struct lt_cert_store_t store = {.certs = {cert1, cert2, cert3, cert4},
                                     .buf_len = {CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN}};
-
+   
     // Reading X509 Certificate Store
-    if (lt_get_info_cert_store(lt_handle, &store) != LT_OK) {
-        fprintf(stderr, "Failed to retrieve the certificates!");
+    printf("Reading certificates from TROPIC01...\n");
+    lt_ret_t ret = lt_get_info_cert_store(lt_handle, &store);
+    if (ret != LT_OK) {
+        fprintf(stderr, "Failed to retrieve the certificates, ret=%d\n", ret);
         return LT_FAIL;
     }
 
@@ -37,18 +39,19 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
     const char *names[4]
         = {"t01_ese_cert.der", "t01_xxxx_ca_cert.der", "t01_ca_cert.der", "tropicsquare_root_ca_cert.der"};
 
+    printf("Writing certificates to files...\n");
     for (int i = 0; i < 4; i++) {
         if (store.cert_len[i] == 0) {
-            fprintf(stderr,  "Error: Certificate %d is empty!", i);
+            fprintf(stderr,  "Error: Certificate %d is empty!\n", i);
             return LT_FAIL;
         }
         FILE *f = fopen(names[i], "wb");
         if (!f) {
-            fprintf(stderr, "Error: Couldn't open file %s!", names[i]);
+            fprintf(stderr, "Error: Couldn't open file %s!\n", names[i]);
             return LT_FAIL;
         }
         if (fwrite(store.certs[i], 1, store.cert_len[i], f) != store.cert_len[i]) {
-            fprintf(stderr,  "Error: Failed to write certificate %d to file!", i);
+            fprintf(stderr,  "Error: Failed to write certificate %d to file!\n", i);
             fclose(f);
             return LT_FAIL;
         }
@@ -107,11 +110,12 @@ int main(void)
 
     printf("Dumping certificates...\n");
     if (LT_OK != dump_cert_store(&lt_handle)) {
-        fprintf(stderr, "Error: Couldn't dump certificates!");
+        fprintf(stderr, "Error: Couldn't dump certificates!\n");
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
         return -1;
     }
+    printf("Certificates dumped successfully!\n");
 
     printf("Deinitializing handle...");
     ret = lt_deinit(&lt_handle);
