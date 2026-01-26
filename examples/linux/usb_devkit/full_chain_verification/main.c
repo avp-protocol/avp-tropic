@@ -1,6 +1,7 @@
 /**
  * @file main.c
- * @brief Utility for dumping certificates from TROPIC01 USB Devkit for Linux. Part of the Full chain verification example.
+ * @brief Utility for dumping certificates from TROPIC01 USB Devkit for Linux. Part of the Full chain verification
+ * example.
  * @author Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -26,7 +27,7 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
 
     struct lt_cert_store_t store = {.certs = {cert1, cert2, cert3, cert4},
                                     .buf_len = {CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN}};
-   
+
     // Reading X509 Certificate Store
     printf("Reading certificates from TROPIC01...\n");
     lt_ret_t ret = lt_get_info_cert_store(lt_handle, &store);
@@ -42,7 +43,7 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
     printf("Writing certificates to files...\n");
     for (int i = 0; i < 4; i++) {
         if (store.cert_len[i] == 0) {
-            fprintf(stderr,  "Error: Certificate %d is empty!\n", i);
+            fprintf(stderr, "Error: Certificate %d is empty!\n", i);
             return LT_FAIL;
         }
         FILE *f = fopen(names[i], "wb");
@@ -51,7 +52,7 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
             return LT_FAIL;
         }
         if (fwrite(store.certs[i], 1, store.cert_len[i], f) != store.cert_len[i]) {
-            fprintf(stderr,  "Error: Failed to write certificate %d to file!\n", i);
+            fprintf(stderr, "Error: Failed to write certificate %d to file!\n", i);
             fclose(f);
             return LT_FAIL;
         }
@@ -93,11 +94,12 @@ int main(void)
 
     // LT_USB_DEVKIT_PATH is defined in CMakeLists.txt. Pass -DLT_USB_DEVKIT_PATH=<path>
     // to cmake if you want to change it.
-    int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH); 
-    if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {  
-        fprintf(stderr, "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n", sizeof(device.dev_path));
-        mbedtls_psa_crypto_free();  
-        return -1;  
+    int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH);
+    if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {
+        fprintf(stderr, "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n",
+                sizeof(device.dev_path));
+        mbedtls_psa_crypto_free();
+        return -1;
     }
 
     device.baud_rate = 115200;
