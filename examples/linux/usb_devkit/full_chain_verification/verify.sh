@@ -63,8 +63,8 @@ cat "$TMPDIR/tropic01_ca_certificate_sn_3001.pem" \
     "$TMPDIR/tsrv1.crl" > "$TMPDIR/chain.pem"
 openssl verify -verbose -crl_check -CAfile "$TMPDIR/chain.pem" "$T01_CERTS_DIR/t01_xxxx_ca_cert.der"
 
-# Verify the "Product (\PartName{})" certificate
-echo "Verifying 'Product (\PartName{})' certificate..."
+# Verify the "Product (Part Name)" certificate
+echo "Verifying 'Product (Part Name)' certificate..."
 cat "$TMPDIR/tropicsquare_root_ca_certificate_sn_301.pem" "$TMPDIR/tsrv1.crl" > "$TMPDIR/chain.pem"
 openssl verify -verbose -crl_check -CAfile "$TMPDIR/chain.pem" "$T01_CERTS_DIR/t01_ca_cert.der"
 
