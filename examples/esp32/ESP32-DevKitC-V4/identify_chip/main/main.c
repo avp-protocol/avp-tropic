@@ -1,57 +1,47 @@
 /**
  * @file main.c
- * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic and ESP32-DevKit-V4.
+ * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic and ESP32-DevKitC-V4.
  * @author Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */
 
+#include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "fw_CPU.h"
-#include "fw_SPECT.h"
 #include "libtropic.h"
 #include "libtropic_common.h"
 #include "libtropic_mbedtls_v4.h"
 #include "libtropic_port_esp_idf.h"
 #include "psa/crypto.h"
 
-#define TAG "fw_update"
+#define TAG "identify_chip"
 
-lt_ret_t get_fw_versions(lt_handle_t *lt_handle)
+// Some libtropic helper functions expect a printf-like function for logging.
+// We provide a simple wrapper around ESP_LOGI to adapt it.
+int my_esp_logi_wrapper(const char *format, ...)
 {
-    uint8_t cpu_fw_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE] = {0};
-    uint8_t spect_fw_ver[TR01_L2_GET_INFO_SPECT_FW_SIZE] = {0};
+    // Add the log timestamp and TAG prefix so idf.py colors it.
+    esp_log_write(ESP_LOG_INFO, TAG, "I (%lu) %s: ", esp_log_timestamp(), TAG);
 
-    ESP_LOGI(TAG, "Reading firmware versions from TROPIC01...");
-    lt_ret_t ret = lt_get_info_riscv_fw_ver(lt_handle, cpu_fw_ver);
-    if (ret != LT_OK) {
-        ESP_LOGE(TAG, "Failed to get RISC-V FW version, ret=%s", lt_ret_verbose(ret));
-        return ret;
-    }
-    ret = lt_get_info_spect_fw_ver(lt_handle, spect_fw_ver);
-    if (ret != LT_OK) {
-        ESP_LOGE(TAG, "Failed to get SPECT FW version, ret=%s", lt_ret_verbose(ret));
-        return ret;
-    }
-    ESP_LOGI(TAG, "OK");
+    // Handle the format string and its arguments.
+    va_list args;
+    va_start(args, format);
+    esp_log_writev(ESP_LOG_INFO, TAG, format, args);
+    va_end(args);
 
-    ESP_LOGI(TAG, "TROPIC01 firmware versions:");
-    ESP_LOGI(TAG, "  - RISC-V FW version: %d.%d.%d", cpu_fw_ver[3], cpu_fw_ver[2], cpu_fw_ver[1]);
-    ESP_LOGI(TAG, "  - SPECT FW version: %d.%d.%d", spect_fw_ver[3], spect_fw_ver[2], spect_fw_ver[1]);
-
-    return LT_OK;
+    return 0;
 }
 
 void app_main(void)
 {
-    ESP_LOGI(TAG, "==========================================");
-    ESP_LOGI(TAG, "==== TROPIC01 Firmware Update Example ====");
-    ESP_LOGI(TAG, "==========================================");
+    ESP_LOGI(TAG, "==============================================");
+    ESP_LOGI(TAG, "==== TROPIC01 Chip Identification Example ====");
+    ESP_LOGI(TAG, "==============================================");
 
     // Cryptographic function provider initialization.
     //
@@ -114,7 +104,7 @@ void app_main(void)
 
     // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
     // Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot.
-    ESP_LOGI(TAG, "Rebooting TROPIC01...");
+    ESP_LOGI(TAG, "Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
         ESP_LOGE(TAG, "Reboot failed, ret=%s", lt_ret_verbose(ret));
@@ -124,18 +114,31 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "OK");
 
-    if (get_fw_versions(&lt_handle) != LT_OK) {
+    ESP_LOGI(TAG, "Reading data from chip...");
+
+    uint8_t fw_ver[4];
+    ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to get RISC-V FW version, ret=%s", lt_ret_verbose(ret));
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
         return;
     }
-    ESP_LOGI(TAG, "OK");
-    ESP_LOGI(TAG, "");
+    ESP_LOGI(TAG, "  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3], fw_ver[2],
+             fw_ver[1], fw_ver[0]);
 
-    ESP_LOGI(TAG, "Starting firmware update...");
+    ret = lt_get_info_spect_fw_ver(&lt_handle, fw_ver);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to get SPECT FW version, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+    ESP_LOGI(TAG, "  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3], fw_ver[2], fw_ver[1],
+             fw_ver[0]);
 
-    // The chip must be in Start-up Mode to be able to perform a firmware update.
-    ESP_LOGI(TAG, "- Sending maintenance reboot request...");
+    // We need to do the maintenance reboot to check bootloader version and FW bank headers in the Startup Mode.
+    ESP_LOGI(TAG, "Sending maintenance reboot request...");
     ret = lt_reboot(&lt_handle, TR01_MAINTENANCE_REBOOT);
     if (ret != LT_OK) {
         ESP_LOGE(TAG, "Maintenance reboot failed, ret=%s", lt_ret_verbose(ret));
@@ -145,69 +148,84 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "OK");
 
-    ESP_LOGI(TAG, "- Updating TR01_FW_BANK_FW1 and TR01_FW_BANK_SPECT1");
-    ESP_LOGI(TAG, "  - Updating RISC-V FW...");
-    ret = lt_do_mutable_fw_update(&lt_handle, fw_CPU, sizeof(fw_CPU), TR01_FW_BANK_FW1);
-    if (ret != LT_OK) {
-        ESP_LOGE(TAG, "RISC-V FW update failed, ret=%s", lt_ret_verbose(ret));
-        lt_deinit(&lt_handle);
-        mbedtls_psa_crypto_free();
-        return;
-    }
-    ESP_LOGI(TAG, "OK");
+    ESP_LOGI(TAG, "Reading data from chip...");
 
-    ESP_LOGI(TAG, "  - Updating SPECT FW...");
-    ret = lt_do_mutable_fw_update(&lt_handle, fw_SPECT, sizeof(fw_SPECT), TR01_FW_BANK_SPECT1);
+    // When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version.
+    ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
-        ESP_LOGE(TAG, "SPECT FW update failed, ret=%s", lt_ret_verbose(ret));
+        ESP_LOGE(TAG, "Failed to get RISC-V bootloader version, ret=%s", lt_ret_verbose(ret));
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
         return;
     }
-    ESP_LOGI(TAG, "OK");
+    ESP_LOGI(TAG, "  RISC-V bootloader version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")",
+             (uint8_t)(fw_ver[3] & 0x7f), fw_ver[2], fw_ver[1], fw_ver[0]);
 
-    ESP_LOGI(TAG, "- Updating TR01_FW_BANK_FW2 and TR01_FW_BANK_SPECT2");
-    ESP_LOGI(TAG, "  - Updating RISC-V FW...");
-    ret = lt_do_mutable_fw_update(&lt_handle, fw_CPU, sizeof(fw_CPU), TR01_FW_BANK_FW2);
-    if (ret != LT_OK) {
-        ESP_LOGE(TAG, "RISC-V FW update failed, ret=%s", lt_ret_verbose(ret));
-        lt_deinit(&lt_handle);
-        mbedtls_psa_crypto_free();
-        return;
-    }
-    ESP_LOGI(TAG, "OK");
-
-    ESP_LOGI(TAG, "  - Updating SPECT FW...");
-    ret = lt_do_mutable_fw_update(&lt_handle, fw_SPECT, sizeof(fw_SPECT), TR01_FW_BANK_SPECT2);
-    if (ret != LT_OK) {
-        ESP_LOGE(TAG, "SPECT FW update failed, ret=%s", lt_ret_verbose(ret));
-        lt_deinit(&lt_handle);
-        mbedtls_psa_crypto_free();
-        return;
-    }
-    ESP_LOGI(TAG, "OK");
-    ESP_LOGI(TAG, "Successfully updated all 4 FW banks.");
     ESP_LOGI(TAG, "");
+    ESP_LOGI(TAG, "Firmware bank headers:");
+    ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_FW1, my_esp_logi_wrapper);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to print TR01_FW_BANK_FW1 header, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+    ESP_LOGI(TAG, "");
+    ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_FW2, my_esp_logi_wrapper);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to print TR01_FW_BANK_FW2 header, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+    ESP_LOGI(TAG, "");
+    ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_SPECT1, my_esp_logi_wrapper);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to print TR01_FW_BANK_SPECT1 header, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+    ESP_LOGI(TAG, "");
+    ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_SPECT2, my_esp_logi_wrapper);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to print TR01_FW_BANK_SPECT2 header, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
 
+    struct lt_chip_id_t chip_id = {0};
+
+    ESP_LOGI(TAG, "");
+    ESP_LOGI(TAG, "Chip ID data:");
+    ret = lt_get_info_chip_id(&lt_handle, &chip_id);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to get chip ID, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+
+    ret = lt_print_chip_id(&chip_id, my_esp_logi_wrapper);
+    if (ret != LT_OK) {
+        ESP_LOGE(TAG, "Failed to print chip ID, ret=%s", lt_ret_verbose(ret));
+        lt_deinit(&lt_handle);
+        mbedtls_psa_crypto_free();
+        return;
+    }
+
+    ESP_LOGI(TAG, "");
     ESP_LOGI(TAG, "Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
-        ESP_LOGE(TAG, "lt_reboot() failed, ret=%s", lt_ret_verbose(ret));
+        ESP_LOGE(TAG, "Reboot failed, ret=%s", lt_ret_verbose(ret));
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
         return;
     }
     ESP_LOGI(TAG, "OK");
-    ESP_LOGI(TAG, "TROPIC01 is executing Application FW now");
-    ESP_LOGI(TAG, "");
 
-    if (get_fw_versions(&lt_handle) != LT_OK) {
-        lt_deinit(&lt_handle);
-        mbedtls_psa_crypto_free();
-        return;
-    }
-
-    ESP_LOGI(TAG, "");
     ESP_LOGI(TAG, "Deinitializing handle...");
     ret = lt_deinit(&lt_handle);
     if (LT_OK != ret) {
