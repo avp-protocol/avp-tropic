@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @brief Simple "Hello, World!" example of using Libtropic with the ESP32-DevKit-V4.
+ * @brief Simple "Hello, World!" example of using Libtropic with the ESP32-DevKitC-V4.
  * @author Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
