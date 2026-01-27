@@ -1,7 +1,7 @@
 /**
  * @file main.c
  * @brief Wrapper project for running Libtropic functional test suite on Nucleo L432KC.
- * @author Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  *
