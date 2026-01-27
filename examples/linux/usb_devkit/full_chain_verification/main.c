@@ -17,16 +17,15 @@
 #include "libtropic_port_posix_usb_dongle.h"
 #include "psa/crypto.h"
 
-/** @brief Length of the buffers for certificates. */
-#define CERTS_BUF_LEN 700
-
 lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
 {
-    uint8_t cert1[CERTS_BUF_LEN] = {0}, cert2[CERTS_BUF_LEN] = {0}, cert3[CERTS_BUF_LEN] = {0},
-            cert4[CERTS_BUF_LEN] = {0};
+    uint8_t cert1[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0}, cert2[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0},
+            cert3[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0}, cert4[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0};
 
-    struct lt_cert_store_t store = {.certs = {cert1, cert2, cert3, cert4},
-                                    .buf_len = {CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN}};
+    struct lt_cert_store_t store
+        = {.certs = {cert1, cert2, cert3, cert4},
+           .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
+                       TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE}};
 
     // Reading X509 Certificate Store
     printf("Reading certificates from TROPIC01...\n");
@@ -37,11 +36,11 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
     }
 
     // Dump the certificates to files
-    const char *names[4]
+    const char *names[LT_NUM_CERTIFICATES]
         = {"t01_ese_cert.der", "t01_xxxx_ca_cert.der", "t01_ca_cert.der", "tropicsquare_root_ca_cert.der"};
 
     printf("Writing certificates to files...\n");
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < LT_NUM_CERTIFICATES; i++) {
         if (store.cert_len[i] == 0) {
             fprintf(stderr, "Error: Certificate %d is empty!\n", i);
             return LT_FAIL;
