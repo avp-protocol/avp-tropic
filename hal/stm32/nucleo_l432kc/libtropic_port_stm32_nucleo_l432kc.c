@@ -1,6 +1,6 @@
 /**
  * @file libtropic_port_stm32_nucleo_l432kc.c
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for STM32 L432KC using native SPI HAL (and GPIO HAL for chip select).
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.

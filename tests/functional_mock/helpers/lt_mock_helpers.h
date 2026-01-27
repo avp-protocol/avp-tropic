@@ -4,7 +4,7 @@
 /**
  * @file lt_mock_helpers.h
  * @brief Helper functions for functional mock tests.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */

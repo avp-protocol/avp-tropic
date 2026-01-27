@@ -1,7 +1,7 @@
 /**
  * @file lt_test_rev_get_info_req_bootloader.c
  * @brief Test Get_Info_Req command in Maintenance mode with all possible OBJECT_ID values.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */

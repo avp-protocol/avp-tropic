@@ -3,7 +3,7 @@
 
 /**
  * @file libtropic_port_esp_idf.h
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Declarations for the ESP-IDF port.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.

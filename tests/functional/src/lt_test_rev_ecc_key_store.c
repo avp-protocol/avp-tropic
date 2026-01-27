@@ -1,7 +1,7 @@
 /**
  * @file lt_test_rev_ecc_key_store.c
  * @brief Test ECC_Key_Store command, along with ECC_Key_Read and ECC_Key_Erase.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */

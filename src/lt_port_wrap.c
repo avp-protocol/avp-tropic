@@ -1,7 +1,7 @@
 /**
  * @file lt_port_wrap.c
  * @brief Implementation of wrappers for the port-specific functions.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
