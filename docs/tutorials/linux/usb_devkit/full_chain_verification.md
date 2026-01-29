@@ -11,7 +11,7 @@ In this tutorial, you will learn about one of the steps required to verify authe
 The TROPIC01 comes with its own unique cryptographic identity in the form of secure channel key pair and a certificate. The certificate is issued by Tropic Square PKI which provides a framework for verifying the origin of each TROPIC01 chip ever produced. In this tutorial, we will learn:
 
 - How to load the certificate chain from a TROPIC01 chip using `lt_get_info_cert_store()` function from the Libtropic API.
-- How to verify all certificates in the chain using OpenSSL CLI using a provided script.
+- How to verify all certificates in the chain using OpenSSL CLI with a provided script.
 
 ## Load the Certificates
 First, we will load the certificates from your TROPIC01 using a provided C application available in `examples/linux/usb_devkit/full_chain_verification`.
