@@ -1,6 +1,6 @@
 # 4. Full Chain Verification Example
 
-In this tutorial, you will learn about one of the steps required to verify authenticity of the TROPIC01 chain, which is a process that should be done by Tropic Square customers during provisioning of their device which integrates TROPIC01.
+In this tutorial, you will learn about one of the steps required to verify the authenticity of the TROPIC01 certificate chain, which is a process that should be done by Tropic Square customers during provisioning of their device which integrates TROPIC01.
 
 !!! important "Important: read before proceeding"
     Detailed information about TROPIC01 device identity and related Tropic Square Public Key Infrastructure (PKI) is provided in the *Device Identity and PKI Application Note* (ODN_TR01_app_003) available [on GitHub](https://github.com/tropicsquare/tropic01/tree/main#application-notes). It is recommended to read this document before proceeding to understand the process described in this tutorial, as here we provide only minimal information to try the process of the certificate chain verification.
