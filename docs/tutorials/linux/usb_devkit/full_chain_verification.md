@@ -13,7 +13,7 @@ The TROPIC01 comes with its own unique cryptographic identity in the form of sec
 - How to load the certificate chain from a TROPIC01 chip using `lt_get_info_cert_store()` function from Libtropic API.
 - How to verify all certificates in the chain using OpenSSL CLI using a provided script.
 
-## 1. Load the Certificates
+## Load the Certificates
 At first, we will load the certificates from your TROPIC01 using provided C application available in `examples/linux/usb_devkit/full_chain_verification`.
 
 !!! example "Building and running the app"
@@ -50,7 +50,7 @@ At first, we will load the certificates from your TROPIC01 using provided C appl
         TBA
 
 
-## 2. Verify the Certificates
+## Verify the Certificates
 After we loaded the certificates from the TROPIC01 chip, we will verify the certificates using provided script.
 
 !!! example "Verifying the certificates"
