@@ -14,7 +14,7 @@ The TROPIC01 comes with its own unique cryptographic identity in the form of sec
 - How to verify all certificates in the chain using OpenSSL CLI using a provided script.
 
 ## Load the Certificates
-At first, we will load the certificates from your TROPIC01 using a provided C application available in `examples/linux/usb_devkit/full_chain_verification`.
+First, we will load the certificates from your TROPIC01 using a provided C application available in `examples/linux/usb_devkit/full_chain_verification`.
 
 !!! example "Building and running the app"
     === ":fontawesome-brands-linux: Linux"
