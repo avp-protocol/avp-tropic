@@ -24,8 +24,9 @@ We support collecting coverage only against [TROPIC01 Model](../../tutorials/mod
     ctest -V
     ```
 
-    After CTest finishes, use [gcovr](https://github.com/gcovr/gcovr) to export results (execute from the `tests/functional/model/build/` directory):
+    After CTest finishes, use [gcovr](https://github.com/gcovr/gcovr) to export results:
     ```bash { .copy }
+    # Execute this from the tests/functional/model/build/ directory!
     gcovr --json coverage_trace.json --exclude '.*_deps/.*|.*cal/.*|.*hal/.*' -r ../../../..
     ```
 
@@ -46,8 +47,9 @@ Run functional mock tests on the same platform you used for the previous tests. 
     ctest -V
     ```
 
-    After CTest finishes, use [gcovr](https://github.com/gcovr/gcovr) to export results (execute from the `tests/functional_mock/build/` directory):
+    After CTest finishes, use [gcovr](https://github.com/gcovr/gcovr) to export results:
     ```bash { .copy }
+    # Execute this from the tests/functional_mock/build/ directory!
     gcovr --json coverage_trace.json --exclude '.*_deps/.*|.*cal/.*|.*hal/.*' -r ../../..
     ```
 
