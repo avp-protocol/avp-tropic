@@ -3,7 +3,7 @@ This tutorial will help you get started with TROPIC01 on ESP32-based platforms u
 
 ## Hardware Setup
 ### TROPIC01
-!!! info "TROPI01 Devkit for ESP32 boards"
+!!! info "TROPIC01 Devkit for ESP32 boards"
     Currently, we don't offer a devkit for ESP32 boards. However, you can use any of our devkits that use SPI, except the USB DevKit.
 
 For the purpose of this tutorial, we will use our TROPIC01 Arduino Shield:
