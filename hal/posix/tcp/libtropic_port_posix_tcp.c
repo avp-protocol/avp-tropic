@@ -1,6 +1,6 @@
 /**
  * @file libtropic_port_posix_tcp.c
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for communication with the TROPIC01 Model using TCP.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.

@@ -1,7 +1,7 @@
 /**
  * @file lt_tr01_attrs.c
  * @brief Implementation for handling TROPIC01 attributes based on FW versions.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */

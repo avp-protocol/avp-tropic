@@ -90,7 +90,7 @@ Change the lines marked with `TODO`.
 /**
  * @file TODO: FILL ME
  * @brief TODO: FILL ME
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */

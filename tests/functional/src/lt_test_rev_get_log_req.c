@@ -1,7 +1,7 @@
 /**
  * @file lt_test_rev_get_log_req.c
  * @brief Tests Get_Log_Req command.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */

@@ -1,6 +1,6 @@
 /**
  * @file libtropic_port_posix_usb_dongle.c
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for communication with USB UART Dongle (TS1302).
  *
  * The TS1302 dongle uses a special protocol to translate UART communication to SPI. This port

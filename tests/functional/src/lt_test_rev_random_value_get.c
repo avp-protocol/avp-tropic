@@ -1,7 +1,7 @@
 /**
  * @file lt_test_rev_random_value_get.c
  * @brief Tests Random_Value_Get command.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
