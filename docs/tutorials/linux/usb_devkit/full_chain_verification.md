@@ -20,7 +20,7 @@ At first, we will load the certificates from your TROPIC01 using a provided C ap
     === ":fontawesome-brands-linux: Linux"
         Go to the example's project directory:
         ```bash { .copy }
-        cd examples/linux/usb_devkit/full_chain_verification
+        cd examples/linux/usb_devkit/full_chain_verification/
         ```
 
         Create a `build/` directory and switch to it:
@@ -57,7 +57,7 @@ After we loaded the certificates from the TROPIC01 chip, we will verify the cert
     === ":fontawesome-brands-linux: Linux"
         Go to the example's project directory:
         ```bash { .copy }
-        cd examples/linux/usb_devkit/full_chain_verification
+        cd examples/linux/usb_devkit/full_chain_verification/
         ```
 
         Run the `verify.sh` script. It accepts a single argument, a path to a directory where certificates loaded from the TROPIC01 are located.
