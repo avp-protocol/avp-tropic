@@ -1,14 +1,14 @@
 # 4. Full Chain Verification Example
 
-In this tutorial, you will learn about one of the steps required to verify the authenticity of the TROPIC01 certificate chain, which is a process that should be done by Tropic Square customers during provisioning of their device which integrates TROPIC01.
+In this tutorial, you will learn about one of the steps required to verify the authenticity of the TROPIC01 certificate chain — a process that should be done by Tropic Square customers during provisioning of their device which integrates TROPIC01.
 
-!!! important "Important: read before proceeding"
-    Detailed information about TROPIC01 device identity and related Tropic Square Public Key Infrastructure (PKI) is provided in the *Device Identity and PKI Application Note* (ODN_TR01_app_003) available [on GitHub](https://github.com/tropicsquare/tropic01/tree/main#application-notes). It is recommended to read this document before proceeding to understand the process described in this tutorial, as here we provide only minimal information to try the process of the certificate chain verification.
+!!! info "Important: read before proceeding"
+    Detailed information about TROPIC01 device identity and related Tropic Square Public Key Infrastructure (PKI) is provided in the *Device Identity and PKI Application Note* (ODN_TR01_app_003) available on [GitHub](https://github.com/tropicsquare/tropic01/tree/main#application-notes). It is recommended to read this document before proceeding to understand the process described in this tutorial, as here we provide only minimal information to try the process of the certificate chain verification.
 
 !!! warning "Compatibility"
     Only production chips contain full certificate chain. Sample chips are not supported by this tutorial. If you encounter problems in this tutorial, you probably have an incompatible chip. Find your TROPIC01's part number ([check the FAQ](../../../faq.md#what-is-the-part-number-pn-of-my-tropic01)) and check the [Catalog list](https://github.com/tropicsquare/tropic01#available-parts) to see if your chip is a production one.
 
-The TROPIC01 comes with its own unique cryptographic identity in the form of secure channel key pair and a certificate. The certificate is issued by Tropic Square PKI which provides a framework for verifying the origin of each TROPIC01 chip ever produced. In this tutorial, we will learn:
+The TROPIC01 comes with its own unique cryptographic identity in the form of Secure Channel key pair and a certificate. The certificate is issued by Tropic Square PKI which provides a framework for verifying the origin of each TROPIC01 chip ever produced. In this tutorial, we will learn:
 
 - How to load the certificate chain from a TROPIC01 chip using `lt_get_info_cert_store()` function from the Libtropic API.
 - How to verify all certificates in the chain using OpenSSL CLI with a provided script.
