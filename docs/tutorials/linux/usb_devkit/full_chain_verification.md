@@ -86,6 +86,6 @@ Authenticity check of the root certificate in the step 3 is not fully implemente
 The script contains comments about each step, so refer to the code of the script for more details about the implementation. It is also recommended to study the *Device Identity and PKI Application Note* (ODN_TR01_app_003) (available [on GitHub](https://github.com/tropicsquare/tropic01/tree/main#application-notes)) to fully understand the principles described in this tutorial.
 
 !!! note "Alternative implementation of the verification"
-    The script verifies the TROPIC01 certificates against certificate authority certificates downloaded from the Tropic Square PKI website. However, as the same certificates are present also in the TROPIC01 itself, those can be used instead. However, the importance of verifying the root certificate independently remains the key part of the process.
+    The script verifies the TROPIC01 certificates against certificate authority certificates downloaded from the Tropic Square PKI website. As the same certificates are present also in the TROPIC01 itself, those can be used instead. The importance of verifying the root certificate independently remains the key part of the process.
 
 
