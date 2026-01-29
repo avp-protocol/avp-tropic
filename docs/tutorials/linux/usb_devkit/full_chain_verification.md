@@ -51,7 +51,7 @@ At first, we will load the certificates from your TROPIC01 using provided C appl
 
 
 ## Verify the Certificates
-After we loaded the certificates from the TROPIC01 chip, we will verify the certificates using provided script.
+After we loaded the certificates from the TROPIC01 chip, we will verify the certificates using a provided script.
 
 !!! example "Verifying the certificates"
     === ":fontawesome-brands-linux: Linux"
