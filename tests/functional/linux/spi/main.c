@@ -31,6 +31,22 @@
 #define CRYPTO_CTX_TYPE lt_ctx_wolfcrypt_t
 #endif
 
+static int cleanup(void) {
+    int ret = 0;
+
+#if LT_USE_MBEDTLS_V4
+    mbedtls_psa_crypto_free();
+#elif LT_USE_WOLFCRYPT
+    ret = wolfCrypt_Cleanup();
+    if (ret != 0) {
+        LT_LOG_ERROR("WolfCrypt cleanup failed, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        return ret;
+    }
+#endif
+
+    return ret;
+}
+
 int main(void)
 {
     int ret = 0;
@@ -61,23 +77,21 @@ int main(void)
     // Device mappings
     lt_dev_linux_spi_t device = {0};
 
-    // LT_GPIO_DEV_PATH is defined in CMakeLists.txt. Pass
-    // -DLT_GPIO_DEV_PATH=<path> to cmake if you want to change it.
+    // LT_GPIO_DEV_PATH is defined in CMakeLists.txt.
     int dev_path_len = snprintf(device.gpio_dev, sizeof(device.gpio_dev), "%s", LT_GPIO_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.gpio_dev)) {
-        fprintf(stderr, "Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).\n",
+        LT_LOG_ERROR("Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).\n",
                 sizeof(device.gpio_dev));
-        mbedtls_psa_crypto_free();
+        LT_UNUSED(cleanup()); // Not caring about return val - we fail anyway.
         return -1;
     }
 
-    // LT_SPI_DEV_PATH is defined in CMakeLists.txt. Pass
-    // -DLT_SPI_DEV_PATH=<path> to cmake if you want to change it.
+    // LT_SPI_DEV_PATH is defined in CMakeLists.txt.
     dev_path_len = snprintf(device.spi_dev, sizeof(device.spi_dev), "%s", LT_SPI_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.spi_dev)) {
-        fprintf(stderr, "Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).\n",
+        LT_LOG_ERROR("Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).\n",
                 sizeof(device.spi_dev));
-        mbedtls_psa_crypto_free();
+        LT_UNUSED(cleanup()); // Not caring about return val - we fail anyway.
         return -1;
     }
 
@@ -97,15 +111,7 @@ int main(void)
     lt_handle_t *__lt_handle__ = &lt_handle;
 #include "lt_test_registry.c.inc"
 
-#if LT_USE_MBEDTLS_V4
-    mbedtls_psa_crypto_free();
-#elif LT_USE_WOLFCRYPT
-    ret = wolfCrypt_Cleanup();
-    if (ret != 0) {
-        LT_LOG_ERROR("WolfCrypt cleanup failed, ret=%d (%s)", ret, wc_GetErrorString(ret));
-        return ret;
-    }
-#endif
+    ret = cleanup();
 
     return ret;
 }
