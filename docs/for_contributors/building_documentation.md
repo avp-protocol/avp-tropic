@@ -4,7 +4,7 @@ Libtropic documentation is built using the two following frameworks, each buildi
 1. [MkDocs](https://www.mkdocs.org/), used to generate the pages you are seeing right now,
 2. [Doxygen](https://www.doxygen.nl/), used to generate the API Reference from the Libtropic source code.
 
-Normally, you should not need to build the documentation yourself - it is available on our [GitHub Pages](https://tropicsquare.github.io/libtropic/latest/), where versions for the [master](https://github.com/tropicsquare/libtropic/tree/master) branch and all [releases](https://github.com/tropicsquare/libtropic/releases) are automatically built and released by our GitHub Actions. However, in the case of contributing to the documentation, it is handy to be able to build it locally and preview the new changes. Refer to the following sections for steps on how to do that.
+Normally, you should not need to build the documentation yourself - it is available on our [GitHub Pages](https://tropicsquare.github.io/libtropic/latest/), where versions for all [releases](https://github.com/tropicsquare/libtropic/releases) are automatically built and released by our GitHub Actions. However, in the case of contributing to the documentation, it is handy to be able to build it locally and preview the new changes. Refer to the following sections for steps on how to do that.
 
 ## Install the Dependencies
 !!! example "Installing dependencies"

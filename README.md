@@ -9,7 +9,7 @@ For more information about TROPIC01 chip and its **datasheet** or **User API**, 
 ## Documentation
 We recommend using the [Libtropic documentation](https://tropicsquare.github.io/libtropic/latest/) as the source of truth for getting information about Libtropic.
 
-The default documentation version is generated from the latest version of the master branch, but release versions are also available (via the version selector at the top of the page).
+The documentation is generated only for the releases and the version can be switched via the version selector at the top of the page.
 
 ## Compatibility with TROPIC01 firmware versions
 
