@@ -33,7 +33,7 @@ endif()
 ###########################################################################
 
 if (NOT DEFINED LT_SPI_DEV_PATH)
-    set(LT_SPI_DEV_PATH "/dev/spidev0.0" CACHE STRING "Path to the SPI device to which the SPI devkit is connected.")
+    set(LT_SPI_DEV_PATH "/dev/spidev0.0" CACHE STRING "Path to the SPI device where TROPIC01 is connected.")
 endif()
 message(STATUS "Using SPI device: ${LT_SPI_DEV_PATH}. You can change it by passing -DLT_SPI_DEV_PATH=<path> to cmake.")
 
