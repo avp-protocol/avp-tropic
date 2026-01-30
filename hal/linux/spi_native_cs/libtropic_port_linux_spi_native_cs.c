@@ -6,6 +6,8 @@
  * @note As this HAL controls CS using SPI driver natively,  whole buffer is transferred each time, which
  * introduces a small overhead.
  *
+ * @warning This HAL is experimental. It can be modified or removed in the next release without notice.
+ *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 

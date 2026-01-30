@@ -6,6 +6,8 @@
  * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
  * @brief Port for communication using Generic SPI UAPI with native CS handling and GPIO UAPI for interrupt handling.
  *
+ * @warning This HAL is experimental. It can be modified or removed in the next release without notice.
+ *
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
