@@ -23,7 +23,7 @@ endif()
 message(STATUS "Using SPI device: ${LT_SPI_DEV_PATH}. You can change it by passing -DLT_SPI_DEV_PATH=<path> to cmake.")
 
 if (NOT DEFINED LT_GPIO_DEV_PATH)
-    set(LT_GPIO_DEV_PATH "/dev/gpiochip0" CACHE STRING "Path to the GPIO device to which TROPIC01's Chip Select (CS) pin is connected.")
+    set(LT_GPIO_DEV_PATH "/dev/gpiochip0" CACHE STRING "Path to the GPIO device that provides the TROPIC01's interrupt (INT) and Chip Select (CS) line.")
 endif()
 message(STATUS "Using GPIO device: ${LT_GPIO_DEV_PATH}. You can change it by passing -DLT_GPIO_DEV_PATH=<path> to cmake.")
 
