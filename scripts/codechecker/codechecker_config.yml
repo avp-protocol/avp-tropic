@@ -1,11 +1,5 @@
 analyzer:
     ################################################
-    # Configure skipfile to select which sources
-    # to check.
-    ################################################
-    - --skip=scripts/codechecker/codechecker.skip
-
-    ################################################
     # Enable / disable checks
     ################################################
     # Built-in profiles (labels).

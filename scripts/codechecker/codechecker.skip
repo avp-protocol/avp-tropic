@@ -3,7 +3,10 @@
 +*/libtropic/cal/*
 +*/libtropic/hal/*
 +*/libtropic/include/*
-+*/libtropic/examples/*
+
+# Disable checking of source codes of examples,
+# as we intentionally omit some checks and patterns for simplicity.
+# +*/libtropic/examples/*/main.c
 
 # Skip everything else (vendor libs, CMake internal libs...)
 -*
