@@ -1,0 +1,22 @@
+<map id="libtropic_port.h" name="libtropic_port.h">
+<area shape="rect" id="Node000001" title="Header file with HAL interfaces which are defined based on host platform." alt="" coords="607,5,727,31"/>
+<area shape="rect" id="Node000002" href="$libtropic__logging_8h.html" title="Macros for logging." alt="" coords="5,86,148,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="594,29,400,49,168,81,129,89,128,83,167,76,400,44,593,23"/>
+<area shape="rect" id="Node000003" href="$libtropic__port__arduino_8cpp.html" title="Port for the Arduino framework." alt="" coords="153,167,344,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="594,26,366,46,265,62,231,71,213,81,208,90,206,100,211,124,225,146,239,165,235,168,220,149,207,126,201,101,203,88,209,77,229,66,264,57,365,41,593,21"/>
+<area shape="rect" id="Node000004" href="$libtropic__port__arduino_8h.html" title="Port for the Arduino framework." alt="" coords="223,86,399,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="603,36,364,89,363,83,602,31"/>
+<area shape="rect" id="Node000005" href="$libtropic__port__linux__spi_8h.html" title="Port for communication using Generic SPI and GPIO Linux UAPI." alt="" coords="423,79,570,119"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="631,39,539,81,537,76,629,34"/>
+<area shape="rect" id="Node000006" href="$libtropic__port__linux__spi__native__cs_8h.html" title="Port for communication using Generic SPI UAPI with native CS handling and GPIO UAPI for interrupt han..." alt="" coords="594,79,741,119"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="670,44,670,79,665,79,665,44"/>
+<area shape="rect" id="Node000007" href="$libtropic__port__mock_8h.html" title="Mock HAL implementation (only for testing purposes)." alt="" coords="765,86,927,111"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="707,34,821,84,819,88,705,39"/>
+<area shape="rect" id="Node000008" href="$libtropic__port__posix__usb__dongle_8h.html" title="Port for communication with USB UART Dongle (TS1302)." alt="" coords="952,79,1103,119"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="733,31,952,78,951,84,732,36"/>
+<area shape="rect" id="Node000009" href="$libtropic__port__stm32__nucleo__f439zi_8h.html" title="Port for STM32 F439ZI using native SPI HAL (and GPIO HAL for chip select)." alt="" coords="1127,79,1283,119"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="742,25,913,46,1116,76,1127,78,1126,83,1115,81,912,51,741,30"/>
+<area shape="rect" id="Node000010" href="$libtropic__port__stm32__nucleo__l432kc_8h.html" title="Port for STM32 L432KC using native SPI HAL (and GPIO HAL for chip select)." alt="" coords="1307,79,1463,119"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="741,21,988,40,1141,56,1296,76,1307,78,1306,83,1295,81,1141,61,987,45,741,26"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="296,124,260,168,256,165,292,120"/>
+</map>

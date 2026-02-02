@@ -1,0 +1,62 @@
+<map id="libtropic_macros.h" name="libtropic_macros.h">
+<area shape="rect" id="Node000001" title="Various helper macros." alt="" coords="1467,5,1609,31"/>
+<area shape="rect" id="Node000002" href="$libtropic__common_8h.html" title="Shared definitions and functions commonly used by more libtropic&#39;s layers." alt="" coords="1463,79,1613,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1541,44,1541,79,1535,79,1535,44"/>
+<area shape="rect" id="Node000003" href="$libtropic_8h.html" title="Libtropic library main API header file." alt="" coords="235,159,321,185"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1449,97,1203,102,881,112,565,129,434,141,335,155,308,162,307,157,333,149,433,135,564,124,881,107,1203,96,1449,91"/>
+<area shape="rect" id="Node000004" href="$libtropic__l2_8h.html" title="Layer 2 functions declarations." alt="" coords="346,159,453,185"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1449,98,944,117,667,133,552,143,465,155,434,162,433,157,464,149,552,138,667,128,944,111,1449,92"/>
+<area shape="rect" id="Node000005" href="$libtropic__l3_8h.html" title="Layer 3 functions declarations." alt="" coords="477,159,583,185"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1449,95,1288,96,1075,105,836,123,714,137,596,155,565,162,564,157,595,149,714,131,836,117,1075,99,1288,91,1448,89"/>
+<area shape="rect" id="Node000006" href="$libtropic__port_8h.html" title="Header file with HAL interfaces which are defined based on host platform." alt="" coords="607,159,727,185"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1449,97,1312,102,1135,112,938,129,741,155,707,162,706,157,740,149,938,123,1135,106,1311,96,1449,92"/>
+<area shape="rect" id="Node000016" href="$libtropic__port__posix__tcp_8h.html" title="Port for communication with the TROPIC01 Model using TCP." alt="" coords="752,152,903,192"/>
+<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="1449,101,1208,120,1062,135,916,155,904,157,903,151,915,149,1061,130,1207,114,1449,95"/>
+<area shape="rect" id="Node000017" href="$lt__aesgcm_8h.html" title="AES&#45;GCM function declarations." alt="" coords="927,159,1029,185"/>
+<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="1449,102,1261,120,1151,135,1043,155,1014,162,1013,157,1041,149,1151,130,1261,115,1449,96"/>
+<area shape="rect" id="Node000018" href="$lt__asn1__der_8h.html" title="ASN1 DER parser." alt="" coords="1053,159,1161,185"/>
+<area shape="poly" id="edge18_Node000002_Node000018" title=" " alt="" coords="1450,107,1319,127,1175,155,1146,162,1145,157,1173,149,1318,122,1449,102"/>
+<area shape="rect" id="Node000019" href="$lt__crypto__common_8h.html" title="Common CAL declarations." alt="" coords="1186,159,1341,185"/>
+<area shape="poly" id="edge19_Node000002_Node000019" title=" " alt="" coords="1486,110,1304,162,1303,157,1484,105"/>
+<area shape="rect" id="Node000020" href="$lt__hkdf_8h.html" title="HKDF function declaration." alt="" coords="1365,159,1444,185"/>
+<area shape="poly" id="edge20_Node000002_Node000020" title=" " alt="" coords="1508,113,1426,161,1423,157,1505,109"/>
+<area shape="rect" id="Node000021" href="$lt__hmac__sha256_8h.html" title="HMAC SHA256 functions declarations." alt="" coords="1468,159,1608,185"/>
+<area shape="poly" id="edge21_Node000002_Node000021" title=" " alt="" coords="1541,118,1541,159,1535,159,1535,118"/>
+<area shape="rect" id="Node000022" href="$lt__l1_8h.html" title="Layer 1 functions declarations." alt="" coords="1632,159,1695,185"/>
+<area shape="poly" id="edge22_Node000002_Node000022" title=" " alt="" coords="1569,109,1646,157,1643,161,1567,114"/>
+<area shape="rect" id="Node000023" href="$lt__l2__api__structs_8h.html" title="Layer 2 structure declaration." alt="" coords="1719,159,1859,185"/>
+<area shape="poly" id="edge23_Node000002_Node000023" title=" " alt="" coords="1588,106,1753,157,1751,162,1587,111"/>
+<area shape="rect" id="Node000024" href="$lt__l2__frame__check_8h.html" title="Layer 2 frame check functions declarations." alt="" coords="1883,159,2036,185"/>
+<area shape="poly" id="edge24_Node000002_Node000024" title=" " alt="" coords="1620,104,1872,149,1908,157,1907,162,1871,155,1619,109"/>
+<area shape="rect" id="Node000025" href="$lt__l3__api__structs_8h.html" title="Layer 3 structure declaration." alt="" coords="2060,159,2200,185"/>
+<area shape="poly" id="edge25_Node000002_Node000025" title=" " alt="" coords="1627,97,1821,117,2049,149,2085,157,2084,162,2048,155,1821,123,1627,103"/>
+<area shape="rect" id="Node000026" href="$lt__l3__process_8h.html" title="Layer 3 transfer functions declarations." alt="" coords="2224,159,2343,185"/>
+<area shape="poly" id="edge26_Node000002_Node000026" title=" " alt="" coords="1627,93,1891,110,2052,126,2213,149,2246,157,2245,162,2212,155,2051,131,1890,115,1627,98"/>
+<area shape="rect" id="Node000027" href="$lt__port__wrap_8h.html" title="Declarations of wrappers for the port&#45;specific functions." alt="" coords="2367,159,2482,185"/>
+<area shape="poly" id="edge27_Node000002_Node000027" title=" " alt="" coords="1627,91,1768,95,1950,105,2152,122,2356,149,2388,157,2387,162,2355,155,2152,127,1949,110,1768,100,1627,96"/>
+<area shape="rect" id="Node000028" href="$lt__secure__memzero_8h.html" title="Declarations for secure memory zeroing." alt="" coords="2506,159,2669,185"/>
+<area shape="poly" id="edge28_Node000002_Node000028" title=" " alt="" coords="1628,92,1790,96,2006,106,2249,123,2494,149,2537,157,2536,162,2494,155,2249,129,2006,112,1790,102,1628,97"/>
+<area shape="rect" id="Node000029" href="$lt__sha256_8h.html" title="SHA256 functions declarations." alt="" coords="2693,159,2791,185"/>
+<area shape="poly" id="edge29_Node000002_Node000029" title=" " alt="" coords="1627,92,2165,109,2464,126,2587,137,2681,149,2711,157,2709,162,2680,155,2587,142,2463,131,2165,115,1627,97"/>
+<area shape="rect" id="Node000030" href="$lt__tr01__attrs_8h.html" title="Declarations for handling TROPIC01 attributes based on FW versions." alt="" coords="2815,159,2928,185"/>
+<area shape="poly" id="edge30_Node000002_Node000030" title=" " alt="" coords="1627,92,2224,109,2559,126,2698,137,2804,149,2836,157,2835,162,2803,155,2698,142,2559,131,2223,114,1627,97"/>
+<area shape="rect" id="Node000007" href="$libtropic__logging_8h.html" title="Macros for logging." alt="" coords="5,247,148,273"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="615,191,596,195,476,213,382,220,288,227,168,243,128,250,127,245,167,237,287,222,381,215,475,207,595,189,614,185"/>
+<area shape="rect" id="Node000008" href="$libtropic__port__arduino_8cpp.html" title="Port for the Arduino framework." alt="" coords="153,328,344,353"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="614,191,596,195,557,199,508,200,393,201,336,203,284,210,242,223,226,231,213,242,208,251,206,262,211,285,225,307,239,326,235,329,220,311,206,287,201,262,203,249,209,238,223,227,240,218,283,205,335,198,393,195,508,195,557,193,595,189,613,185"/>
+<area shape="rect" id="Node000009" href="$libtropic__port__arduino_8h.html" title="Port for the Arduino framework." alt="" coords="223,247,399,273"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="612,191,596,195,362,250,361,245,595,189,610,185"/>
+<area shape="rect" id="Node000010" href="$libtropic__port__linux__spi_8h.html" title="Port for communication using Generic SPI and GPIO Linux UAPI." alt="" coords="423,240,570,280"/>
+<area shape="poly" id="edge10_Node000006_Node000010" title=" " alt="" coords="633,193,536,242,533,237,631,189"/>
+<area shape="rect" id="Node000011" href="$libtropic__port__linux__spi__native__cs_8h.html" title="Port for communication using Generic SPI UAPI with native CS handling and GPIO UAPI for interrupt han..." alt="" coords="594,240,741,280"/>
+<area shape="poly" id="edge11_Node000006_Node000011" title=" " alt="" coords="670,198,670,240,665,240,665,198"/>
+<area shape="rect" id="Node000012" href="$libtropic__port__mock_8h.html" title="Mock HAL implementation (only for testing purposes)." alt="" coords="765,247,927,273"/>
+<area shape="poly" id="edge12_Node000006_Node000012" title=" " alt="" coords="705,188,823,245,821,249,702,193"/>
+<area shape="rect" id="Node000013" href="$libtropic__port__posix__usb__dongle_8h.html" title="Port for communication with USB UART Dongle (TS1302)." alt="" coords="952,240,1103,280"/>
+<area shape="poly" id="edge13_Node000006_Node000013" title=" " alt="" coords="725,185,741,189,952,239,951,244,740,195,724,191"/>
+<area shape="rect" id="Node000014" href="$libtropic__port__stm32__nucleo__f439zi_8h.html" title="Port for STM32 F439ZI using native SPI HAL (and GPIO HAL for chip select)." alt="" coords="1127,240,1283,280"/>
+<area shape="poly" id="edge14_Node000006_Node000014" title=" " alt="" coords="722,185,741,189,846,206,928,215,1010,223,1116,237,1127,239,1126,245,1115,243,1010,228,927,220,845,211,740,195,721,190"/>
+<area shape="rect" id="Node000015" href="$libtropic__port__stm32__nucleo__l432kc_8h.html" title="Port for STM32 L432KC using native SPI HAL (and GPIO HAL for chip select)." alt="" coords="1307,240,1463,280"/>
+<area shape="poly" id="edge15_Node000006_Node000015" title=" " alt="" coords="721,185,741,189,896,209,1018,215,1140,220,1296,237,1307,239,1306,244,1295,243,1139,226,1018,221,896,215,740,195,720,190"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="296,285,260,329,256,326,292,282"/>
+</map>

@@ -1,0 +1,22 @@
+<map id="libtropic_port_mock.h" name="libtropic_port_mock.h">
+<area shape="rect" id="Node000001" title="Mock HAL implementation (only for testing purposes)." alt="" coords="129,5,292,31"/>
+<area shape="rect" id="Node000002" href="$libtropic__port_8h.html" title="Header file with HAL interfaces which are defined based on host platform." alt="" coords="151,79,271,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,31,213,65,208,65,208,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="109,152,179,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="202,106,166,144,162,140,198,103"/>
+<area shape="rect" id="Node000004" href="$libtropic__common_8h.html" title="Shared definitions and functions commonly used by more libtropic&#39;s layers." alt="" coords="203,152,354,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="224,102,260,140,256,144,220,106"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,225,88,251"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="242,180,98,224,96,219,241,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="113,225,183,251"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="259,180,182,221,180,216,256,175"/>
+<area shape="rect" id="Node000007" href="$libtropic__macros_8h.html" title="Various helper macros." alt="" coords="207,225,350,251"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="281,178,281,212,276,212,276,178"/>
+<area shape="rect" id="Node000008" href="$tropic01__application__co_8h.html" title="Application Configuration Objects registers." alt="" coords="374,225,562,251"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="310,175,425,218,423,223,308,180"/>
+<area shape="rect" id="Node000010" href="$tropic01__bootloader__co_8h.html" title="Bootloader Configuration Objects registers." alt="" coords="587,225,773,251"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="344,175,602,220,601,226,343,180"/>
+<area shape="rect" id="Node000009" href="$bits_8h.html" title="Struct and function declarations for dealing with bit assignment." alt="" coords="544,299,603,324"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="486,248,546,289,544,293,483,253"/>
+<area shape="poly" id="edge10_Node000010_Node000009" title=" " alt="" coords="664,253,604,293,601,289,661,248"/>
+</map>

@@ -1,0 +1,37 @@
+<map id="libtropic_port_arduino.cpp" name="libtropic_port_arduino.cpp">
+<area shape="rect" id="Node000001" title="Port for the Arduino framework." alt="" coords="212,5,403,31"/>
+<area shape="rect" id="Node000002" href="$libtropic__port__arduino_8h.html" title="Port for the Arduino framework." alt="" coords="94,79,270,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="289,33,216,74,213,69,286,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,89,177"/>
+<area shape="poly" id="edge14_Node000001_Node000003" title=" " alt="" coords="228,33,136,53,98,66,73,81,64,93,57,108,51,139,45,138,52,106,59,90,70,77,96,61,135,48,227,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="133,152,188,177"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="223,33,139,52,105,65,84,80,80,89,79,97,87,113,104,129,126,143,123,148,101,134,83,117,74,98,75,87,80,77,102,61,137,47,222,28"/>
+<area shape="rect" id="Node000005" href="$libtropic__port_8h.html" title="Header file with HAL interfaces which are defined based on host platform." alt="" coords="230,152,350,177"/>
+<area shape="poly" id="edge19_Node000001_Node000005" title=" " alt="" coords="309,31,296,139,290,138,303,31"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="345,79,419,104"/>
+<area shape="poly" id="edge16_Node000001_Node000014" title=" " alt="" coords="321,29,362,67,358,71,317,33"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="443,79,510,104"/>
+<area shape="poly" id="edge17_Node000001_Node000015" title=" " alt="" coords="336,28,437,71,435,76,334,33"/>
+<area shape="rect" id="Node000016" title=" " alt="" coords="535,79,605,104"/>
+<area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="350,28,522,74,521,80,349,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="162,106,83,148,80,143,159,102"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="181,105,171,140,165,138,176,104"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="201,102,262,142,259,147,198,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="187,225,257,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="281,180,245,217,241,213,277,176"/>
+<area shape="rect" id="Node000007" href="$libtropic__common_8h.html" title="Shared definitions and functions commonly used by more libtropic&#39;s layers." alt="" coords="281,225,432,251"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="303,176,338,213,335,217,299,179"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="83,299,166,324"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="320,253,176,297,174,292,319,248"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="191,299,261,324"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="337,253,260,294,258,290,334,248"/>
+<area shape="rect" id="Node000010" href="$libtropic__macros_8h.html" title="Various helper macros." alt="" coords="285,299,428,324"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="359,251,359,285,354,285,354,251"/>
+<area shape="rect" id="Node000011" href="$tropic01__application__co_8h.html" title="Application Configuration Objects registers." alt="" coords="664,299,852,324"/>
+<area shape="poly" id="edge10_Node000007_Node000011" title=" " alt="" coords="422,248,680,294,679,299,421,253"/>
+<area shape="rect" id="Node000013" href="$tropic01__bootloader__co_8h.html" title="Bootloader Configuration Objects registers." alt="" coords="453,299,639,324"/>
+<area shape="poly" id="edge12_Node000007_Node000013" title=" " alt="" coords="388,248,503,291,501,296,386,253"/>
+<area shape="rect" id="Node000012" href="$bits_8h.html" title="Struct and function declarations for dealing with bit assignment." alt="" coords="622,372,681,397"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="742,326,682,367,679,362,739,322"/>
+<area shape="poly" id="edge13_Node000013_Node000012" title=" " alt="" coords="564,322,624,362,622,367,561,326"/>
+</map>
