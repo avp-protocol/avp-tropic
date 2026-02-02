@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Missing check of `lt_handle_t.l3.session_status` in `lt_in__ecc_key_generate()`.
 - CAL: support for OpenSSL.
 - CAL: support for WolfCrypt.
-- Linux HAL: added new HAL for Linux which utilizes spidev for chip select instead of GPIO.
+- Linux HAL: added new experimental HAL for Linux which utilizes spidev for chip select instead of GPIO.
 - Linux USB Devkit: added full chain verification example with tutorial.
 - ESP32: added examples and functional tests support for ESP32-DevKitC-V4, ESP32-S3-DevKitC-1 and ESP32-C3-DevKit-RUST-1.
 
