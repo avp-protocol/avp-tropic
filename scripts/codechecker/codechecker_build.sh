@@ -1,6 +1,8 @@
 #!/bin/bash
-cd tropic01_model/
-mkdir -p build
-cd build
-cmake -DLT_BUILD_EXAMPLES=1 -DLT_CAL=mbedtls_v4 ..
-make clean && make
+cd tests/functional/model/
+./download_deps.sh
+rm -rf build/
+mkdir -p build/
+cd build/
+cmake -DLT_CAL=mbedtls_v4 ..
+make -j

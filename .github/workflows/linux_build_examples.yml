@@ -1,0 +1,60 @@
+name: Build examples for Linux
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+
+jobs:
+  build_examples:
+    name: Build examples for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential ninja-build
+            pip3 install jsonschema
+
+      - name: Build SPI examples
+        run: |
+          cd examples/linux/spi/hello_world
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../identify_chip
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../fw_update
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+      - name: Build USB Devkit examples
+        run: |
+          cd examples/linux/usb_devkit/hello_world
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../identify_chip
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../fw_update
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../full_chain_verification
+          cmake ./ -B build -G Ninja
+          cd build && ninja

@@ -1,25 +1,28 @@
 /**
  * @file libtropic_port_stm32_nucleo_f439zi.c
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for STM32 F439ZI using native SPI HAL (and GPIO HAL for chip select).
  *
  * Most of this SPI code is inspired by https://github.com/STMicroelectronics/STM32CubeF4:
  * Projects/STM32F429I-Discovery/Examples/SPI/SPI_FullDuplex_ComPolling/Src/main.c
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic_port_stm32_nucleo_f439zi.h"
 
+#include <stdarg.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "libtropic_common.h"
 #include "libtropic_logging.h"
 #include "libtropic_macros.h"
 #include "libtropic_port.h"
-#include "main.h"
 #include "stm32f4xx_hal.h"
+
+#define LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS 10
 
 lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
 {
@@ -50,9 +53,15 @@ lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
     lt_dev_stm32_nucleo_f439zi_t *device = (lt_dev_stm32_nucleo_f439zi_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_RESET);
-    while (HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin));
 
-    return LT_OK;
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+        if (!HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
+            return LT_OK;
+        }
+    }
+
+    LT_LOG_ERROR("Failed to set CSN low!");
+    return LT_L1_SPI_ERROR;
 }
 
 lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
@@ -60,9 +69,15 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     lt_dev_stm32_nucleo_f439zi_t *device = (lt_dev_stm32_nucleo_f439zi_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
-    while (!HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin));
 
-    return LT_OK;
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_F439ZI_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+        if (HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
+            return LT_OK;
+        }
+    }
+
+    LT_LOG_ERROR("Failed to set CSN high!");
+    return LT_L1_SPI_ERROR;
 }
 
 lt_ret_t lt_port_init(lt_l2_state_t *s2)
@@ -98,7 +113,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
     // GPIO for chip select.
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    LT_SPI_CS_CLK_ENABLE();
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
     GPIO_InitStruct.Pin = device->spi_cs_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -108,7 +122,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
 #if LT_USE_INT_PIN
     // GPIO for INT pin.
-    LT_INT_CLK_ENABLE();
     GPIO_InitStruct.Pin = device->int_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -178,3 +191,16 @@ lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms)
     return LT_OK;
 }
 #endif
+
+int lt_port_log(const char *format, ...)
+{
+    va_list args;
+    int ret;
+
+    va_start(args, format);
+    ret = vprintf(format, args);
+    fflush(stdout);
+    va_end(args);
+
+    return ret;
+}

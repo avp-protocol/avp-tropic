@@ -3,10 +3,10 @@
 
 /**
  * @file libtropic_port_arduino.h
- * @author Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for the Arduino framework.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include <Arduino.h>
@@ -28,10 +28,7 @@ typedef struct lt_dev_arduino_t {
 #endif
     /** @public @brief SPI settings. */
     SPISettings spi_settings;
-    /** @public @brief Seed for random number generator. */
-    unsigned int rng_seed;
-
-    /** @private @brief Pointer to the SPI class. */
+    /** @public @brief Pointer to the SPI class. */
     SPIClass *spi;
 } lt_dev_arduino_t;
 

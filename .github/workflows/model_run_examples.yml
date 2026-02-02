@@ -1,0 +1,111 @@
+name: Run examples for TROPIC01 model
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+
+jobs:
+  build_and_run_examples_valgrind:
+    name: Build and run examples with Valgrind
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential valgrind ninja-build
+            ./tests/functional/model/download_deps.sh
+            ./scripts/tropic01_model/install_linux.sh
+            echo "$GITHUB_WORKSPACE/scripts/tropic01_model/.venv/bin" >> $GITHUB_PATH
+            pip install jsonschema
+
+      - name: Compile and run Hello World example
+        id: run_hello_world
+        run: |
+            cd examples/model/hello_world
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_hello_world \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload Hello World run logs
+        if: always() && (steps.run_hello_world.outcome == 'success' || steps.run_hello_world.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: hello_world_valgrind_run_logs
+          path: examples/model/hello_world/build/run_logs/
+
+      - name: Compile and run HW Wallet example
+        id: run_hw_wallet
+        run: |
+            cd examples/model/hw_wallet
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_hw_wallet \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload HW Wallet run logs
+        if: always() && (steps.run_hw_wallet.outcome == 'success' || steps.run_hw_wallet.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: hw_wallet_valgrind_run_logs
+          path: examples/model/hw_wallet/build/run_logs/
+
+      - name: Compile and run Mac-And-Destroy example
+        id: run_mac_and_destroy
+        run: |
+            cd examples/model/mac_and_destroy
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_mac_and_destroy \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload Mac-And-Destroy run logs
+        if: always() && (steps.run_mac_and_destroy.outcome == 'success' || steps.run_mac_and_destroy.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: macandd_valgrind_run_logs
+          path: examples/model/mac_and_destroy/build/run_logs/
+
+      - name: Compile and run Separate API example
+        id: run_separate_api
+        run: |
+            cd examples/model/separate_api
+            cmake ./ -B build -G Ninja
+            cd build/
+            ninja
+            python3 ../../../../scripts/tropic01_model/model_runner.py \
+              -e ./libtropic_separate_api \
+              -c ../../../../scripts/tropic01_model/model_cfg.yml \
+              -o run_logs/ \
+              --use-valgrind
+      
+      - name: Upload Separate API run logs
+        if: always() && (steps.run_separate_api.outcome == 'success' || steps.run_separate_api.outcome == 'failure')
+        uses: actions/upload-artifact@v4
+        with:
+          name: separate_api_valgrind_run_logs
+          path: examples/model/separate_api/build/run_logs/

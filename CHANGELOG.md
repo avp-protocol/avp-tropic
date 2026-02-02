@@ -5,6 +5,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0]
+
+### Changed
+- Merged all Libtropic platform repositories into this main Libtropic repository.
+  - Examples and functional tests are no longer part of the core Libtropic (related CMake options were removed from Libtropic's `CMakeLists.txt`) - they are now standalone CMake projects. Note that we provide the tests just for a reference and executing them is at user's risk, as they can cause irreversible changes to the TROPIC01 chip.
+  - `examples/`: contains platform directories, where **Chip Identification**, **FW Update** and **Hello, World!** standalone example projects are always implemented for each platform (except the TROPIC01 Model). Each platform may contain additional example projects.
+  - HW Wallet, Mac-And-Destroy and Separate API examples are now implemented only for the TROPIC01 Model (`examples/model/`).
+  - `tests/functional/`: contains `src/`, where the functional tests CMake project is implemented and platform directories with entry points for each target.
+  - Restructured [documentation](https://tropicsquare.github.io/libtropic/latest/), it is now generated only for release versions, added *Tutorials* section to help users quickly get started with Libtropic on supported platforms.
+- STM32 HAL: updated L432KC and started active support again.
+- STM32 HAL: moved clock initialization out of the HALs to remove dependency on user's `main.h` and allow for higher flexibility.
+  - Clock initialization is up to the user now and it is demonstrated in our integration examples.
+- Logging: Changed handling of newlines. In the main code base, we now use line feed (LF, `\n`). Refer to your platform's documentation
+  about if and how the LF is translated automatically (e.g., `stdio.h` implementation of major desktop platforms) or if you
+  need to modify the behavior yourself (e.g., by modifiying `_write` syscall on STM32), or (in the case of the embedded platforms)
+  you just need to configure your serial monitor correctly, so it expects only LF character (and not CR+LF pair).
+- TCP HAL: Fixed `lt_port_init()` cleanup, refactored local functions.
+- Moved TROPIC01 Model related files to `scripts/tropic01_model/`.
+
+### Added
+- Logging: `lt_port_log` function for platform-specific logging mechanism; is used by the logging macros declared in `libtropic_logging.h`.
+- CAL: `lt_sha256_deinit` function to deinitialize the SHA-256 context. It is called after the SHA-256 operation is finalized, so it must do an exhaustive cleanup.
+- ESP-IDF HAL for Espressif SoCs.
+- Missing secure memory zeroing to `lt_in__session_start()` and `lt_hkdf()` (internal function).
+- Missing check of `lt_handle_t.l3.session_status` in `lt_in__ecc_key_generate()`.
+- CAL: support for OpenSSL.
+- CAL: support for WolfCrypt.
+- Linux HAL: added new experimental HAL for Linux which utilizes spidev for chip select instead of GPIO.
+- Linux USB Devkit: added full chain verification example with tutorial.
+- ESP32: added examples and functional tests support for ESP32-DevKitC-V4, ESP32-S3-DevKitC-1 and ESP32-C3-DevKit-RUST-1.
+
+### Fixed
+- `lt_print_bytes` function now returns `LT_PARAM_ERR` when incorrect parameters are passed instead of `LT_FAIL`.
+- `lt_print_fw_header` function now returns `LT_PARAM_ERR` when incorrect bank ID is used instead of `LT_FAIL`.
+- Linux SPI HAL: If SPI mode 0 is not supported, cleanup and return with an error.
+- If `lt_init()` fails, it performs the needed cleanup itself -> the user should call `lt_deinit()` only after `lt_init()` succeeds.
+
+### Removed
+- Logging: Redundant/unused macros `LT_LOG`, `LT_LOG_RESULT`, `LT_LOG_VALUE`.
+- Arduino HAL: Removed `rng_seed` from `lt_dev_arduino_t`, as it should be user's responsibility to initialize the PRNG.
+- Arduino HAL: Removed `SPI.begin()` and `SPI.end()` calls (fixes [this](https://github.com/tropicsquare/libtropic-arduino/issues/15) issue). It is now expected that users initialize SPI in their code themselves.
+- Redundant checks of `lt_handle_t.l3.session_status` in `lt_l3_encrypt_request()` and `lt_l3_decrypt_response()`.
+- Legacy internal scripts in `scripts/test_runner/`.
+
 ## [3.0.0]
 
 ### Changed
@@ -47,7 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - STM32 F439ZI HAL: Changed `rng_handle` type in `lt_dev_stm32_nucleo_f439zi_t` to a pointer (`RNG_HandleTypeDef*`).
 - New return value `LT_REBOOT_UNSUCCESSFUL` returned by `lt_reboot` function, which now checks if TROPIC01 is in correct mode after the reboot.
 - Examples: Refactored and cleaned up `lt_ex_show_chip_id_and_fwver` and `lt_ex_fw_update` logic to use the new version of the `lt_reboot` function.
-- Meaning of `lt_tr01_mode_t` enum values. Now, this enum is supposed to be used with the new `lt_get_tr01_mode` function.
+- Meaning and names of `lt_tr01_mode_t` enum values. Now, this enum is supposed to be used with the new `lt_get_tr01_mode` function.
 - CMake: Renamed `LT_CPU_FW_VERSION` to `LT_CPU_FW_UPDATE_DATA_VER` to make it more clear that it is used for the FW version to update to.
 
 ### Added
@@ -86,7 +130,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Signature verification was removed from the HW wallet example.
     - Users should verify the signatures themselves e.g., using functions provided by their crypto library.
 - `lt_update_mode` function.
-
+- `R_MEM_DATA_SIZE_MAX` macro because its value differs between Application FW versions. Use the appropriate [User API or datasheet](https://github.com/tropicsquare/tropic01?tab=readme-ov-file#datasheet-and-user-api) (based on the Application FW in use) as the source of truth for such constants.
 ## [2.0.1]
 
 ### Added
@@ -115,7 +159,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `pkey_index_t` to `lt_pkey_index_t`.
 - Renamed `session_state_t` to `lt_session_state_t`.
 - Renamed `LT_L2_SLEEP_KIND_SLEEP` to `TR01_L2_SLEEP_KIND_SLEEP`.
-- Renamed `LT_MODE_APP` to `TR01_MODE_APP`.
 - Renamed `LT_MODE_APP` to `TR01_MODE_APP`.
 - Renamed `LT_MODE_MAINTENANCE` to `TR01_MODE_MAINTENANCE`.
 - Renamed `GET_LOG_MAX_MSG_LEN` to `TR01_GET_LOG_MAX_MSG_LEN`.

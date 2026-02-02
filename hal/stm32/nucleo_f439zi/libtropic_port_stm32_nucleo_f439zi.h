@@ -3,10 +3,10 @@
 
 /**
  * @file libtropic_port_stm32_nucleo_f439zi.h
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for STM32 F439ZI using native SPI HAL (and GPIO HAL for chip select).
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic_port.h"
@@ -41,7 +41,7 @@ typedef struct lt_dev_stm32_nucleo_f439zi_t {
     GPIO_TypeDef *int_gpio_bank;
 #endif
 
-    /** @brief @private Random number generator handle. */
+    /** @brief @public Random number generator handle. */
     RNG_HandleTypeDef *rng_handle;
 
     /** @brief @private SPI handle. */

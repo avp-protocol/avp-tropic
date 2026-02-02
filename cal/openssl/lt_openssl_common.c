@@ -1,0 +1,44 @@
+/**
+ * @file lt_openssl_common.c
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
+ *
+ * @license For the license see LICENSE.md in the root directory of this source tree.
+ */
+
+#include <openssl/evp.h>
+#include <stdbool.h>
+
+#include "libtropic_openssl.h"
+#include "lt_aesgcm.h"
+#include "lt_crypto_common.h"
+#include "lt_sha256.h"
+
+lt_ret_t lt_crypto_ctx_init(void *ctx)
+{
+    lt_ctx_openssl_t *_ctx = (lt_ctx_openssl_t *)ctx;
+
+    _ctx->aesgcm_encrypt_ctx = NULL;
+    _ctx->aesgcm_decrypt_ctx = NULL;
+    _ctx->sha256_ctx = NULL;
+
+    return LT_OK;
+}
+
+lt_ret_t lt_crypto_ctx_deinit(void *ctx)
+{
+    lt_ret_t ret1 = lt_aesgcm_encrypt_deinit(ctx);
+    lt_ret_t ret2 = lt_aesgcm_decrypt_deinit(ctx);
+    lt_ret_t ret3 = lt_sha256_deinit(ctx);
+
+    if (ret1 != LT_OK) {
+        return ret1;
+    }
+    if (ret2 != LT_OK) {
+        return ret2;
+    }
+    if (ret3 != LT_OK) {
+        return ret3;
+    }
+
+    return LT_OK;
+}

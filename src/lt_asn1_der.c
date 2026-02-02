@@ -2,9 +2,9 @@
  * @file asn1_der.c
  * @brief ASN1 DER parser
  * @note Implements subset of ASN1 DER parsing needed to extract STPub from
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include <inttypes.h>
@@ -150,10 +150,10 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
     uint16_t start = ctx->past;
 
 #ifdef ASNDER_LOG_EN
-    LT_LOG("parse_object:");
-    LT_LOG("    Start: %" PRIu16, start);
-    LT_LOG("    Object type: 0x%" PRIx8, b);
-    LT_LOG("    Object len: %" PRIu16, len);
+    LT_LOG_DEBUG("parse_object:");
+    LT_LOG_DEBUG("    Start: %" PRIu16, start);
+    LT_LOG_DEBUG("    Object type: 0x%" PRIx8, b);
+    LT_LOG_DEBUG("    Object len: %" PRIu16, len);
 #endif
 
     switch (b) {
@@ -181,7 +181,7 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
         case LT_ASN1DER_OBJECT_IDENTIFIER: {
             if (len < 3) {
 #ifdef ASNDER_LOG_EN
-                LT_LOG("Length too short (< 3), skipping.");
+                LT_LOG_DEBUG("Length too short (< 3), skipping.");
 #endif  // ASNDER_LOG_EN
                 break;
             }
@@ -194,7 +194,7 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
 
             if (ctx->obj_id == obj_id) {
 #ifdef ASNDER_LOG_EN
-                LT_LOG("Found searched object: 0x%" PRIx32 ". Next object will be sampled!", ctx->obj_id);
+                LT_LOG_DEBUG("Found searched object: 0x%" PRIx32 ". Next object will be sampled!", ctx->obj_id);
 #endif
                 ctx->sample_next = true;
             }
@@ -212,7 +212,7 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
         case LT_ASN1DER_UTC_TIME: {
             if (ctx->sample_next & !ctx->found) {
 #ifdef ASNDER_LOG_EN
-                LT_LOG("Sampling this object!", ctx->obj_id);
+                LT_LOG_DEBUG("Sampling this object!", ctx->obj_id);
 #endif
                 uint8_t sample_len = len;
 
@@ -222,10 +222,10 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
                     ctx->cropped = true;
 
 #ifdef ASNDER_LOG_EN
-                    LT_LOG("Sample buffer (%d) is smaller than size of the object to be sampled (%" PRIu8
-                           "). "
-                           "Cropping %" PRIu16 " bytes from %s of the searched object",
-                           ctx->sbuf_len, sample_len, n_crop_bytes, crop_prefix ? "prefix" : "suffix");
+                    LT_LOG_DEBUG("Sample buffer (%d) is smaller than size of the object to be sampled (%" PRIu8
+                                 "). "
+                                 "Cropping %" PRIu16 " bytes from %s of the searched object",
+                                 ctx->sbuf_len, sample_len, n_crop_bytes, crop_prefix ? "prefix" : "suffix");
 #endif
 
                     if (crop_prefix) {

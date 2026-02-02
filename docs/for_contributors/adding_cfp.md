@@ -23,7 +23,7 @@ To add support for a new CFP (let's say `mycrypto`):
     For inspiration, see the existing CALs inside `cal/`.
 
 After these steps, the sources and include directories of the new CAL should be available in consumer's `CMakeLists.txt` by calling:
-```cmake
+```cmake { .copy }
 add_subdirectory("<path_to_libtropic>/cal/mycrypto")
 ```
 
@@ -50,7 +50,7 @@ By doing this, the CMake variables `LT_CAL_SRCS` and `LT_CAL_INC_DIRS` will beco
         To implement Curve25519 functions, copy declarations from `lt_x25519.h` to `lt_mycrypto_x25519.c` and provide implementations.
 
 4. Inside `cal/mycrypto/`, create a file `libtropic_mycrypto.h`. This file should declare the **context structure** for `mycrypto`:
-```c
+```c { .copy }
 typedef struct lt_ctx_mycrypto_t {
     /** @private @brief AES-GCM context for encryption. */
     // TODO
@@ -62,13 +62,13 @@ typedef struct lt_ctx_mycrypto_t {
 ```
 
     !!! question "Which Contexts Are Needed?"
-        This structure must include all contexts the functions in the CAL might need. The structure will be defined in the user's application and assigned to the `crypto_ctx` void pointer in the `lt_handle_t` — see the [Libtropic Bare-Bone Example](../get_started/integrating_libtropic/how_to_use/index.md#libtropic-bare-bone-example) for more information.
+        This structure must include all contexts the functions in the CAL might need. The structure will be defined in the user's application and assigned to the `crypto_ctx` void pointer in the `lt_handle_t` — see the [Libtropic Bare-Bone Example](../reference/integrating_libtropic/how_to_use/index.md#libtropic-bare-bone-example) for more information.
 
 5. Additionally, other source files and headers can be created for the needs of the implementation.
 
 ### Create and Implement the CAL CMakeLists.txt
 Inside `cal/mycrypto/`, create a `CMakeLists.txt` with the following contents:
-```cmake
+```cmake { .copy }
 set(LT_CAL_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/lt_mycrypto_common.c    
     ${CMAKE_CURRENT_SOURCE_DIR}/lt_mycrypto_aesgcm.c
@@ -89,4 +89,4 @@ set(LT_CAL_INC_DIRS ${LT_CAL_INC_DIRS} PARENT_SCOPE)
 ```
 
 ### Provide Some Information About the CAL
-All currently supported CFPs are listed in the [Supported Cryptographic Functionality Providers](../other/supported_cfps/index.md) section. Add the new CFP there and provide some information about it and the CAL (see other sections for inspiration).
+All currently supported CFPs are listed in the [Supported Cryptographic Functionality Providers](../compatibility/cfps/index.md) section. Add the new CFP there and provide some information about it and the CAL (see other sections for inspiration).

@@ -1,9 +1,9 @@
 /**
  * @file libtropic.c
  * @brief Implementation of libtropic API
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic.h"
@@ -25,11 +25,10 @@
 #include "lt_crypto_common.h"
 #include "lt_hkdf.h"
 #include "lt_l1.h"
-#include "lt_l1_port_wrap.h"
 #include "lt_l2_api_structs.h"
 #include "lt_l3_api_structs.h"
 #include "lt_l3_process.h"
-#include "lt_random.h"
+#include "lt_port_wrap.h"
 #include "lt_secure_memzero.h"
 #include "lt_sha256.h"
 #include "lt_tr01_attrs.h"
@@ -43,7 +42,7 @@ lt_ret_t lt_init(lt_handle_t *h)
         return LT_PARAM_ERR;
     }
 
-    lt_ret_t ret;
+    lt_ret_t ret, ret_unused;
 
     // When compiling libtropic with l3 buffer embedded into handle,
     // define buffer's length here (later used to prevent overflow during communication).
@@ -60,21 +59,31 @@ lt_ret_t lt_init(lt_handle_t *h)
 
     ret = lt_crypto_ctx_init(h->l3.crypto_ctx);
     if (ret != LT_OK) {
-        return ret;
+        goto l1_cleanup;
     }
 
     // Prevent usage of insufficient buffer.
     if (h->l3.buff_len < LT_SIZE_OF_L3_BUFF) {
-        return LT_L3_BUFFER_TOO_SMALL;
+        ret = LT_L3_BUFFER_TOO_SMALL;
+        goto crypto_ctx_cleanup;
     }
 
     // Initialize the TROPIC01 attributes based on its Application FW.
     ret = lt_init_tr01_attrs(h);
     if (ret != LT_OK) {
-        return ret;
+        goto crypto_ctx_cleanup;
     }
 
     return LT_OK;
+
+crypto_ctx_cleanup:
+    ret_unused = lt_crypto_ctx_deinit(h->l3.crypto_ctx);
+
+l1_cleanup:
+    ret_unused = lt_l1_deinit(&h->l2);
+    LT_UNUSED(ret_unused);
+
+    return ret;
 }
 
 lt_ret_t lt_deinit(lt_handle_t *h)
@@ -113,6 +122,11 @@ lt_ret_t lt_get_tr01_mode(lt_handle_t *h, lt_tr01_mode_t *mode)
         }
 
         if (h->l2.buff[0] & TR01_L1_CHIP_MODE_ALARM_bit) {
+#ifdef LT_RETRIEVE_ALARM_LOG
+            lt_ret_t ret_unused = lt_l1_retrieve_alarm_log(&h->l2, LT_L1_TIMEOUT_MS_DEFAULT);
+            LT_UNUSED(ret_unused);
+#endif
+
             *mode = LT_TR01_ALARM;
             return LT_OK;
         }
@@ -411,21 +425,21 @@ lt_ret_t lt_session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pkey_in
 
     lt_ret_t ret = lt_out__session_start(h, pkey_index, &host_eph_keys);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_l2_send(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
     ret = lt_l2_receive(&h->l2);
     if (ret != LT_OK) {
-        goto lt_session_start_cleanup;
+        goto cleanup;
     }
 
     ret = lt_in__session_start(h, stpub, pkey_index, shipriv, shipub, &host_eph_keys);
 
-lt_session_start_cleanup:
+cleanup:
     lt_secure_memzero(&host_eph_keys, sizeof(lt_host_eph_keys_t));
     return ret;
 }
@@ -1659,7 +1673,7 @@ lt_ret_t lt_print_bytes(const uint8_t *bytes, const size_t bytes_cnt, char *out_
         if (out_buf && out_buf_size > 0) {
             out_buf[0] = '\0';
         }
-        return LT_FAIL;
+        return LT_PARAM_ERR;
     }
 
     for (size_t i = 0; i < bytes_cnt; i++) {
@@ -1687,7 +1701,7 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->chip_id_ver, sizeof(chip_id->chip_id_ver), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("CHIP_ID ver            = 0x%s (v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 ")\r\n",
+        || 0 > print_func("CHIP_ID ver            = 0x%s (v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 ")\n",
                           print_bytes_buff, chip_id->chip_id_ver[0], chip_id->chip_id_ver[1], chip_id->chip_id_ver[2],
                           chip_id->chip_id_ver[3])) {
         return LT_FAIL;
@@ -1696,7 +1710,7 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->fl_chip_info, sizeof(chip_id->fl_chip_info), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("FL_PROD_DATA           = 0x%s (%s)\r\n", print_bytes_buff,
+        || 0 > print_func("FL_PROD_DATA           = 0x%s (%s)\n", print_bytes_buff,
                           chip_id->fl_chip_info[0] == 0x01 ? "PASSED" : "N/A")) {
         return LT_FAIL;
     }
@@ -1704,7 +1718,7 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->func_test_info, sizeof(chip_id->func_test_info), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("MAN_FUNC_TEST          = 0x%s (%s)\r\n", print_bytes_buff,
+        || 0 > print_func("MAN_FUNC_TEST          = 0x%s (%s)\n", print_bytes_buff,
                           chip_id->func_test_info[0] == 0x01 ? "PASSED" : "N/A")) {
         return LT_FAIL;
     }
@@ -1712,7 +1726,7 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->silicon_rev, sizeof(chip_id->silicon_rev), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Silicon rev            = 0x%s (%c%c%c%c)\r\n", print_bytes_buff, chip_id->silicon_rev[0],
+        || 0 > print_func("Silicon rev            = 0x%s (%c%c%c%c)\n", print_bytes_buff, chip_id->silicon_rev[0],
                           chip_id->silicon_rev[1], chip_id->silicon_rev[2], chip_id->silicon_rev[3])) {
         return LT_FAIL;
     }
@@ -1737,11 +1751,11 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
             packg_type_id_str = "N/A";
             break;
     }
-    if (0 > print_func("Package ID             = 0x%s (%s)\r\n", print_bytes_buff, packg_type_id_str)) {
+    if (0 > print_func("Package ID             = 0x%s (%s)\n", print_bytes_buff, packg_type_id_str)) {
         return LT_FAIL;
     }
 
-    if (0 > print_func("Prov info ver          = 0x%02" PRIX8 " (v%" PRIu8 ")\r\n", chip_id->prov_ver_fab_id_pn[0],
+    if (0 > print_func("Prov info ver          = 0x%02" PRIX8 " (v%" PRIu8 ")\n", chip_id->prov_ver_fab_id_pn[0],
                        chip_id->prov_ver_fab_id_pn[0])) {
         return LT_FAIL;
     }
@@ -1749,53 +1763,51 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     uint16_t parsed_fab_id = ((chip_id->prov_ver_fab_id_pn[1] << 4) | (chip_id->prov_ver_fab_id_pn[2] >> 4)) & 0xfff;
     switch (parsed_fab_id) {
         case TR01_FAB_ID_TROPIC_SQUARE_LAB:
-            if (0
-                > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\r\n", parsed_fab_id, "Tropic Square Lab")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "Tropic Square Lab")) {
                 return LT_FAIL;
             }
             break;
 
         case TR01_FAB_ID_EPS_BRNO:
-            if (0
-                > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\r\n", parsed_fab_id, "EPS Global - Brno")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "EPS Global - Brno")) {
                 return LT_FAIL;
             }
             break;
 
         default:
-            if (0 > print_func("Fab ID         = 0x%03" PRIX16 " (%s)\r\n", parsed_fab_id, "N/A")) {
+            if (0 > print_func("Fab ID         = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "N/A")) {
                 return LT_FAIL;
             }
             break;
     }
 
     uint16_t parsed_short_pn = ((chip_id->prov_ver_fab_id_pn[2] << 8) | (chip_id->prov_ver_fab_id_pn[3])) & 0xfff;
-    if (0 > print_func("P/N ID (short P/N)     = 0x%03" PRIX16 "\r\n", parsed_short_pn)) {
+    if (0 > print_func("P/N ID (short P/N)     = 0x%03" PRIX16 "\n", parsed_short_pn)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes(chip_id->provisioning_date, sizeof(chip_id->provisioning_date), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Prov date              = 0x%s \r\n", print_bytes_buff)) {
+        || 0 > print_func("Prov date              = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     if (LT_OK != lt_print_bytes(chip_id->hsm_ver, sizeof(chip_id->hsm_ver), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("HSM HW/FW/SW ver       = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("HSM HW/FW/SW ver       = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes(chip_id->prog_ver, sizeof(chip_id->prog_ver), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("Programmer ver         = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("Programmer ver         = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes((uint8_t *)&chip_id->ser_num, sizeof(chip_id->ser_num), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("S/N                    = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("S/N                    = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
@@ -1806,14 +1818,14 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->part_num_data, sizeof(chip_id->part_num_data), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("P/N (long)             = 0x%s (%s)\r\n", print_bytes_buff, pn_data)) {
+        || 0 > print_func("P/N (long)             = 0x%s (%s)\n", print_bytes_buff, pn_data)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes(chip_id->prov_templ_ver, sizeof(chip_id->prov_templ_ver), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Prov template ver      = 0x%s (v%" PRIu8 ".%" PRIu8 ")\r\n", print_bytes_buff,
+        || 0 > print_func("Prov template ver      = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
                           chip_id->prov_templ_ver[0], chip_id->prov_templ_ver[1])) {
         return LT_FAIL;
     }
@@ -1821,14 +1833,14 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->prov_templ_tag, sizeof(chip_id->prov_templ_tag), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Prov template tag      = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("Prov template tag      = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes(chip_id->prov_spec_ver, sizeof(chip_id->prov_spec_ver), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Prov specification ver = 0x%s (v%" PRIu8 ".%" PRIu8 ")\r\n", print_bytes_buff,
+        || 0 > print_func("Prov specification ver = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
                           chip_id->prov_spec_ver[0], chip_id->prov_spec_ver[1])) {
         return LT_FAIL;
     }
@@ -1836,13 +1848,13 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     if (LT_OK
             != lt_print_bytes(chip_id->prov_spec_tag, sizeof(chip_id->prov_spec_tag), print_bytes_buff,
                               sizeof(print_bytes_buff))
-        || 0 > print_func("Prov specification tag = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("Prov specification tag = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     if (LT_OK
             != lt_print_bytes(chip_id->batch_id, sizeof(chip_id->batch_id), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("Batch ID               = 0x%s\r\n", print_bytes_buff)) {
+        || 0 > print_func("Batch ID               = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
@@ -1904,66 +1916,66 @@ lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id, int (*pr
 
     switch (bank_id) {
         case TR01_FW_BANK_FW1:
-            print_func("    Reading header from Application's firmware bank 1:\r\n");
+            print_func("    Reading header from Application's firmware bank 1:\n");
             break;
         case TR01_FW_BANK_FW2:
-            print_func("    Reading header from Application's firmware bank 2:\r\n");
+            print_func("    Reading header from Application's firmware bank 2:\n");
             break;
         case TR01_FW_BANK_SPECT1:
-            print_func("    Reading header from SPECT's firmware bank 1:\r\n");
+            print_func("    Reading header from SPECT's firmware bank 1:\n");
             break;
         case TR01_FW_BANK_SPECT2:
-            print_func("    Reading header from SPECT's foirmware bank 2:\r\n");
+            print_func("    Reading header from SPECT's firmware bank 2:\n");
             break;
         default:
-            print_func("    Reading header: Unknown bank ID: %d\r\n", (int)bank_id);
-            return LT_FAIL;
+            print_func("    Reading header: Unknown bank ID: %d\n", (int)bank_id);
+            return LT_PARAM_ERR;
     }
 
     lt_ret_t ret = lt_get_info_fw_bank(h, bank_id, header, sizeof(header), &read_header_size);
     if (ret != LT_OK) {
-        print_func("Failed to read FW header, error: %s\r\n", lt_ret_verbose(ret));
+        print_func("Failed to read FW header, error: %s\n", lt_ret_verbose(ret));
         return ret;
     }
 
     if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1) {
-        print_func("    Bootloader v1.0.1 detected, reading %dB header\r\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1);
+        print_func("    Bootloader v1.0.1 detected, reading %dB header\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1);
         struct lt_header_boot_v1_t *p_h = (struct lt_header_boot_v1_t *)header;
 
-        print_func("      Type:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\r\n", p_h->type[3], p_h->type[2],
+        print_func("      Type:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->type[3], p_h->type[2],
                    p_h->type[1], p_h->type[0]);
-        print_func("      Version:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\r\n", p_h->version[3],
+        print_func("      Version:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->version[3],
                    p_h->version[2], p_h->version[1], p_h->version[0]);
-        print_func("      Size:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\r\n", p_h->size[3], p_h->size[2],
+        print_func("      Size:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->size[3], p_h->size[2],
                    p_h->size[1], p_h->size[0]);
-        print_func("      Git hash:  %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\r\n", p_h->git_hash[3],
+        print_func("      Git hash:  %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->git_hash[3],
                    p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
-        print_func("      FW hash:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\r\n", p_h->hash[3], p_h->hash[2],
+        print_func("      FW hash:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->hash[3], p_h->hash[2],
                    p_h->hash[1], p_h->hash[0]);
     }
     else if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2) {
-        print_func("    Bootloader v2.0.1 detected, reading %dB header\r\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2);
+        print_func("    Bootloader v2.0.1 detected, reading %dB header\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2);
         struct lt_header_boot_v2_t *p_h = (struct lt_header_boot_v2_t *)header;
 
-        print_func("      Type:               %04" PRIX16 "\r\n", p_h->type);
-        print_func("      Padding:            %02" PRIX8 "\r\n", p_h->padding);
-        print_func("      FW header version:  %02" PRIX8 "\r\n", p_h->header_version);
-        print_func("      Version:            %08" PRIX32 "\r\n", p_h->ver);
-        print_func("      Size:               %08" PRIX32 "\r\n", p_h->size);
-        print_func("      Git hash:           %08" PRIX32 "\r\n", p_h->git_hash);
+        print_func("      Type:               %04" PRIX16 "\n", p_h->type);
+        print_func("      Padding:            %02" PRIX8 "\n", p_h->padding);
+        print_func("      FW header version:  %02" PRIX8 "\n", p_h->header_version);
+        print_func("      Version:            %08" PRIX32 "\n", p_h->ver);
+        print_func("      Size:               %08" PRIX32 "\n", p_h->size);
+        print_func("      Git hash:           %08" PRIX32 "\n", p_h->git_hash);
         // Hash str has 32B
         char hash_str[32 * 2 + 1] = {0};
         for (int i = 0; i < 32; i++) {
             snprintf(hash_str + i * 2, sizeof(hash_str) - i * 2, "%02" PRIX8, p_h->hash[i]);
         }
-        print_func("      Hash:          %s\r\n", hash_str);
-        print_func("      Pair version:  %08" PRIX32 "\r\n", p_h->pair_version);
+        print_func("      Hash:          %s\n", hash_str);
+        print_func("      Pair version:  %08" PRIX32 "\n", p_h->pair_version);
     }
     else if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2_EMPTY_BANK) {
-        print_func("    No firmware present in a given bank\r\n");
+        print_func("    No firmware present in a given bank\n");
     }
     else {
-        print_func("Unexpected header size %" PRIu16 "\r\n", read_header_size);
+        print_func("Unexpected header size %" PRIu16 "\n", read_header_size);
         return LT_FAIL;
     }
 

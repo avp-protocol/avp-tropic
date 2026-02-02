@@ -11,9 +11,9 @@
 /**
  * @file libtropic.h
  * @brief Libtropic library main API header file.
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include <stdbool.h>
@@ -26,7 +26,8 @@ extern "C" {
 #endif
 
 /**
- * @brief Initialize handle and transport layer
+ * @brief Initialize handle and transport layer.
+ * @note If the function fails, `lt_deinit` must not be called. In this case, the function handles the cleanup itself.
  *
  * @param h           Handle for communication with TROPIC01
  *
@@ -343,7 +344,11 @@ lt_ret_t lt_pairing_key_read(lt_handle_t *h, uint8_t *pairing_pub, const uint8_t
 lt_ret_t lt_pairing_key_invalidate(lt_handle_t *h, const uint8_t slot);
 
 /**
- * @brief Writes configuration object specified by `addr`
+ * @brief Writes configuration object specified by `addr`. Make sure to read the Configuration Objects Application Note
+ * (ODN_TR01_app_006) to see how to handle the R-config before proceeding.
+ *
+ * @warning Writing R-config before erasing it first can brick the TROPIC01 chip. Refer to Erratum
+ * OI_TR01_ERR_2026010800: R-Config write triggers permanent Alarm Mode.
  *
  * @param h           Handle for communication with TROPIC01
  * @param addr        Address of a config object
@@ -356,7 +361,8 @@ lt_ret_t lt_pairing_key_invalidate(lt_handle_t *h, const uint8_t slot);
 lt_ret_t lt_r_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr, const uint32_t obj);
 
 /**
- * @brief Reads configuration object specified by `addr`
+ * @brief Reads configuration object specified by `addr`. Make sure to read the Configuration Objects Application Note
+ * (ODN_TR01_app_006) to see how to handle the R-config before proceeding.
  *
  * @param h           Handle for communication with TROPIC01
  * @param addr        Address of a config object
@@ -370,7 +376,8 @@ lt_ret_t lt_r_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
 lt_ret_t lt_r_config_read(lt_handle_t *h, const enum lt_config_obj_addr_t addr, uint32_t *obj);
 
 /**
- * @brief Erases all configuration objects
+ * @brief Erases all configuration objects. Make sure to read the Configuration Objects Application Note
+ * (ODN_TR01_app_006) to see how to handle the R-config before proceeding.
  *
  * @param h           Handle for communication with TROPIC01
  *
@@ -642,7 +649,11 @@ extern struct lt_config_obj_desc_t cfg_desc_table[LT_CONFIG_OBJ_CNT];
 const char *lt_ret_verbose(lt_ret_t ret);
 
 /**
- * @brief Writes the whole R-Config with the passed `config`.
+ * @brief Writes the whole R-Config with the passed `config`. Make sure to read the Configuration Objects Application
+ * Note (ODN_TR01_app_006) to see how to handle the R-config before proceeding.
+ *
+ * @warning Writing R-config before erasing it first can brick the TROPIC01 chip. Refer to Erratum
+ * OI_TR01_ERR_2026010800: R-Config write triggers permanent Alarm Mode.
  *
  * @param h           Handle for communication with TROPIC01
  * @param config      Array into which objects are read
@@ -654,7 +665,8 @@ const char *lt_ret_verbose(lt_ret_t ret);
 lt_ret_t lt_write_whole_R_config(lt_handle_t *h, const struct lt_config_t *config);
 
 /**
- * @brief Reads all of the R-Config objects into `config`.
+ * @brief Reads all of the R-Config objects into `config`. Make sure to read the Configuration Objects Application Note
+ * (ODN_TR01_app_006) to see how to handle the R-config before proceeding.
  *
  * @param h           Handle for communication with TROPIC01
  * @param config      Struct into which objects are readed

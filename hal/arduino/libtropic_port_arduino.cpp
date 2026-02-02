@@ -1,15 +1,18 @@
 /**
- * @file libtropic_port_arduino.c
- * @author Tropic Square s.r.o.
+ * @file libtropic_port_arduino.cpp
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for the Arduino framework.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic_port_arduino.h"
 
 #include <Arduino.h>
 #include <SPI.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "libtropic_port.h"
 
@@ -20,15 +23,11 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     // Setup SPI
     pinMode(device->spi_cs_pin, OUTPUT);
     digitalWrite(device->spi_cs_pin, HIGH);
-    device->spi->begin();
 
     // Setup interrupt pin
 #if LT_USE_INT_PIN
     pinMode(device->int_gpio_pin, INPUT);
 #endif
-
-    // Initialize RNG
-    randomSeed(device->rng_seed);
 
     return LT_OK;
 }
@@ -38,7 +37,6 @@ lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
     lt_dev_arduino_t *device = (lt_dev_arduino_t *)(s2->device);
 
     digitalWrite(device->spi_cs_pin, HIGH);
-    device->spi->end();
 
     return LT_OK;
 }
@@ -109,4 +107,33 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     }
 
     return LT_OK;
+}
+
+int lt_port_log(const char *format, ...)
+{
+    // 1 KiB should be enough.
+    // Using static to avoid stack overflow.
+    static char log_buff[1024];
+    va_list args;
+    int ret;
+
+    va_start(args, format);
+    ret = vsnprintf(log_buff, sizeof(log_buff), format, args);
+    va_end(args);
+
+    if (ret > 0) {
+        size_t len = strnlen(log_buff, sizeof(log_buff));
+        for (size_t i = 0; i < len; ++i) {
+            char c = log_buff[i];
+            if (c == '\n') {
+                Serial.println();  // Let Arduino Library handle newlines properly.
+            }
+            else {
+                Serial.write(c);
+            }
+        }
+        Serial.flush();
+    }
+
+    return ret;
 }

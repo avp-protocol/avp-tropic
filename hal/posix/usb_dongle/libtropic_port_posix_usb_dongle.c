@@ -1,13 +1,13 @@
 /**
  * @file libtropic_port_posix_usb_dongle.c
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  * @brief Port for communication with USB UART Dongle (TS1302).
  *
  * The TS1302 dongle uses a special protocol to translate UART communication to SPI. This port
  * implements the protocol. More info about the dongle in GitHub repo:
  * https://github.com/tropicsquare/ts13-usb-dev-kit-fw
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic_port_posix_usb_dongle.h"
@@ -16,6 +16,7 @@
 #include <fcntl.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -276,4 +277,17 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_dat
     }
 
     return LT_OK;
+}
+
+int lt_port_log(const char *format, ...)
+{
+    va_list args;
+    int ret;
+
+    va_start(args, format);
+    ret = vfprintf(stderr, format, args);
+    fflush(stderr);
+    va_end(args);
+
+    return ret;
 }

@@ -11,9 +11,9 @@
 /**
  * @file lt_l1.h
  * @brief Layer 1 functions declarations
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include "libtropic_common.h"
@@ -65,6 +65,20 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
  */
 lt_ret_t lt_l1_write(lt_l2_state_t *s2, const uint16_t len, const uint32_t timeout_ms)
     __attribute__((warn_unused_result));
+
+/**
+ * @brief Retrieves alarm log from TROPIC01.
+ *
+ * @warning This function is for internal use only and it is not compatible
+ * with production TROPIC01 chips.
+ * @note This is called automatically only if LT_RETRIEVE_ALARM_LOG is defined.
+ *
+ * @param s2          Structure holding l2 state
+ * @param timeout_ms  Timeout
+ *
+ * @return LT_OK if success, otherwise returns other error code.
+ */
+lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms) __attribute__((warn_unused_result));
 
 /** @} */  // end of group_l1_functions
 

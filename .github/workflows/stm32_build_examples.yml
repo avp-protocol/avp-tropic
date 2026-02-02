@@ -1,0 +1,56 @@
+name: Build examples for STM32 boards
+on: 
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
+      - 'develop'
+
+jobs:
+  stm32_build_examples:
+    name: Build examples for STM32 boards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+            sudo apt-get install cmake build-essential ninja-build gcc-arm-none-eabi
+            pip3 install jsonschema
+
+      - name: Compile F439ZI examples
+        run: |
+          cd examples/stm32/nucleo_f439zi/hello_world
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../identify_chip
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../fw_update
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+      - name: Compile L432KC examples
+        run: |
+          cd examples/stm32/nucleo_l432kc/hello_world
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../identify_chip
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
+          cd ../../fw_update
+          cmake ./ -B build -G Ninja
+          cd build && ninja

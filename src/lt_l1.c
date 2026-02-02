@@ -1,9 +1,9 @@
 /**
  * @file lt_l1.c
  * @brief Layer 1 functions definitions
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 #include "lt_l1.h"
 
@@ -11,11 +11,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "libtropic_common.h"
 #include "libtropic_logging.h"
 #include "libtropic_macros.h"
-#include "lt_l1_port_wrap.h"
+#include "lt_port_wrap.h"
 
 #ifdef LT_PRINT_SPI_DATA
 #include "stdio.h"
@@ -77,9 +78,13 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
         // Check ALARM bit of CHIP_STATUS byte
         if (s2->buff[0] & TR01_L1_CHIP_MODE_ALARM_bit) {
             lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
-            LT_UNUSED(ret_unused);  // We don't care about it, we return LT_L1_CHIP_ALARM_MODE anyway.
-
             LT_LOG_DEBUG("CHIP_STATUS: 0x%02" PRIX8, s2->buff[0]);
+
+#ifdef LT_RETRIEVE_ALARM_LOG
+            ret_unused = lt_l1_retrieve_alarm_log(s2, timeout_ms);
+#endif
+
+            LT_UNUSED(ret_unused);  // We don't care about it, we return LT_L1_CHIP_ALARM_MODE anyway.
             return LT_L1_CHIP_ALARM_MODE;
         }
 
@@ -200,6 +205,57 @@ lt_ret_t lt_l1_write(lt_l2_state_t *s2, const uint16_t len, const uint32_t timeo
     if (ret != LT_OK) {
         return ret;
     }
+
+    return LT_OK;
+}
+
+lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
+{
+    LT_LOG_DEBUG("Retrieving alarm log from TROPIC01...");
+
+    // Transfer full L2 frame to get the alarm log
+
+    memset(s2->buff, 0, sizeof(s2->buff));
+    s2->buff[0] = TR01_L1_GET_RESPONSE_REQ_ID;
+
+    lt_ret_t ret = lt_l1_spi_csn_low(s2);
+    if (ret != LT_OK) {
+        LT_LOG_ERROR("Failed to set CSN low while retrieving alarm log.");
+        return ret;
+    }
+
+    ret = lt_l1_spi_transfer(s2, 0, TR01_L2_MAX_FRAME_SIZE, timeout_ms);
+    if (ret != LT_OK) {
+        lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
+        LT_UNUSED(ret_unused);  // We don't care about it, we return ret from SPI transfer.
+        LT_LOG_ERROR("Failed to transfer SPI data while retrieving alarm log.");
+        return ret;
+    }
+
+    ret = lt_l1_spi_csn_high(s2);
+    if (ret != LT_OK) {
+        LT_LOG_ERROR("Failed to set CSN high after retrieving alarm log.");
+        return ret;
+    }
+
+    // Decode and print the alarm log
+
+    uint8_t log_size = lt_min(s2->buff[TR01_L2_RSP_LEN_OFFSET], TR01_L2_CHUNK_MAX_DATA_SIZE);
+    LT_LOG_DEBUG("LOG SIZE: %" PRIu8, log_size);
+
+    LT_LOG_DEBUG("------------ DECODED CPU Log BEGIN ------------");
+    for (size_t i = 0; i < log_size; i++) {  // log_size is guaranteed to be <= TR01_L2_CHUNK_MAX_DATA_SIZE
+        lt_port_log("%c", s2->buff[i + TR01_L2_RSP_DATA_RSP_CRC_OFFSET]);
+    }
+    lt_port_log("\n");
+    LT_LOG_DEBUG("------------- DECODED CPU Log END -------------");
+
+    LT_LOG_DEBUG("------------ RAW CPU Log BEGIN ------------");
+    for (size_t i = 0; i < sizeof(s2->buff); i++) {  // Print whole L2 buffer.
+        lt_port_log("0x%02x ", s2->buff[i]);
+    }
+    lt_port_log("\n");
+    LT_LOG_DEBUG("------------- RAW CPU Log END -------------");
 
     return LT_OK;
 }

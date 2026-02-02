@@ -2,20 +2,20 @@
 #define LT_LIBTROPIC_PORT_H
 
 /**
- * @defgroup group_port_functions 6.2. Layer 1: Port Interface
+ * @defgroup group_port_functions 7. HAL Interface
  * @brief Functions defined for each supported platform.
- * @details Function used by host platform during l1 operations. Check 'hal/' folder to see what is supported.
- *          All of these functions have to be impemented by the port for libtropic to work.
+ * @details Function used by host platform during hardware-specific operations. Check 'hal/' folder to see what is
+ * supported. All of these functions have to be impemented by the port for libtropic to work.
  *
  * @{
  */
 
 /**
  * @file libtropic_port.h
- * @brief Header file with layer 1 interfaces which are defined based on host platform
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @brief Header file with HAL interfaces which are defined based on host platform
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #include <stdlib.h>
@@ -122,6 +122,20 @@ lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms);
  * @retval            LT_FAIL Function did not execute successully
  */
 lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count);
+
+/**
+ * @brief Port-specific printf-like function used by Libtropic for logging debug information and test outputs.
+ * @note  The implementation shall not modify output in any way (e.g., by appending arbitrary newlines)
+ * apart from behavior expected from a standard printf-like function (e.g., replacing format specifiers).
+ * @warning Some implementations use size limited buffer for temporarily storing the log message.
+ *
+ * @param format      Pointer to a null-terminated byte string specifying how to interpret the data
+ * @param ...         Arguments specifying data to print
+ *
+ * @return The number of characters printed (like printf), or a negative
+ *         value on encoding/printing error.
+ */
+int lt_port_log(const char *format, ...);
 
 /** @} */  // end of group_port_functions
 

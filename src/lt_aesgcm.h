@@ -4,9 +4,9 @@
 /**
  * @file   lt_aesgcm.h
  * @brief  AES-GCM function declarations
- * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
 #ifdef __cplusplus
@@ -75,6 +75,8 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
 
 /**
  * @brief Deinitializes AES-GCM encryption context.
+ * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume that
+ * `lt_aesgcm_encrypt_init` was called before.
  *
  * @param ctx  Crypto context structure
  * @return     LT_OK if success, otherwise returns other error code.
@@ -83,6 +85,8 @@ lt_ret_t lt_aesgcm_encrypt_deinit(void *ctx) __attribute__((warn_unused_result))
 
 /**
  * @brief Deinitializes AES-GCM decryption context.
+ * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume that
+ * `lt_aesgcm_decrypt_init` was called before.
  *
  * @param ctx  Crypto context structure
  * @return     LT_OK if success, otherwise returns other error code.
