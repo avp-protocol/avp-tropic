@@ -16,7 +16,8 @@ the CodeChecker will fail silently without generating any reports. Currently we 
 We generate reports from multiple projects (examples and tests) to cover as much CALs and HALs
 as possible. The reports are then merged and exported to HTML.
 
-To generate HTML report, you can use our convenience script.
+To generate HTML report, you can use our convenience script. Reports will be
+generated to `.codechecker/reports_html` in the Libtropic repository.
 
 !!! example "Generating HTML report"
     === ":fontawesome-brands-linux: Linux"
@@ -42,7 +43,7 @@ To generate HTML report, you can use our convenience script.
             TBA
 
 If the script executes without any errors, exports will be ready and you can open
-`./.codechecker/reports_html/index.html` in your favourite web browser.
+`.codechecker/reports_html/index.html` in your favourite web browser.
 
 ## Remarks
 The current CodeChecker configuration is in YAML format, as it is more human-readable than JSON and also supports comments.  
