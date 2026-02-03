@@ -2,7 +2,7 @@
 The CodeChecker is a tool for performing static code analysis and generating reports.
 We provide scripts and custom configuration for running the CodeChecker.
 
-We regurarly run CodeChecker to check for any potentional bugs or security issues. It is also
+We regularly run CodeChecker to check for any potential bugs or security issues. It is also
 recommended to run the CodeChecker yourself on any code you plan to contribute, as it can discover
 issues that other tools (compiler, ASAN, ...) can miss.
 

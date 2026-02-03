@@ -10,7 +10,7 @@ set -e
 
 LT_ROOT_DIR="./"
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     echo "Assuming Libtropic root directory is a current working directory."
     echo "To change the Libtropic root directory, pass it as the first argument:"
     echo "  $0 <path_to_libtropic>"
