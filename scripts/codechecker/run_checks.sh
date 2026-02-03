@@ -8,14 +8,14 @@
 
 set -e
 
-LT_ROOT_DIR="./"
+LT_ROOT_DIR="."
 
 if [ -z "$1" ]; then
     echo "Assuming Libtropic root directory is a current working directory."
     echo "To change the Libtropic root directory, pass it as the first argument:"
     echo "  $0 <path_to_libtropic>"
 else
-    LT_ROOT_DIR="$1"
+    LT_ROOT_DIR="${1%/}" # Remove last trailing slash (if any present)
     echo "Libtropic root directory set to: $LT_ROOT_DIR"
 fi
 
@@ -43,11 +43,11 @@ done
 # also special symbols in the path specified by $LT_ROOT_DIR.
 (cd "$LT_ROOT_DIR/.codechecker/compile_commands" && \
     jq -s 'add' ./*_compile_commands.json \
-    > "$LT_ROOT_DIR/.codechecker/compile_commands.json")
+    > "../merged_compile_commands.json")
 
 set +e
 # Run analysis on merged compilation database
-CodeChecker analyze "$LT_ROOT_DIR/.codechecker/compile_commands.json" \
+CodeChecker analyze "$LT_ROOT_DIR/.codechecker/merged_compile_commands.json" \
                     --config "$LT_ROOT_DIR/scripts/codechecker/codechecker_config.yml" \
                     --skip "$LT_ROOT_DIR/scripts/codechecker/codechecker.skip" \
                     -o "$LT_ROOT_DIR/.codechecker/reports"
