@@ -38,14 +38,19 @@ static int pin_check(lt_handle_t *h, uint8_t *pin, uint16_t pin_len, lt_mac_and_
     LT_TEST_ASSERT(LT_OK, lt_hmac_sha256(w, sizeof(w), pin, pin_len, k_i));
 
     LT_LOG_INFO("Decrypting (XOR) c_i using k_i...");
-    for (uint8_t j = 0; j < TR01_MAC_AND_DESTROY_DATA_SIZE; j++) s[j] = ciphertexts[slot][j] ^ k_i[j];
+    for (uint8_t j = 0; j < TR01_MAC_AND_DESTROY_DATA_SIZE; j++) {
+        s[j] = ciphertexts[slot][j] ^ k_i[j];
+    }
 
     LT_LOG_INFO("Computing t' = KDF(s, \"0\")...");
     LT_TEST_ASSERT(LT_OK, lt_hmac_sha256(s, TR01_MAC_AND_DESTROY_DATA_SIZE, (uint8_t *)"0", 1, t_));
 
     LT_LOG_INFO("Checking if t' != t...");
-    for (uint8_t i = 0; i < sizeof(t_); i++)
-        if (t_[i] != t[i]) return 1;
+    for (uint8_t i = 0; i < sizeof(t_); i++) {
+        if (t_[i] != t[i]) {
+            return 1;
+        }
+    }
 
     return 0;
 }
