@@ -6,7 +6,7 @@
 # the model is built using tests, as they allow to change CAL, which has
 # to be done for one target.
 
-set -euo pipefail
+set -eo pipefail
 
 LT_ROOT_DIR="."
 
@@ -71,7 +71,7 @@ CodeChecker analyze "$LT_ROOT_DIR/.codechecker/merged_compile_commands.json" \
                     --config "$LT_ROOT_DIR/scripts/codechecker/codechecker_config.yml" \
                     --skip "$LT_ROOT_DIR/scripts/codechecker/codechecker.skip" \
                     -o "$LT_ROOT_DIR/.codechecker/reports"
-set -euo pipefail
+set -e
 
 CodeChecker parse "$LT_ROOT_DIR/.codechecker/reports" \
                   -e html \
