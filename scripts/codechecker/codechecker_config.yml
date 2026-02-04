@@ -43,11 +43,6 @@ analyzer:
     - --ctu-all
 
     ################################################
-    # Export setup
-    ################################################
-    - --output=.codechecker/reports
-
-    ################################################
     # Checker selection
     ################################################
     # CodeChecker does not support specifying multiple checkers for now,
