@@ -1,4 +1,4 @@
-# Using CodeChecker
+# Using the CodeChecker
 The CodeChecker is a tool for performing static code analysis and generating reports.
 We provide scripts and custom configuration for running the CodeChecker.
 
