@@ -53,7 +53,7 @@ CodeChecker log -b "cd \"$LT_ROOT_DIR/examples/linux/spi/hello_world\" && rm -rf
 
 # Model + all CALs
 CALS=("trezor_crypto" "mbedtls_v4" "openssl" "wolfcrypt")
-for CURRENT_CAL in ${CALS[@]}; do
+for CURRENT_CAL in "${CALS[@]}"; do
     CodeChecker log -b "cd \"$LT_ROOT_DIR/tests/functional/model\" && rm -rf build && mkdir build && cd build && cmake -DLT_CAL=$CURRENT_CAL .. && make -j" \
                     -o "$LT_ROOT_DIR/.codechecker/compile_commands/model_${CURRENT_CAL}_compile_commands.json"
 done
