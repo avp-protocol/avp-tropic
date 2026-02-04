@@ -145,7 +145,9 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
     LT_ASN1_DER_GET_NEXT_BYTE(ctx, &b);
 
     rv = parse_length(ctx, &len);
-    if (rv != LT_OK) return rv;
+    if (rv != LT_OK) {
+        return rv;
+    }
 
     uint16_t start = ctx->past;
 
@@ -160,7 +162,9 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
         case LT_ASN1DER_SEQUENCE:
             while (ctx->past < start + len - 1) {
                 rv = parse_object(ctx);
-                if (rv != LT_OK) return rv;
+                if (rv != LT_OK) {
+                    return rv;
+                }
             }
 
             if (start + len != ctx->past) {
@@ -279,10 +283,14 @@ lt_ret_t asn1der_find_object(const uint8_t *stream, uint16_t len, int32_t obj_id
 
     while (ctx.past < ctx.len - 1) {
         lt_ret_t rv = parse_object(&ctx);
-        if (rv != LT_OK) return rv;
+        if (rv != LT_OK) {
+            return rv;
+        }
     };
 
-    if (!ctx.found) return LT_CERT_ITEM_NOT_FOUND;
+    if (!ctx.found) {
+        return LT_CERT_ITEM_NOT_FOUND;
+    }
 
     return LT_OK;
 }

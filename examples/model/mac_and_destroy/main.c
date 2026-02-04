@@ -121,7 +121,9 @@ static psa_status_t hmac_sha256(const uint8_t *key, const size_t key_len, const 
                              PSA_HASH_LENGTH(PSA_ALG_SHA_256), &output_len);
 
 cleanup:
-    if (key_id != 0) psa_destroy_key(key_id);
+    if (key_id != 0) {
+        psa_destroy_key(key_id);
+    }
     psa_reset_key_attributes(&attributes);
     return status;
 }
