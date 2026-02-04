@@ -84,7 +84,7 @@ set(SOURCES
 
 # Enable strict compile flags for main.c and Libtropic HAL sources
 if(LT_STRICT_COMPILATION)
-    set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/main.c ${LT_HAL_SRCS} PROPERTIES COMPILE_OPTIONS "${LT_STRICT_COMPILATION_FLAGS}")   
+    set_source_files_properties(${SOURCES} ${LT_HAL_SRCS} PROPERTIES COMPILE_OPTIONS "${LT_STRICT_COMPILATION_FLAGS}")   
 endif()
 
 ###########################################################################
