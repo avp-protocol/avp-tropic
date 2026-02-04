@@ -28,6 +28,14 @@ if ! command -v jq >/dev/null 2>&1; then
     echo "Missing jq! Install and try again."
     exit 1
 fi
+if ! command -v cmake >/dev/null 2>&1; then  
+    echo "Missing cmake! Install and try again."  
+    exit 1  
+fi  
+if ! command -v make >/dev/null 2>&1; then  
+    echo "Missing make! Install and try again."  
+    exit 1  
+fi  
 
 # Recreating directories
 rm -fr "$LT_ROOT_DIR/.codechecker/"
