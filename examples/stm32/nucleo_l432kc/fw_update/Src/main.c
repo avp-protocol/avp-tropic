@@ -1,13 +1,13 @@
 /**
  * @file main.c
- * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic on STM32 Nucleo L432KC
- * board.
+ * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic on STM32
+ * Nucleo L432KC board.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  *
- * This example project is based on the SPI/SPI_FullDuplex_ComPolling example from STM32 example library
- * which was created by the MCD Application Team.
+ * This example project is based on the SPI/SPI_FullDuplex_ComPolling example from STM32 example
+ * library which was created by the MCD Application Team.
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -284,8 +284,9 @@ int main(void)
     }
     printf("OK\n");
 
-    /* First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-       Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot. */
+    /* First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+       be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+       automatically on boot. */
     printf("Rebooting TROPIC01...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -465,8 +466,8 @@ void SystemClock_Config(void)
 
     /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
        clocks dividers */
-    RCC_ClkInitStruct.ClockType
-        = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 |
+                                   RCC_CLOCKTYPE_PCLK2);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;

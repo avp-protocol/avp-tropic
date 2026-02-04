@@ -89,12 +89,13 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     }
 
     // Create configuration for the SPI device.
-    spi_device_interface_config_t spi_dev_cfg = {.mode = 0,  // TROPIC01 supports only CPOL=0 and CPHA=0.
-                                                 .clock_speed_hz = dev->spi_clk_hz,
-                                                 .spics_io_num = -1,  // We handle CS ourselves.
-                                                 .queue_size = 1,
-                                                 .pre_cb = NULL,
-                                                 .post_cb = NULL};
+    spi_device_interface_config_t spi_dev_cfg = {
+        .mode = 0,  // TROPIC01 supports only CPOL=0 and CPHA=0.
+        .clock_speed_hz = dev->spi_clk_hz,
+        .spics_io_num = -1,  // We handle CS ourselves.
+        .queue_size = 1,
+        .pre_cb = NULL,
+        .post_cb = NULL};
 
     // Add the SPI device to the bus.
     esp_ret = spi_bus_add_device(dev->spi_host_id, &spi_dev_cfg, &dev->spi_handle);

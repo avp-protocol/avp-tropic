@@ -13,7 +13,8 @@
 
 /**
  * @brief Initializes the crypto context.
- * @warning This function must not allocate anything, just initialize the context structure to defined values.
+ * @warning This function must not allocate anything, just initialize the context structure to defined
+ * values.
  *
  * @param ctx  Context structure
  * @return     LT_OK if success, otherwise returns other error code.

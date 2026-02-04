@@ -14,8 +14,8 @@
 #include "libtropic_logging.h"
 #include "lt_hmac_sha256.h"
 
-lt_ret_t lt_hmac_sha256(const uint8_t *key, const uint32_t key_len, const uint8_t *input, const uint32_t input_len,
-                        uint8_t *output)
+lt_ret_t lt_hmac_sha256(const uint8_t *key, const uint32_t key_len, const uint8_t *input,
+                        const uint32_t input_len, uint8_t *output)
 {
     int ret;
     Hmac hmac;

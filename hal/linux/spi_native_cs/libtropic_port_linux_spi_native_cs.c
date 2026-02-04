@@ -1,10 +1,11 @@
 /**
  * @file libtropic_port_linux_spi_native_cs.c
  * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
- * @brief Port for communication using Generic SPI UAPI with native CS handling and GPIO for interrupt handling.
+ * @brief Port for communication using Generic SPI UAPI with native CS handling and GPIO for interrupt
+ * handling.
  *
- * @note As this HAL controls CS using SPI driver natively,  whole buffer is transferred each time, which
- * introduces a small overhead.
+ * @note As this HAL controls CS using SPI driver natively,  whole buffer is transferred each time,
+ * which introduces a small overhead.
  *
  * @warning This HAL is experimental. It can be modified or removed in the next release without notice.
  *
@@ -183,7 +184,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     return LT_OK;
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
     LT_UNUSED(offset);
     LT_UNUSED(tx_data_length);
@@ -191,7 +193,8 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_dat
     lt_dev_linux_spi_native_cs_t *device = (lt_dev_linux_spi_native_cs_t *)(s2->device);
 
     if (!device->frame_in_progress) {
-        LT_LOG_ERROR("lt_port_spi_transfer: No transfer in progress (spi_transfer called before csn_low)!");
+        LT_LOG_ERROR(
+            "lt_port_spi_transfer: No transfer in progress (spi_transfer called before csn_low)!");
         return LT_L1_SPI_ERROR;
     }
 
@@ -240,8 +243,9 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     }
 
     if ((size_t)ret != count) {
-        LT_LOG_ERROR("lt_port_random_bytes: getrandom() generated %zd bytes instead of requested %zu bytes!", ret,
-                     count);
+        LT_LOG_ERROR(
+            "lt_port_random_bytes: getrandom() generated %zd bytes instead of requested %zu bytes!",
+            ret, count);
         return LT_FAIL;
     }
 

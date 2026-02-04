@@ -32,39 +32,39 @@
 #define DEFAULT_SH0_PUB sh0pub_prod0
 
 /** @brief Attestation key for ECC slot 0. */
-uint8_t attestation_key[TR01_CURVE_PRIVKEY_LEN]
-    = {0x22, 0x57, 0xa8, 0x2f, 0x85, 0x8f, 0x13, 0x32, 0xfa, 0x0f, 0xf6, 0x0c, 0x76, 0x29, 0x42, 0x70,
-       0xa9, 0x58, 0x9d, 0xfd, 0x47, 0xa5, 0x23, 0x78, 0x18, 0x4d, 0x2d, 0x38, 0xf0, 0xa7, 0xc4, 0x01};
+uint8_t attestation_key[TR01_CURVE_PRIVKEY_LEN] = {
+    0x22, 0x57, 0xa8, 0x2f, 0x85, 0x8f, 0x13, 0x32, 0xfa, 0x0f, 0xf6, 0x0c, 0x76, 0x29, 0x42, 0x70,
+    0xa9, 0x58, 0x9d, 0xfd, 0x47, 0xa5, 0x23, 0x78, 0x18, 0x4d, 0x2d, 0x38, 0xf0, 0xa7, 0xc4, 0x01};
 
 /** @brief X25519 private key to execute a Secure Channel Handshake on Pairing Key slot 1. */
-const uint8_t sh1priv[]
-    = {0x58, 0xc4, 0x81, 0x88, 0xf8, 0xb1, 0xcb, 0xd4, 0x19, 0x00, 0x2e, 0x9c, 0x8d, 0xf8, 0xce, 0xea,
-       0xf3, 0xa9, 0x11, 0xde, 0xb6, 0x6b, 0xc8, 0x87, 0xae, 0xe7, 0x88, 0x10, 0xfb, 0x48, 0xb6, 0x74};
+const uint8_t sh1priv[] = {0x58, 0xc4, 0x81, 0x88, 0xf8, 0xb1, 0xcb, 0xd4, 0x19, 0x00, 0x2e,
+                           0x9c, 0x8d, 0xf8, 0xce, 0xea, 0xf3, 0xa9, 0x11, 0xde, 0xb6, 0x6b,
+                           0xc8, 0x87, 0xae, 0xe7, 0x88, 0x10, 0xfb, 0x48, 0xb6, 0x74};
 
 /** @brief X25519 public key to execute a Secure Channel Handshake on Pairing Key slot 1. */
-const uint8_t sh1pub[]
-    = {0xe1, 0xdc, 0xf9, 0xc3, 0x46, 0xbc, 0xf2, 0xe7, 0x8b, 0xa8, 0xf0, 0x27, 0xd8, 0x0a, 0x8a, 0x33,
-       0xcc, 0xf3, 0xe9, 0xdf, 0x6b, 0xdf, 0x65, 0xa2, 0xc1, 0xae, 0xc4, 0xd9, 0x21, 0xe1, 0x8d, 0x51};
+const uint8_t sh1pub[] = {0xe1, 0xdc, 0xf9, 0xc3, 0x46, 0xbc, 0xf2, 0xe7, 0x8b, 0xa8, 0xf0,
+                          0x27, 0xd8, 0x0a, 0x8a, 0x33, 0xcc, 0xf3, 0xe9, 0xdf, 0x6b, 0xdf,
+                          0x65, 0xa2, 0xc1, 0xae, 0xc4, 0xd9, 0x21, 0xe1, 0x8d, 0x51};
 
 /** @brief X25519 private key to execute a Secure Channel Handshake on Pairing Key slot 2. */
-const uint8_t sh2priv[]
-    = {0x00, 0x40, 0x5e, 0x19, 0x46, 0x75, 0xab, 0xe1, 0x5f, 0x0b, 0x57, 0xf2, 0x5b, 0x12, 0x86, 0x62,
-       0xab, 0xb0, 0xe9, 0xc6, 0xa7, 0xc3, 0xca, 0xdf, 0x1c, 0xb1, 0xd2, 0xb7, 0xf8, 0xcf, 0x35, 0x47};
+const uint8_t sh2priv[] = {0x00, 0x40, 0x5e, 0x19, 0x46, 0x75, 0xab, 0xe1, 0x5f, 0x0b, 0x57,
+                           0xf2, 0x5b, 0x12, 0x86, 0x62, 0xab, 0xb0, 0xe9, 0xc6, 0xa7, 0xc3,
+                           0xca, 0xdf, 0x1c, 0xb1, 0xd2, 0xb7, 0xf8, 0xcf, 0x35, 0x47};
 
 /** @brief X25519 public key to execute a Secure Channel Handshake on Pairing Key slot 2. */
-const uint8_t sh2pub[]
-    = {0x66, 0xb9, 0x92, 0x5a, 0x85, 0x66, 0xe8, 0x09, 0x5c, 0x56, 0x80, 0xfb, 0x22, 0xd4, 0xb8, 0x4b,
-       0xf8, 0xe3, 0x12, 0xb2, 0x7c, 0x4b, 0xac, 0xce, 0x26, 0x3c, 0x78, 0x39, 0x6d, 0x4c, 0x16, 0x6c};
+const uint8_t sh2pub[] = {0x66, 0xb9, 0x92, 0x5a, 0x85, 0x66, 0xe8, 0x09, 0x5c, 0x56, 0x80,
+                          0xfb, 0x22, 0xd4, 0xb8, 0x4b, 0xf8, 0xe3, 0x12, 0xb2, 0x7c, 0x4b,
+                          0xac, 0xce, 0x26, 0x3c, 0x78, 0x39, 0x6d, 0x4c, 0x16, 0x6c};
 
 /** @brief X25519 private key to execute a Secure Channel Handshake on Pairing Key slot 3. */
-const uint8_t sh3priv[]
-    = {0xb0, 0x90, 0x9f, 0xe1, 0xf3, 0x1f, 0xa1, 0x21, 0x75, 0xef, 0x45, 0xb1, 0x42, 0xde, 0x0e, 0xdd,
-       0xa1, 0xf4, 0x51, 0x01, 0x40, 0xc2, 0xe5, 0x2c, 0xf4, 0x68, 0xac, 0x96, 0xa1, 0x0e, 0xcb, 0x46};
+const uint8_t sh3priv[] = {0xb0, 0x90, 0x9f, 0xe1, 0xf3, 0x1f, 0xa1, 0x21, 0x75, 0xef, 0x45,
+                           0xb1, 0x42, 0xde, 0x0e, 0xdd, 0xa1, 0xf4, 0x51, 0x01, 0x40, 0xc2,
+                           0xe5, 0x2c, 0xf4, 0x68, 0xac, 0x96, 0xa1, 0x0e, 0xcb, 0x46};
 
 /** @brief X25519 public key to execute a Secure Channel Handshake on Pairing Key slot 3. */
-const uint8_t sh3pub[]
-    = {0x22, 0x57, 0xa8, 0x2f, 0x85, 0x8f, 0x13, 0x32, 0xfa, 0x0f, 0xf6, 0x0c, 0x76, 0x29, 0x42, 0x70,
-       0xa9, 0x58, 0x9d, 0xfd, 0x47, 0xa5, 0x23, 0x78, 0x18, 0x4d, 0x2d, 0x38, 0xf0, 0xa7, 0xc4, 0x01};
+const uint8_t sh3pub[] = {0x22, 0x57, 0xa8, 0x2f, 0x85, 0x8f, 0x13, 0x32, 0xfa, 0x0f, 0xf6,
+                          0x0c, 0x76, 0x29, 0x42, 0x70, 0xa9, 0x58, 0x9d, 0xfd, 0x47, 0xa5,
+                          0x23, 0x78, 0x18, 0x4d, 0x2d, 0x38, 0xf0, 0xa7, 0xc4, 0x01};
 
 /**
  * @brief Creates an HW wallet example config from the virgin R config.
@@ -75,21 +75,28 @@ static void create_example_r_config(struct lt_config_t *r_config)
 {
     //-------CFG_START_UP------------------------------------
     // Enable MBIST and RNGTEST (DIS in their names stands for disable, so writing 0 enables them)
-    r_config->obj[TR01_CFG_START_UP_IDX]
-        &= ~(BOOTLOADER_CO_CFG_START_UP_MBIST_DIS_MASK | BOOTLOADER_CO_CFG_START_UP_RNGTEST_DIS_MASK);
+    r_config->obj[TR01_CFG_START_UP_IDX] &= ~(BOOTLOADER_CO_CFG_START_UP_MBIST_DIS_MASK |
+                                              BOOTLOADER_CO_CFG_START_UP_RNGTEST_DIS_MASK);
 
     //-------CFG_SENSORS-------------------------------------
     // Enable all sensors (DIS in their names stands for disable, so writing 0 enables them)
     r_config->obj[TR01_CFG_SENSORS_IDX] &= ~(
-        BOOTLOADER_CO_CFG_SENSORS_PTRNG0_TEST_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_PTRNG1_TEST_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_OSCILLATOR_MON_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_SHIELD_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_VOLTAGE_MON_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_GLITCH_DET_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_TEMP_SENS_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_LASER_DET_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_EM_PULSE_DET_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_CPU_ALERT_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_PIN_VERIF_BIT_FLIP_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_SCB_BIT_FLIP_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_CPB_BIT_FLIP_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_ECC_BIT_FLIP_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_R_MEM_BIT_FLIP_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_EKDB_BIT_FLIP_DIS_MASK
-        | BOOTLOADER_CO_CFG_SENSORS_I_MEM_BIT_FLIP_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_PLATFORM_BIT_FLIP_DIS_MASK);
+        BOOTLOADER_CO_CFG_SENSORS_PTRNG0_TEST_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_PTRNG1_TEST_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_OSCILLATOR_MON_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_SHIELD_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_VOLTAGE_MON_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_GLITCH_DET_DIS_MASK | BOOTLOADER_CO_CFG_SENSORS_TEMP_SENS_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_LASER_DET_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_EM_PULSE_DET_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_CPU_ALERT_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_PIN_VERIF_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_SCB_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_CPB_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_ECC_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_R_MEM_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_EKDB_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_I_MEM_BIT_FLIP_DIS_MASK |
+        BOOTLOADER_CO_CFG_SENSORS_PLATFORM_BIT_FLIP_DIS_MASK);
 
     //-------CFG_DEBUG---------------------------------------
     // Disable FW logging
@@ -105,41 +112,57 @@ static void create_example_r_config(struct lt_config_t *r_config)
     //------- TR01_CFG_UAP_PAIRING_KEY_WRITE ---------------------
     // Disable writing pairing keys for all slots
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_WRITE_IDX] &= ~LT_TO_PAIRING_KEY_SH0(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_WRITE_IDX] &= ~LT_TO_PAIRING_KEY_SH1(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_WRITE_IDX] &= ~LT_TO_PAIRING_KEY_SH2(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_WRITE_IDX] &= ~LT_TO_PAIRING_KEY_SH3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_PAIRING_KEY_READ ----------------------
     // All sessions can read pairing keys
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_READ_IDX] |= LT_TO_PAIRING_KEY_SH0(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_READ_IDX] |= LT_TO_PAIRING_KEY_SH1(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_READ_IDX] |= LT_TO_PAIRING_KEY_SH2(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_READ_IDX] |= LT_TO_PAIRING_KEY_SH3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_PAIRING_KEY_INVALIDATE ----------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] &= ~LT_TO_PAIRING_KEY_SH0(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] &= ~LT_TO_PAIRING_KEY_SH1(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] &= ~LT_TO_PAIRING_KEY_SH2(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] &= ~LT_TO_PAIRING_KEY_SH3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Pairing key SH0PUB can be invalidated only from session with SH0PUB
-    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH0(LT_SESSION_SH0_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH0(
+        LT_SESSION_SH0_HAS_ACCESS);
     // 3. Pairing keys SH1PUB, SH2PUB and SH3PUB can be invalidated only from session with SH3PUB
-    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH1(LT_SESSION_SH3_HAS_ACCESS);
-    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH2(LT_SESSION_SH3_HAS_ACCESS);
-    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH3(LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH1(
+        LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH2(
+        LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_IDX] |= LT_TO_PAIRING_KEY_SH3(
+        LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_R_CONFIG_WRITE_ERASE ------------------
     // Keep at reset value, not used currently
@@ -155,8 +178,8 @@ static void create_example_r_config(struct lt_config_t *r_config)
 
     //------- TR01_CFG_UAP_PING ----------------------------------
     // Enable for all pairing keys
-    r_config->obj[TR01_CFG_UAP_PING_IDX] |= (LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS
-                                             | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_PING_IDX] |= (LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS |
+                                             LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_R_MEM_DATA_WRITE ----------------------
     // Reset value, not used currently
@@ -169,156 +192,207 @@ static void create_example_r_config(struct lt_config_t *r_config)
 
     //------- TR01_CFG_UAP_RANDOM_VALUE_GET ----------------------
     // Enable for all pairing keys
-    r_config->obj[TR01_CFG_UAP_RANDOM_VALUE_GET_IDX] |= (LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS
-                                                         | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_RANDOM_VALUE_GET_IDX] |= (LT_SESSION_SH0_HAS_ACCESS |
+                                                         LT_SESSION_SH1_HAS_ACCESS |
+                                                         LT_SESSION_SH2_HAS_ACCESS |
+                                                         LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_ECC_KEY_GENERATE ----------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX] &= ~LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX] &= ~LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX] &= ~LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX] &= ~LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Only session with SH3PUB can generate keys in slots 8-31
-    r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX]
-        |= (LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_ECC_KEY_GENERATE_IDX] |=
+        (LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_ECC_KEY_STORE -------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] &= ~LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] &= ~LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] &= ~LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] &= ~LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH1PUB can store key into ECC key slot 0-7
     r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] |= LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH1_HAS_ACCESS);
     // 3. Session with SH3PUB can store key into ECC key slot 8-31
-    r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] |= LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS)
-                                                     | LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS)
-                                                     | LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_ECC_KEY_STORE_IDX] |=
+        LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) |
+        LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS) |
+        LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_ECC_KEY_READ --------------------------
     // Enable for all pairing keys
     r_config->obj[TR01_CFG_UAP_ECC_KEY_READ_IDX] |= LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_READ_IDX] |= LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_READ_IDX] |= LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_READ_IDX] |= LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_ECC_KEY_ERASE -------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] &= ~LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] &= ~LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] &= ~LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] &= ~LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH1PUB can erase ECC key slots 0-7
     r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] |= LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH1_HAS_ACCESS);
     // 3. Session with SH3PUB can erase ECC key slots 8-31
-    r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] |= LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS)
-                                                     | LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS)
-                                                     | LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS);
+    r_config->obj[TR01_CFG_UAP_ECC_KEY_ERASE_IDX] |=
+        LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) |
+        LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS) |
+        LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS);
 
     //------- TR01_CFG_UAP_ECDSA_SIGN ----------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH3PUB can sign with all ECC key slots
-    r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX]
-        |= (LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_ECDSA_SIGN_IDX] |=
+        (LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_EDDSA_SIGN ----------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_0_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_8_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_16_23(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX] &= ~LT_TO_ECC_KEY_SLOT_24_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH3PUB can sign with all ECC key slots
-    r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX]
-        |= (LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_EDDSA_SIGN_IDX] |=
+        (LT_TO_ECC_KEY_SLOT_0_7(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_8_15(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_16_23(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_ECC_KEY_SLOT_24_31(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_MCOUNTER_INIT -------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX] &= ~LT_TO_MCOUNTER_0_3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX] &= ~LT_TO_MCOUNTER_4_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX] &= ~LT_TO_MCOUNTER_8_11(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX] &= ~LT_TO_MCOUNTER_12_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH3PUB can init all mcounters
-    r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX]
-        |= (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_MCOUNTER_INIT_IDX] |= (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) |
+                                                      LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS) |
+                                                      LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) |
+                                                      LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_MCOUNTER_GET --------------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX] &= ~LT_TO_MCOUNTER_0_3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX] &= ~LT_TO_MCOUNTER_4_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX] &= ~LT_TO_MCOUNTER_8_11(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX] &= ~LT_TO_MCOUNTER_12_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH3PUB can get all mcounters
-    r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX]
-        |= (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_MCOUNTER_GET_IDX] |= (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) |
+                                                     LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS) |
+                                                     LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) |
+                                                     LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_MCOUNTER_UPDATE -----------------------
     // 1. Disable all, then enable only specific ones
     r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX] &= ~LT_TO_MCOUNTER_0_3(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX] &= ~LT_TO_MCOUNTER_4_7(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX] &= ~LT_TO_MCOUNTER_8_11(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX] &= ~LT_TO_MCOUNTER_12_15(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     // 2. Session with SH3PUB can update all mcounters
-    r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX]
-        |= (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS)
-            | LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) | LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
+    r_config->obj[TR01_CFG_UAP_MCOUNTER_UPDATE_IDX] |=
+        (LT_TO_MCOUNTER_0_3(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_MCOUNTER_4_7(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_MCOUNTER_8_11(LT_SESSION_SH3_HAS_ACCESS) |
+         LT_TO_MCOUNTER_12_15(LT_SESSION_SH3_HAS_ACCESS));
 
     //------- TR01_CFG_UAP_MAC_AND_DESTROY_ADDR -----------------------
     // Enable for all pairing key slots
     r_config->obj[TR01_CFG_UAP_MAC_AND_DESTROY_IDX] |= LT_TO_MACANDD_SLOT_0_31(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MAC_AND_DESTROY_IDX] |= LT_TO_MACANDD_SLOT_32_63(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MAC_AND_DESTROY_IDX] |= LT_TO_MACANDD_SLOT_64_95(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
     r_config->obj[TR01_CFG_UAP_MAC_AND_DESTROY_IDX] |= LT_TO_MACANDD_SLOT_96_127(
-        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS | LT_SESSION_SH3_HAS_ACCESS);
+        LT_SESSION_SH0_HAS_ACCESS | LT_SESSION_SH1_HAS_ACCESS | LT_SESSION_SH2_HAS_ACCESS |
+        LT_SESSION_SH3_HAS_ACCESS);
 }
 
 /**
@@ -344,12 +418,14 @@ static int session_initial(lt_handle_t *h)
     const uint8_t *pub_keys[] = {DEFAULT_SH0_PUB, sh1pub, sh2pub, sh3pub};
 
     printf("Starting Secure Session with key slot %d...", (int)TR01_PAIRING_KEY_SLOT_INDEX_0);
-    ret = lt_verify_chip_and_start_secure_session(h, DEFAULT_SH0_PRIV, DEFAULT_SH0_PUB, TR01_PAIRING_KEY_SLOT_INDEX_0);
+    ret = lt_verify_chip_and_start_secure_session(h, DEFAULT_SH0_PRIV, DEFAULT_SH0_PUB,
+                                                  TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (LT_OK != ret) {
-        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n", (int)TR01_PAIRING_KEY_SLOT_INDEX_0,
-                lt_ret_verbose(ret));
+        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n",
+                (int)TR01_PAIRING_KEY_SLOT_INDEX_0, lt_ret_verbose(ret));
         fprintf(stderr,
-                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, compile with "
+                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, "
+                "compile with "
                 "-DLT_SH0_KEYS=eng_sample\n");
         return -1;
     }
@@ -435,7 +511,8 @@ static int session_initial(lt_handle_t *h)
 }
 
 /**
- * @brief Tries to start a Secure Session with previously invalidated pairing key slot 0 and checks that it fails.
+ * @brief Tries to start a Secure Session with previously invalidated pairing key slot 0 and checks
+ * that it fails.
  *
  * @param h  Handle for communication with TROPIC01
  * @return   0 if success, -1 otherwise
@@ -444,8 +521,10 @@ static int session0(lt_handle_t *h)
 {
     lt_ret_t ret;
 
-    printf("Starting Secure Session with key slot %d (should fail)...", (int)TR01_PAIRING_KEY_SLOT_INDEX_0);
-    ret = lt_verify_chip_and_start_secure_session(h, DEFAULT_SH0_PRIV, DEFAULT_SH0_PUB, TR01_PAIRING_KEY_SLOT_INDEX_0);
+    printf("Starting Secure Session with key slot %d (should fail)...",
+           (int)TR01_PAIRING_KEY_SLOT_INDEX_0);
+    ret = lt_verify_chip_and_start_secure_session(h, DEFAULT_SH0_PRIV, DEFAULT_SH0_PUB,
+                                                  TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (ret != LT_L2_HSK_ERR) {
         fprintf(stderr, "\nReturn value is not LT_L2_HSK_ERR, ret=%s\n", lt_ret_verbose(ret));
         return -1;
@@ -493,7 +572,8 @@ static int session1(lt_handle_t *h)
     printf("Storing attestation key into ECC slot %d...", (int)TR01_ECC_SLOT_0);
     ret = lt_ecc_key_store(h, TR01_ECC_SLOT_0, TR01_CURVE_ED25519, attestation_key);
     if (LT_OK != ret) {
-        fprintf(stderr, "\nFailed to store ECC key to slot %d, ret=%s\n", (int)TR01_ECC_SLOT_0, lt_ret_verbose(ret));
+        fprintf(stderr, "\nFailed to store ECC key to slot %d, ret=%s\n", (int)TR01_ECC_SLOT_0,
+                lt_ret_verbose(ret));
         lt_session_abort(h);
         return -1;
     }
@@ -505,7 +585,8 @@ static int session1(lt_handle_t *h)
         printf("\tWriting pairing key slot %" PRIu8 "...", i);
         ret = lt_pairing_key_write(h, dummy_key, i);
         if (LT_L3_UNAUTHORIZED != ret) {
-            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n", lt_ret_verbose(ret));
+            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n",
+                    lt_ret_verbose(ret));
             lt_session_abort(h);
             return -1;
         }
@@ -559,7 +640,8 @@ static int session2(lt_handle_t *h)
     printf("\t<-- Message received from TROPIC01: '%s'\n", recv_buf);
 
     uint8_t dummy_key[TR01_CURVE_PRIVKEY_LEN] = {0};
-    printf("Trying to store key into ECC slot %d (should fail due to unauthorized access)...", (int)TR01_ECC_SLOT_0);
+    printf("Trying to store key into ECC slot %d (should fail due to unauthorized access)...",
+           (int)TR01_ECC_SLOT_0);
     ret = lt_ecc_key_store(h, TR01_ECC_SLOT_0, TR01_CURVE_ED25519, dummy_key);
     if (LT_L3_UNAUTHORIZED != ret) {
         fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n", lt_ret_verbose(ret));
@@ -573,7 +655,8 @@ static int session2(lt_handle_t *h)
         printf("\tWriting pairing key slot %" PRIu8 "...", i);
         ret = lt_pairing_key_write(h, dummy_key, i);
         if (LT_L3_UNAUTHORIZED != ret) {
-            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n", lt_ret_verbose(ret));
+            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n",
+                    lt_ret_verbose(ret));
             lt_session_abort(h);
             return -1;
         }
@@ -759,7 +842,8 @@ static int session3(lt_handle_t *h)
     printf("OK\n");
 
     uint8_t dummy_key[TR01_CURVE_PRIVKEY_LEN] = {0};
-    printf("Trying to store key into ECC slot %d (should fail due to unauthorized access)...", (int)TR01_ECC_SLOT_0);
+    printf("Trying to store key into ECC slot %d (should fail due to unauthorized access)...",
+           (int)TR01_ECC_SLOT_0);
     ret = lt_ecc_key_store(h, TR01_ECC_SLOT_0, TR01_CURVE_ED25519, dummy_key);
     if (LT_L3_UNAUTHORIZED != ret) {
         fprintf(stderr, "\nReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n", lt_ret_verbose(ret));
@@ -773,7 +857,8 @@ static int session3(lt_handle_t *h)
         printf("\tWriting pairing key slot %" PRIu8 "...", i);
         ret = lt_pairing_key_write(h, dummy_key, i);
         if (LT_L3_UNAUTHORIZED != ret) {
-            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n", lt_ret_verbose(ret));
+            fprintf(stderr, "\n\tReturn value is not LT_L3_UNAUTHORIZED, ret=%s\n",
+                    lt_ret_verbose(ret));
             lt_session_abort(h);
             return -1;
         }
@@ -793,8 +878,9 @@ static int session3(lt_handle_t *h)
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -827,7 +913,8 @@ int main(void)
     lt_handle.l2.device = &device;
 
     // Generate seed for the PRNG and seed it.
-    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be used in production.
+    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be
+    // used in production.
     unsigned int prng_seed;
     if (0 != getentropy(&prng_seed, sizeof(prng_seed))) {
         fprintf(stderr, "main: getentropy() failed (%s)!\n", strerror(errno));
@@ -850,7 +937,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // We need to ensure we are not in the Start-up Mode, as L3 commands are available only in the Application Firmware.
+    // We need to ensure we are not in the Start-up Mode, as L3 commands are available only in the
+    // Application Firmware.
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {

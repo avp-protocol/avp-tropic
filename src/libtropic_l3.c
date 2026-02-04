@@ -28,7 +28,8 @@
 #include "lt_sha256.h"
 #include "lt_x25519.h"
 
-lt_ret_t lt_out__session_start(lt_handle_t *h, const lt_pkey_index_t pkey_index, lt_host_eph_keys_t *host_eph_keys)
+lt_ret_t lt_out__session_start(lt_handle_t *h, const lt_pkey_index_t pkey_index,
+                               lt_host_eph_keys_t *host_eph_keys)
 {
     if (!h || (pkey_index > TR01_PAIRING_KEY_SLOT_INDEX_3) || !host_eph_keys) {
         return LT_PARAM_ERR;
@@ -36,7 +37,8 @@ lt_ret_t lt_out__session_start(lt_handle_t *h, const lt_pkey_index_t pkey_index,
 
     // Remove any previous session data and init IVs.
     // In case we reuse handle and use separate l3 buffer, we need to ensure that IV's are zeroed,
-    // because on session start we expect IV's to be 0. It does not hurt to zero them anyway on session start.
+    // because on session start we expect IV's to be 0. It does not hurt to zero them anyway on session
+    // start.
     lt_l3_invalidate_host_session_data(&h->l3);
 
     // Create ephemeral host keys
@@ -63,23 +65,27 @@ lt_ret_t lt_out__session_start(lt_handle_t *h, const lt_pkey_index_t pkey_index,
 }
 
 lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pkey_index_t pkey_index,
-                              const uint8_t *shipriv, const uint8_t *shipub, lt_host_eph_keys_t *host_eph_keys)
+                              const uint8_t *shipriv, const uint8_t *shipub,
+                              lt_host_eph_keys_t *host_eph_keys)
 {
-    if (!h || !stpub || (pkey_index > TR01_PAIRING_KEY_SLOT_INDEX_3) || !shipriv || !shipub || !host_eph_keys) {
+    if (!h || !stpub || (pkey_index > TR01_PAIRING_KEY_SLOT_INDEX_3) || !shipriv || !shipub ||
+        !host_eph_keys) {
         return LT_PARAM_ERR;
     }
 
     // Remove any previous session data and init IVs.
     // In case we reuse handle and use separate l3 buffer, we need to ensure that IV's are zeroed,
-    // because on session start we expect IV's to be 0. It does not hurt to zero them anyway on session start.
+    // because on session start we expect IV's to be 0. It does not hurt to zero them anyway on session
+    // start.
     lt_l3_invalidate_host_session_data(&h->l3);
 
     // Setup a response pointer to l2 buffer, which is placed in handle
     struct lt_l2_handshake_rsp_t *p_rsp = (struct lt_l2_handshake_rsp_t *)h->l2.buff;
 
     // Noise_KK1_25519_AESGCM_SHA256\x00\x00\x00
-    uint8_t protocol_name[32] = {'N', 'o', 'i', 's', 'e', '_', 'K', 'K', '1', '_', '2', '5', '5', '1',  '9',  '_',
-                                 'A', 'E', 'S', 'G', 'C', 'M', '_', 'S', 'H', 'A', '2', '5', '6', 0x00, 0x00, 0x00};
+    uint8_t protocol_name[32] = {'N', 'o', 'i', 's', 'e', '_', 'K', 'K',  '1',  '_', '2',
+                                 '5', '5', '1', '9', '_', 'A', 'E', 'S',  'G',  'C', 'M',
+                                 '_', 'S', 'H', 'A', '2', '5', '6', 0x00, 0x00, 0x00};
     uint8_t hash[LT_SHA256_DIGEST_LENGTH] = {0};
     lt_ret_t ret;
     lt_ret_t ret_unused;
@@ -198,8 +204,10 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
     uint8_t output_1[33] = {0};  // Temp storage for ck, kcmd.
     uint8_t output_2[32] = {0};  // Temp storage for kauth.
     uint8_t shared_secret[TR01_X25519_KEY_LEN] = {0};
-    uint8_t kcmd[TR01_AES256_KEY_LEN] = {0};   // AES256 key used for L3 command packet encryption/decryption.
-    uint8_t kres[TR01_AES256_KEY_LEN] = {0};   // AES256 key used for L3 result packet encryption/decryption.
+    uint8_t kcmd[TR01_AES256_KEY_LEN] = {
+        0};  // AES256 key used for L3 command packet encryption/decryption.
+    uint8_t kres[TR01_AES256_KEY_LEN] = {
+        0};  // AES256 key used for L3 result packet encryption/decryption.
     uint8_t kauth[TR01_AES256_KEY_LEN] = {0};  // AES256 key used for handshake authentication.
 
     // ck = protocol_name
@@ -208,7 +216,8 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
-    ret = lt_hkdf(protocol_name, sizeof(protocol_name), shared_secret, sizeof(shared_secret), 1, output_1, output_2);
+    ret = lt_hkdf(protocol_name, sizeof(protocol_name), shared_secret, sizeof(shared_secret), 1,
+                  output_1, output_2);
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
@@ -217,7 +226,8 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
-    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 1, output_1, output_2);
+    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 1, output_1,
+                  output_2);
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
@@ -226,7 +236,8 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
-    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 2, output_1, kauth);
+    ret = lt_hkdf(output_1, sizeof(output_1), shared_secret, sizeof(shared_secret), 2, output_1,
+                  kauth);
     if (ret != LT_OK) {
         goto key_derivation_cleanup;
     }
@@ -241,8 +252,8 @@ lt_ret_t lt_in__session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pke
         goto aesgcm_error;
     }
 
-    ret = lt_aesgcm_decrypt(h->l3.crypto_ctx, h->l3.decryption_IV, sizeof(h->l3.decryption_IV), hash, sizeof(hash),
-                            p_rsp->t_tauth, sizeof(p_rsp->t_tauth), (uint8_t *)"", 0);
+    ret = lt_aesgcm_decrypt(h->l3.crypto_ctx, h->l3.decryption_IV, sizeof(h->l3.decryption_IV), hash,
+                            sizeof(hash), p_rsp->t_tauth, sizeof(p_rsp->t_tauth), (uint8_t *)"", 0);
     if (ret != LT_OK) {
         goto aesgcm_error;
     }
@@ -343,7 +354,8 @@ lt_ret_t lt_out__pairing_key_write(lt_handle_t *h, const uint8_t *pairing_pub, c
     }
 
     // Pointer to access l3 buffer when it contains command data
-    struct lt_l3_pairing_key_write_cmd_t *p_l3_cmd = (struct lt_l3_pairing_key_write_cmd_t *)h->l3.buff;
+    struct lt_l3_pairing_key_write_cmd_t *p_l3_cmd = (struct lt_l3_pairing_key_write_cmd_t *)
+                                                         h->l3.buff;
 
     // Fill l3 buffer
     p_l3_cmd->cmd_size = TR01_L3_PAIRING_KEY_WRITE_CMD_SIZE;
@@ -369,7 +381,8 @@ lt_ret_t lt_in__pairing_key_write(lt_handle_t *h)
     }
 
     // Pointer to access l3 buffer with result's data.
-    struct lt_l3_pairing_key_write_res_t *p_l3_res = (struct lt_l3_pairing_key_write_res_t *)h->l3.buff;
+    struct lt_l3_pairing_key_write_res_t *p_l3_res = (struct lt_l3_pairing_key_write_res_t *)
+                                                         h->l3.buff;
 
     // The result status is OK, we can check for precise size.
     if (p_l3_res->res_size != TR01_L3_PAIRING_KEY_WRITE_RES_SIZE) {
@@ -438,7 +451,8 @@ lt_ret_t lt_out__pairing_key_invalidate(lt_handle_t *h, const uint8_t slot)
     }
 
     // Pointer to access l3 buffer when it contains command data
-    struct lt_l3_pairing_key_invalidate_cmd_t *p_l3_cmd = (struct lt_l3_pairing_key_invalidate_cmd_t *)h->l3.buff;
+    struct lt_l3_pairing_key_invalidate_cmd_t *p_l3_cmd = (struct lt_l3_pairing_key_invalidate_cmd_t *)
+                                                              h->l3.buff;
 
     // Fill l3 buffer
     p_l3_cmd->cmd_size = TR01_L3_PAIRING_KEY_INVALIDATE_CMD_SIZE;
@@ -464,7 +478,8 @@ lt_ret_t lt_in__pairing_key_invalidate(lt_handle_t *h)
     }
 
     // Pointer to access L3 buffer with result's data.
-    struct lt_l3_pairing_key_invalidate_res_t *p_l3_res = (struct lt_l3_pairing_key_invalidate_res_t *)h->l3.buff;
+    struct lt_l3_pairing_key_invalidate_res_t *p_l3_res = (struct lt_l3_pairing_key_invalidate_res_t *)
+                                                              h->l3.buff;
 
     // The result status is OK, we can check for precise size.
     if (p_l3_res->res_size != TR01_L3_PAIRING_KEY_INVALIDATE_RES_SIZE) {
@@ -512,7 +527,8 @@ static bool conf_addr_valid(enum lt_config_obj_addr_t addr)
     return valid;
 }
 
-lt_ret_t lt_out__r_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr, const uint32_t obj)
+lt_ret_t lt_out__r_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
+                                const uint32_t obj)
 {
     if (!h || !conf_addr_valid(addr)) {
         return LT_PARAM_ERR;
@@ -652,7 +668,8 @@ lt_ret_t lt_in__r_config_erase(lt_handle_t *h)
     return LT_OK;
 }
 
-lt_ret_t lt_out__i_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr, const uint8_t bit_index)
+lt_ret_t lt_out__i_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
+                                const uint8_t bit_index)
 {
     if (!h || !conf_addr_valid(addr) || (bit_index > 31)) {
         return LT_PARAM_ERR;
@@ -750,8 +767,9 @@ lt_ret_t lt_in__i_config_read(lt_handle_t *h, uint32_t *obj)
 lt_ret_t lt_out__r_mem_data_write(lt_handle_t *h, const uint16_t udata_slot, const uint8_t *data,
                                   const uint16_t data_size)
 {
-    if (!h || !data || data_size < TR01_R_MEM_DATA_SIZE_MIN || data_size > h->tr01_attrs.r_mem_udata_slot_size_max
-        || (udata_slot > TR01_R_MEM_DATA_SLOT_MAX)) {
+    if (!h || !data || data_size < TR01_R_MEM_DATA_SIZE_MIN ||
+        data_size > h->tr01_attrs.r_mem_udata_slot_size_max ||
+        (udata_slot > TR01_R_MEM_DATA_SLOT_MAX)) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -816,7 +834,8 @@ lt_ret_t lt_out__r_mem_data_read(lt_handle_t *h, const uint16_t udata_slot)
     return lt_l3_encrypt_request(&h->l3);
 }
 
-lt_ret_t lt_in__r_mem_data_read(lt_handle_t *h, uint8_t *data, const uint16_t data_max_size, uint16_t *data_read_size)
+lt_ret_t lt_in__r_mem_data_read(lt_handle_t *h, uint8_t *data, const uint16_t data_max_size,
+                                uint16_t *data_read_size)
 {
     if (!h || !data || !data_read_size) {
         return LT_PARAM_ERR;
@@ -833,8 +852,8 @@ lt_ret_t lt_in__r_mem_data_read(lt_handle_t *h, uint8_t *data, const uint16_t da
     // Pointer to access L3 buffer with result's data.
     struct lt_l3_r_mem_data_read_res_t *p_l3_res = (struct lt_l3_r_mem_data_read_res_t *)h->l3.buff;
 
-    if (p_l3_res->res_size
-        > TR01_L3_RESULT_SIZE + h->tr01_attrs.r_mem_udata_slot_size_max + TR01_L3_R_MEM_DATA_READ_PADDING_SIZE) {
+    if (p_l3_res->res_size > TR01_L3_RESULT_SIZE + h->tr01_attrs.r_mem_udata_slot_size_max +
+                                 TR01_L3_R_MEM_DATA_READ_PADDING_SIZE) {
         lt_l3_invalidate_host_session_data(&h->l3);
         return LT_L3_RES_SIZE_ERROR;
     }
@@ -950,15 +969,18 @@ lt_ret_t lt_in__random_value_get(lt_handle_t *h, uint8_t *rnd_bytes, const uint1
     }
 
     // Here we copy only random bytes, excluding padding and result status, hence using len from the
-    // parameter. Note: p_l3_res->res_size could be used as well if we subtract TR01_L3_RANDOM_VALUE_GET_RES_SIZE_MIN.
+    // parameter. Note: p_l3_res->res_size could be used as well if we subtract
+    // TR01_L3_RANDOM_VALUE_GET_RES_SIZE_MIN.
     memcpy(rnd_bytes, p_l3_res->random_data, rnd_bytes_cnt);
 
     return LT_OK;
 }
 
-lt_ret_t lt_out__ecc_key_generate(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc_curve_type_t curve)
+lt_ret_t lt_out__ecc_key_generate(lt_handle_t *h, const lt_ecc_slot_t slot,
+                                  const lt_ecc_curve_type_t curve)
 {
-    if (!h || (slot > TR01_ECC_SLOT_31) || ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519))) {
+    if (!h || (slot > TR01_ECC_SLOT_31) ||
+        ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519))) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1003,10 +1025,11 @@ lt_ret_t lt_in__ecc_key_generate(lt_handle_t *h)
     return LT_OK;
 }
 
-lt_ret_t lt_out__ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc_curve_type_t curve,
-                               const uint8_t *key)
+lt_ret_t lt_out__ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot,
+                               const lt_ecc_curve_type_t curve, const uint8_t *key)
 {
-    if (!h || (slot > TR01_ECC_SLOT_31) || ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519)) || !key) {
+    if (!h || (slot > TR01_ECC_SLOT_31) ||
+        ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519)) || !key) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1072,8 +1095,8 @@ lt_ret_t lt_out__ecc_key_read(lt_handle_t *h, const lt_ecc_slot_t slot)
     return lt_l3_encrypt_request(&h->l3);
 }
 
-lt_ret_t lt_in__ecc_key_read(lt_handle_t *h, uint8_t *key, const uint8_t key_max_size, lt_ecc_curve_type_t *curve,
-                             lt_ecc_key_origin_t *origin)
+lt_ret_t lt_in__ecc_key_read(lt_handle_t *h, uint8_t *key, const uint8_t key_max_size,
+                             lt_ecc_curve_type_t *curve, lt_ecc_key_origin_t *origin)
 {
     if (!h || !key || !curve || !origin) {
         return LT_PARAM_ERR;
@@ -1090,8 +1113,9 @@ lt_ret_t lt_in__ecc_key_read(lt_handle_t *h, uint8_t *key, const uint8_t key_max
     // Pointer to access L3 buffer with result's data.
     struct lt_l3_ecc_key_read_res_t *p_l3_res = (struct lt_l3_ecc_key_read_res_t *)h->l3.buff;
 
-    size_t pubkey_size_in_result = p_l3_res->res_size - sizeof(p_l3_res->result) - sizeof(p_l3_res->curve)
-                                   - sizeof(p_l3_res->origin) - sizeof(p_l3_res->padding);
+    size_t pubkey_size_in_result = p_l3_res->res_size - sizeof(p_l3_res->result) -
+                                   sizeof(p_l3_res->curve) - sizeof(p_l3_res->origin) -
+                                   sizeof(p_l3_res->padding);
 
     if (p_l3_res->curve == (uint8_t)TR01_CURVE_ED25519) {
         // Check whether RES_SIZE was set correctly.
@@ -1178,7 +1202,8 @@ lt_ret_t lt_in__ecc_key_erase(lt_handle_t *h)
     return LT_OK;
 }
 
-lt_ret_t lt_out__ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t slot, const uint8_t *msg, const uint32_t msg_len)
+lt_ret_t lt_out__ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t slot, const uint8_t *msg,
+                                const uint32_t msg_len)
 {
     if (!h || (slot > TR01_ECC_SLOT_31) || !msg) {
         return LT_PARAM_ERR;
@@ -1261,7 +1286,8 @@ lt_ret_t lt_in__ecc_ecdsa_sign(lt_handle_t *h, uint8_t *rs)
 lt_ret_t lt_out__ecc_eddsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const uint8_t *msg,
                                 const uint16_t msg_len)
 {
-    if (!h || !msg || (msg_len > TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX) || (ecc_slot > TR01_ECC_SLOT_31)) {
+    if (!h || !msg || (msg_len > TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX) ||
+        (ecc_slot > TR01_ECC_SLOT_31)) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1451,7 +1477,8 @@ lt_ret_t lt_in__mcounter_get(lt_handle_t *h, uint32_t *mcounter_value)
     return LT_OK;
 }
 
-lt_ret_t lt_out__mac_and_destroy(lt_handle_t *h, lt_mac_and_destroy_slot_t slot, const uint8_t *data_out)
+lt_ret_t lt_out__mac_and_destroy(lt_handle_t *h, lt_mac_and_destroy_slot_t slot,
+                                 const uint8_t *data_out)
 {
     if (!h || !data_out || slot > TR01_MAC_AND_DESTROY_SLOT_127) {
         return LT_PARAM_ERR;

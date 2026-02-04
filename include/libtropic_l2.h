@@ -24,8 +24,8 @@ extern "C" {
 
 /**
  * @brief Sends L2 request.
- * @note Before calling this function, place request's data into handle's internal L2 buffer. Structures defined in
- * lt_l2_api_structs.h might help with encoding the data.
+ * @note Before calling this function, place request's data into handle's internal L2 buffer.
+ * Structures defined in lt_l2_api_structs.h might help with encoding the data.
  *
  * @param s2          Structure holding l2 state
  *

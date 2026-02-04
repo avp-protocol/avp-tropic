@@ -1,7 +1,7 @@
 /**
  * @file main.c
- * @brief Utility for dumping certificates from TROPIC01 USB Devkit for Linux. Part of the Full chain verification
- * example.
+ * @brief Utility for dumping certificates from TROPIC01 USB Devkit for Linux. Part of the Full chain
+ * verification example.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -19,13 +19,15 @@
 
 lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
 {
-    uint8_t cert1[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0}, cert2[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0},
-            cert3[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0}, cert4[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0};
+    uint8_t cert1[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0},
+            cert2[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0},
+            cert3[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0},
+            cert4[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0};
 
-    struct lt_cert_store_t store
-        = {.certs = {cert1, cert2, cert3, cert4},
-           .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
-                       TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE}};
+    struct lt_cert_store_t store = {
+        .certs = {cert1, cert2, cert3, cert4},
+        .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
+                    TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE}};
 
     // Reading X509 Certificate Store
     printf("Reading certificates from TROPIC01...\n");
@@ -36,8 +38,8 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
     }
 
     // Dump the certificates to files
-    const char *names[LT_NUM_CERTIFICATES]
-        = {"t01_ese_cert.der", "t01_xxxx_ca_cert.der", "t01_ca_cert.der", "tropicsquare_root_ca_cert.der"};
+    const char *names[LT_NUM_CERTIFICATES] = {"t01_ese_cert.der", "t01_xxxx_ca_cert.der",
+                                              "t01_ca_cert.der", "tropicsquare_root_ca_cert.der"};
 
     printf("Writing certificates to files...\n");
     for (int i = 0; i < LT_NUM_CERTIFICATES; i++) {
@@ -63,8 +65,9 @@ lt_ret_t dump_cert_store(lt_handle_t *lt_handle)
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -100,8 +103,10 @@ int main(void)
     // to cmake if you want to change it.
     int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {
-        fprintf(stderr, "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n",
-                sizeof(device.dev_path));
+        fprintf(
+            stderr,
+            "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n",
+            sizeof(device.dev_path));
         mbedtls_psa_crypto_free();
         return -1;
     }

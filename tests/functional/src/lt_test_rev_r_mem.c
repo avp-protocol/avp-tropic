@@ -86,7 +86,8 @@ void lt_test_rev_r_mem(lt_handle_t *h)
     // Making the handle accessible to the cleanup function.
     g_h = h;
 
-    uint8_t r_mem_data[R_MEM_DATA_SIZE_MAX], write_data[R_MEM_DATA_SIZE_MAX], zeros[R_MEM_DATA_SIZE_MAX] = {0};
+    uint8_t r_mem_data[R_MEM_DATA_SIZE_MAX], write_data[R_MEM_DATA_SIZE_MAX],
+        zeros[R_MEM_DATA_SIZE_MAX] = {0};
     uint16_t read_data_size, write_data_len;
 
     LT_LOG_INFO("Initializing handle");
@@ -122,10 +123,12 @@ void lt_test_rev_r_mem(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, write_data, h->tr01_attrs.r_mem_udata_slot_size_max));
 
         LT_LOG_INFO("Writing to slot #%" PRIu16 "...", i);
-        LT_TEST_ASSERT(LT_OK, lt_r_mem_data_write(h, i, write_data, h->tr01_attrs.r_mem_udata_slot_size_max));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_r_mem_data_write(h, i, write_data, h->tr01_attrs.r_mem_udata_slot_size_max));
 
         LT_LOG_INFO("Reading slot #%" PRIu16 "...", i);
-        LT_TEST_ASSERT(LT_OK, lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
 
         LT_LOG_INFO("Checking number of read bytes...");
         LT_TEST_ASSERT(1, (read_data_size == h->tr01_attrs.r_mem_udata_slot_size_max));
@@ -134,11 +137,13 @@ void lt_test_rev_r_mem(lt_handle_t *h)
         LT_TEST_ASSERT(0, memcmp(r_mem_data, write_data, h->tr01_attrs.r_mem_udata_slot_size_max));
 
         LT_LOG_INFO("Writing zeros to slot #%" PRIu16 " (should fail)...", i);
-        LT_TEST_ASSERT(LT_L3_SLOT_NOT_EMPTY, lt_r_mem_data_write(h, i, zeros, h->tr01_attrs.r_mem_udata_slot_size_max));
+        LT_TEST_ASSERT(LT_L3_SLOT_NOT_EMPTY,
+                       lt_r_mem_data_write(h, i, zeros, h->tr01_attrs.r_mem_udata_slot_size_max));
 
         LT_LOG_INFO("Reading slot #%" PRIu16 "...", i);
         read_data_size = 0;  // Set different value just in case
-        LT_TEST_ASSERT(LT_OK, lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
 
         LT_LOG_INFO("Checking number of read bytes...");
         LT_TEST_ASSERT(1, (read_data_size == h->tr01_attrs.r_mem_udata_slot_size_max));
@@ -166,11 +171,12 @@ void lt_test_rev_r_mem(lt_handle_t *h)
     LT_LOG_INFO("Testing writing all slots partially...");
     for (uint16_t i = 0; i <= TR01_R_MEM_DATA_SLOT_MAX; i++) {
         LT_LOG_INFO();
-        LT_LOG_INFO("Generating random data length < %" PRIu16 "...", h->tr01_attrs.r_mem_udata_slot_size_max);
+        LT_LOG_INFO("Generating random data length < %" PRIu16 "...",
+                    h->tr01_attrs.r_mem_udata_slot_size_max);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &write_data_len, sizeof(write_data_len)));
-        write_data_len
-            %= h->tr01_attrs.r_mem_udata_slot_size_max - 1;  // 0..(h->tr01_attrs.r_mem_udata_slot_size_max-2)
-        write_data_len += 1;                                 // 1..(h->tr01_attrs.r_mem_udata_slot_size_max-1)
+        write_data_len %= h->tr01_attrs.r_mem_udata_slot_size_max -
+                          1;  // 0..(h->tr01_attrs.r_mem_udata_slot_size_max-2)
+        write_data_len += 1;  // 1..(h->tr01_attrs.r_mem_udata_slot_size_max-1)
 
         LT_LOG_INFO("Generating %" PRIu16 " random bytes for slot #%" PRIu16 "...", write_data_len, i);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, write_data, write_data_len));
@@ -179,7 +185,8 @@ void lt_test_rev_r_mem(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_r_mem_data_write(h, i, write_data, write_data_len));
 
         LT_LOG_INFO("Reading slot #%" PRIu16 "...", i);
-        LT_TEST_ASSERT(LT_OK, lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_r_mem_data_read(h, i, r_mem_data, sizeof(r_mem_data), &read_data_size));
 
         LT_LOG_INFO("Checking number of read bytes...");
         LT_TEST_ASSERT(1, (read_data_size == write_data_len));

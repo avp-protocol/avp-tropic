@@ -861,7 +861,8 @@
  */
 // #define MBEDTLS_SSL_VARIABLE_BUFFER_LENGTH
 
-// #define MBEDTLS_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default 256 or 384 bits)
+// #define MBEDTLS_PSK_MAX_LEN               32 /**< Max size of TLS pre-shared keys, in bytes (default
+// 256 or 384 bits)
 // */ #define MBEDTLS_SSL_CACHE_DEFAULT_MAX_ENTRIES      50 /**< Maximum entries in cache */ #define
 // MBEDTLS_SSL_CACHE_DEFAULT_TIMEOUT       86400 /**< 1 day  */
 
@@ -910,8 +911,8 @@
 // #define MBEDTLS_SSL_CIPHERSUITES
 // MBEDTLS_TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,MBEDTLS_TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
 
-// #define MBEDTLS_SSL_COOKIE_TIMEOUT        60 /**< Default expiration delay of DTLS cookies, in seconds if HAVE_TIME,
-// or in number of cookies issued */
+// #define MBEDTLS_SSL_COOKIE_TIMEOUT        60 /**< Default expiration delay of DTLS cookies, in
+// seconds if HAVE_TIME, or in number of cookies issued */
 
 /** \def MBEDTLS_SSL_DTLS_MAX_BUFFERING
  *
@@ -1198,8 +1199,8 @@
  */
 // #define MBEDTLS_X509_USE_C
 
-// #define MBEDTLS_X509_MAX_FILE_PATH_LEN     512 /**< Maximum length of a path/filename string in bytes including the
-// null terminator character ('\0'). */ #define MBEDTLS_X509_MAX_INTERMEDIATE_CA   8   /**< Maximum number of
-// intermediate CAs in a verification chain. */
+// #define MBEDTLS_X509_MAX_FILE_PATH_LEN     512 /**< Maximum length of a path/filename string in
+// bytes including the null terminator character ('\0'). */ #define MBEDTLS_X509_MAX_INTERMEDIATE_CA 8
+// /**< Maximum number of intermediate CAs in a verification chain. */
 
 /** \} name SECTION: X.509 feature selection */

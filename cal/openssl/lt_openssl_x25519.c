@@ -56,8 +56,8 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
     // Initialize the derivation.
     if (EVP_PKEY_derive_init(ctx) <= 0) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize EVP_PKEY_CTX for X25519 derivation, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to initialize EVP_PKEY_CTX for X25519 derivation, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -65,8 +65,8 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
     // Provide the peer public key.
     if (EVP_PKEY_derive_set_peer(ctx, pub) <= 0) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to set peer public key for X25519 derivation, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to set peer public key for X25519 derivation, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -82,8 +82,8 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
     }
 
     if (secret_len != TR01_X25519_KEY_LEN) {
-        LT_LOG_ERROR("X25519 derived secret length mismatch! Current: %zu bytes, expected: %d bytes", secret_len,
-                     TR01_X25519_KEY_LEN);
+        LT_LOG_ERROR("X25519 derived secret length mismatch! Current: %zu bytes, expected: %d bytes",
+                     secret_len, TR01_X25519_KEY_LEN);
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -115,15 +115,15 @@ lt_ret_t lt_X25519_scalarmult(const uint8_t *sk, uint8_t *pk)
     size_t pk_len = TR01_X25519_KEY_LEN;
     if (!EVP_PKEY_get_raw_public_key(priv, pk, &pk_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to extract X25519 public key from private key, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to extract X25519 public key from private key, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_scalarmult_cleanup;
     }
 
     if (pk_len != TR01_X25519_KEY_LEN) {
-        LT_LOG_ERROR("X25519 public key length mismatch! Current: %zu bytes, expected: %d bytes", pk_len,
-                     TR01_X25519_KEY_LEN);
+        LT_LOG_ERROR("X25519 public key length mismatch! Current: %zu bytes, expected: %d bytes",
+                     pk_len, TR01_X25519_KEY_LEN);
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_scalarmult_cleanup;
     }

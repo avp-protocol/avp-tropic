@@ -218,8 +218,10 @@ lt_ret_t lt_get_info_cert_store(lt_handle_t *h, struct lt_cert_store_t *store)
         }
 
         // Read out and copy certificate chunk. Assumes that:
-        //  - A single certificate is always larger than 128 bytes -> There is at most one "trailing chunk"!
-        //    No need to handle this case explicitly since it is very likely to be like that, but worth mentioning.
+        //  - A single certificate is always larger than 128 bytes -> There is at most one "trailing
+        //  chunk"!
+        //    No need to handle this case explicitly since it is very likely to be like that, but worth
+        //    mentioning.
 
         // Copy certificate chunk
         int available = tail - head;
@@ -263,7 +265,8 @@ lt_ret_t lt_get_st_pub(const struct lt_cert_store_t *store, uint8_t *stpub)
     uint8_t *head = store->certs[LT_CERT_KIND_DEVICE];
     uint16_t len = store->cert_len[LT_CERT_KIND_DEVICE];
 
-    return asn1der_find_object(head, len, LT_OBJ_ID_CURVEX25519, stpub, TR01_STPUB_LEN, LT_ASN1DER_CROP_PREFIX);
+    return asn1der_find_object(head, len, LT_OBJ_ID_CURVEX25519, stpub, TR01_STPUB_LEN,
+                               LT_ASN1DER_CROP_PREFIX);
 }
 
 lt_ret_t lt_get_info_chip_id(lt_handle_t *h, struct lt_chip_id_t *chip_id)
@@ -295,7 +298,8 @@ lt_ret_t lt_get_info_chip_id(lt_handle_t *h, struct lt_chip_id_t *chip_id)
         return LT_L2_RSP_LEN_ERROR;
     }
 
-    memcpy(chip_id, ((struct lt_l2_get_info_rsp_t *)h->l2.buff)->object, TR01_L2_GET_INFO_CHIP_ID_SIZE);
+    memcpy(chip_id, ((struct lt_l2_get_info_rsp_t *)h->l2.buff)->object,
+           TR01_L2_GET_INFO_CHIP_ID_SIZE);
 
     return LT_OK;
 }
@@ -371,9 +375,9 @@ lt_ret_t lt_get_info_spect_fw_ver(lt_handle_t *h, uint8_t *ver)
 lt_ret_t lt_get_info_fw_bank(lt_handle_t *h, const lt_bank_id_t bank_id, uint8_t *header,
                              const uint16_t header_max_size, uint16_t *header_read_size)
 {
-    if (!h || !header || !header_read_size
-        || ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) && (bank_id != TR01_FW_BANK_SPECT1)
-            && (bank_id != TR01_FW_BANK_SPECT2))) {
+    if (!h || !header || !header_read_size ||
+        ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) &&
+         (bank_id != TR01_FW_BANK_SPECT1) && (bank_id != TR01_FW_BANK_SPECT2))) {
         return LT_PARAM_ERR;
     }
 
@@ -396,9 +400,9 @@ lt_ret_t lt_get_info_fw_bank(lt_handle_t *h, const lt_bank_id_t bank_id, uint8_t
         return ret;
     }
 
-    if ((TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1 != p_l2_resp->rsp_len)
-        && (TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2 != p_l2_resp->rsp_len)
-        && (TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2_EMPTY_BANK != p_l2_resp->rsp_len)) {
+    if ((TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1 != p_l2_resp->rsp_len) &&
+        (TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2 != p_l2_resp->rsp_len) &&
+        (TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2_EMPTY_BANK != p_l2_resp->rsp_len)) {
         return LT_L2_RSP_LEN_ERROR;
     }
 
@@ -453,9 +457,11 @@ lt_ret_t lt_session_abort(lt_handle_t *h)
     lt_l3_invalidate_host_session_data(&h->l3);
 
     // Setup a request pointer to l2 buffer, which is placed in handle
-    struct lt_l2_encrypted_session_abt_req_t *p_l2_req = (struct lt_l2_encrypted_session_abt_req_t *)h->l2.buff;
+    struct lt_l2_encrypted_session_abt_req_t *p_l2_req = (struct lt_l2_encrypted_session_abt_req_t *)
+                                                             h->l2.buff;
     // Setup a request pointer to l2 buffer with response data
-    struct lt_l2_encrypted_session_abt_rsp_t *p_l2_resp = (struct lt_l2_encrypted_session_abt_rsp_t *)h->l2.buff;
+    struct lt_l2_encrypted_session_abt_rsp_t *p_l2_resp = (struct lt_l2_encrypted_session_abt_rsp_t *)
+                                                              h->l2.buff;
 
     p_l2_req->req_id = TR01_L2_ENCRYPTED_SESSION_ABT_ID;
     p_l2_req->req_len = TR01_L2_ENCRYPTED_SESSION_ABT_LEN;
@@ -555,8 +561,8 @@ lt_ret_t lt_reboot(lt_handle_t *h, const lt_startup_id_t startup_id)
     }
 
     // Validate the current TROPIC01 mode based on the given `startup_id`.
-    if ((startup_id == TR01_REBOOT && tr01_mode != LT_TR01_APPLICATION)
-        || (startup_id == TR01_MAINTENANCE_REBOOT && tr01_mode != LT_TR01_MAINTENANCE)) {
+    if ((startup_id == TR01_REBOOT && tr01_mode != LT_TR01_APPLICATION) ||
+        (startup_id == TR01_MAINTENANCE_REBOOT && tr01_mode != LT_TR01_MAINTENANCE)) {
         return LT_REBOOT_UNSUCCESSFUL;
     }
 
@@ -566,9 +572,8 @@ lt_ret_t lt_reboot(lt_handle_t *h, const lt_startup_id_t startup_id)
 #ifdef ABAB
 lt_ret_t lt_mutable_fw_erase(lt_handle_t *h, const lt_bank_id_t bank_id)
 {
-    if (!h
-        || ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) && (bank_id != TR01_FW_BANK_SPECT1)
-            && (bank_id != TR01_FW_BANK_SPECT2))) {
+    if (!h || ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) &&
+               (bank_id != TR01_FW_BANK_SPECT1) && (bank_id != TR01_FW_BANK_SPECT2))) {
         return LT_PARAM_ERR;
     }
 
@@ -597,18 +602,21 @@ lt_ret_t lt_mutable_fw_erase(lt_handle_t *h, const lt_bank_id_t bank_id)
     return LT_OK;
 }
 
-lt_ret_t lt_mutable_fw_update(lt_handle_t *h, const uint8_t *fw_data, const uint16_t fw_data_size, lt_bank_id_t bank_id)
+lt_ret_t lt_mutable_fw_update(lt_handle_t *h, const uint8_t *fw_data, const uint16_t fw_data_size,
+                              lt_bank_id_t bank_id)
 {
-    if (!h || !fw_data || fw_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX
-        || ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) && (bank_id != TR01_FW_BANK_SPECT1)
-            && (bank_id != TR01_FW_BANK_SPECT2))) {
+    if (!h || !fw_data || fw_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX ||
+        ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) &&
+         (bank_id != TR01_FW_BANK_SPECT1) && (bank_id != TR01_FW_BANK_SPECT2))) {
         return LT_PARAM_ERR;
     }
 
     // Setup a request pointer to l2 buffer, which is placed in handle
-    struct lt_l2_mutable_fw_update_req_t *p_l2_req = (struct lt_l2_mutable_fw_update_req_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_req_t *p_l2_req = (struct lt_l2_mutable_fw_update_req_t *)
+                                                         h->l2.buff;
     // Setup a request pointer to l2 buffer with response data
-    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)
+                                                          h->l2.buff;
 
     uint16_t loops = fw_data_size / 128;
     uint16_t rest = fw_data_size % 128;
@@ -666,19 +674,22 @@ lt_ret_t lt_mutable_fw_update(lt_handle_t *h, const uint8_t *update_request)
 
     // This structure reflects incomming data and is used for passing those data into l2 frame
     struct data_format_t {
-        uint8_t req_len;        /**< Length byte */
-        uint8_t signature[64];  /**< Signature of SHA256 hash of all following data in this packet */
-        uint8_t hash[32];       /**< SHA256 HASH of first FW chunk of data sent using Mutable_FW_Update_Data */
-        uint16_t type;          /**< FW type which is going to be updated */
+        uint8_t req_len;       /**< Length byte */
+        uint8_t signature[64]; /**< Signature of SHA256 hash of all following data in this packet */
+        uint8_t
+            hash[32];  /**< SHA256 HASH of first FW chunk of data sent using Mutable_FW_Update_Data */
+        uint16_t type; /**< FW type which is going to be updated */
         uint8_t padding;        /**< Padding, zero value */
         uint8_t header_version; /**< Version of used header */
         uint32_t version;       /**< Version of FW */
     } __attribute__((__packed__));
 
     // Setup a request pointer to l2 buffer, which is placed in handle
-    struct lt_l2_mutable_fw_update_req_t *p_l2_req = (struct lt_l2_mutable_fw_update_req_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_req_t *p_l2_req = (struct lt_l2_mutable_fw_update_req_t *)
+                                                         h->l2.buff;
     // Setup a request pointer to l2 buffer with response data
-    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)
+                                                          h->l2.buff;
 
     // Setup a pointer to incomming data
     struct data_format_t *data_p = (struct data_format_t *)(update_request);
@@ -710,26 +721,30 @@ lt_ret_t lt_mutable_fw_update(lt_handle_t *h, const uint8_t *update_request)
     return LT_OK;
 }
 
-lt_ret_t lt_mutable_fw_update_data(lt_handle_t *h, const uint8_t *update_data, const uint16_t update_data_size)
+lt_ret_t lt_mutable_fw_update_data(lt_handle_t *h, const uint8_t *update_data,
+                                   const uint16_t update_data_size)
 {
-    if (!h || !update_data || update_data_size <= (TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN + 1U)
-        || update_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX) {
+    if (!h || !update_data || update_data_size <= (TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN + 1U) ||
+        update_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX) {
         return LT_PARAM_ERR;
     }
 
     // Setup a request pointer to l2 buffer, which is placed in handle
-    struct lt_l2_mutable_fw_update_data_req_t *p2_l2_req = (struct lt_l2_mutable_fw_update_data_req_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_data_req_t *p2_l2_req =
+        (struct lt_l2_mutable_fw_update_data_req_t *)h->l2.buff;
     // Setup a request pointer to l2 buffer with response data
-    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)h->l2.buff;
+    struct lt_l2_mutable_fw_update_rsp_t *p_l2_resp = (struct lt_l2_mutable_fw_update_rsp_t *)
+                                                          h->l2.buff;
 
     // Normalized sizes for arithmetic.
     size_t upd_size = (size_t)update_data_size;
     size_t copy_len;
 
-    // Compute how many bytes are available in the `lt_l2_mutable_fw_update_data_req_t` struct starting at `req_len`.
-    // This is a compile-time-safe calculation and prevents overflow into unknown memory.
+    // Compute how many bytes are available in the `lt_l2_mutable_fw_update_data_req_t` struct starting
+    // at `req_len`. This is a compile-time-safe calculation and prevents overflow into unknown memory.
     const size_t dest_offset = offsetof(struct lt_l2_mutable_fw_update_data_req_t, req_len);
-    const size_t dest_capacity = sizeof(*p2_l2_req) > dest_offset ? sizeof(*p2_l2_req) - dest_offset : 0U;
+    const size_t dest_capacity = sizeof(*p2_l2_req) > dest_offset ? sizeof(*p2_l2_req) - dest_offset
+                                                                  : 0U;
 
     // Data consist of "request" and "data" parts,
     // 'data' byte chunks are taken starting from 'chunk_index'
@@ -764,7 +779,8 @@ lt_ret_t lt_mutable_fw_update_data(lt_handle_t *h, const uint8_t *update_data, c
 #error "Undefined silicon revision. Please define either ABAB or ACAB."
 #endif
 
-lt_ret_t lt_get_log_req(lt_handle_t *h, uint8_t *log_msg, const uint16_t log_msg_max_size, uint16_t *log_msg_read_size)
+lt_ret_t lt_get_log_req(lt_handle_t *h, uint8_t *log_msg, const uint16_t log_msg_max_size,
+                        uint16_t *log_msg_read_size)
 {
     if (!h || !log_msg || !log_msg_read_size) {
         return LT_PARAM_ERR;
@@ -818,7 +834,8 @@ lt_ret_t lt_ping(lt_handle_t *h, const uint8_t *msg_out, uint8_t *msg_in, const 
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_PING_RES_PACKET_SIZE_MAX));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_PING_RES_PACKET_SIZE_MAX));
     if (ret != LT_OK) {
         return ret;
     }
@@ -901,8 +918,8 @@ lt_ret_t lt_pairing_key_invalidate(lt_handle_t *h, const uint8_t slot)
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
-                                   lt_min(h->l3.buff_len, TR01_L3_PAIRING_KEY_INVALIDATE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(
+        &h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_PAIRING_KEY_INVALIDATE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -929,7 +946,8 @@ lt_ret_t lt_r_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_WRITE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_WRITE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -956,7 +974,8 @@ lt_ret_t lt_r_config_read(lt_handle_t *h, const enum lt_config_obj_addr_t addr, 
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_READ_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_READ_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -983,7 +1002,8 @@ lt_ret_t lt_r_config_erase(lt_handle_t *h)
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_ERASE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_R_CONFIG_ERASE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -991,7 +1011,8 @@ lt_ret_t lt_r_config_erase(lt_handle_t *h)
     return lt_in__r_config_erase(h);
 }
 
-lt_ret_t lt_i_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr, const uint8_t bit_index)
+lt_ret_t lt_i_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
+                           const uint8_t bit_index)
 {
     if (!h || (bit_index > 31)) {
         return LT_PARAM_ERR;
@@ -1010,7 +1031,8 @@ lt_ret_t lt_i_config_write(lt_handle_t *h, const enum lt_config_obj_addr_t addr,
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_I_CONFIG_WRITE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_I_CONFIG_WRITE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1037,7 +1059,8 @@ lt_ret_t lt_i_config_read(lt_handle_t *h, const enum lt_config_obj_addr_t addr, 
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_I_CONFIG_READ_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_I_CONFIG_READ_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1045,10 +1068,12 @@ lt_ret_t lt_i_config_read(lt_handle_t *h, const enum lt_config_obj_addr_t addr, 
     return lt_in__i_config_read(h, obj);
 }
 
-lt_ret_t lt_r_mem_data_write(lt_handle_t *h, const uint16_t udata_slot, const uint8_t *data, const uint16_t data_size)
+lt_ret_t lt_r_mem_data_write(lt_handle_t *h, const uint16_t udata_slot, const uint8_t *data,
+                             const uint16_t data_size)
 {
-    if (!h || !data || data_size < TR01_R_MEM_DATA_SIZE_MIN || data_size > h->tr01_attrs.r_mem_udata_slot_size_max
-        || (udata_slot > TR01_R_MEM_DATA_SLOT_MAX)) {
+    if (!h || !data || data_size < TR01_R_MEM_DATA_SIZE_MIN ||
+        data_size > h->tr01_attrs.r_mem_udata_slot_size_max ||
+        (udata_slot > TR01_R_MEM_DATA_SLOT_MAX)) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1074,8 +1099,8 @@ lt_ret_t lt_r_mem_data_write(lt_handle_t *h, const uint16_t udata_slot, const ui
     return lt_in__r_mem_data_write(h);
 }
 
-lt_ret_t lt_r_mem_data_read(lt_handle_t *h, const uint16_t udata_slot, uint8_t *data, const uint16_t data_max_size,
-                            uint16_t *data_read_size)
+lt_ret_t lt_r_mem_data_read(lt_handle_t *h, const uint16_t udata_slot, uint8_t *data,
+                            const uint16_t data_max_size, uint16_t *data_read_size)
 {
     if (!h || !data || !data_read_size || (udata_slot > TR01_R_MEM_DATA_SLOT_MAX)) {
         return LT_PARAM_ERR;
@@ -1096,9 +1121,10 @@ lt_ret_t lt_r_mem_data_read(lt_handle_t *h, const uint16_t udata_slot, uint8_t *
 
     ret = lt_l2_recv_encrypted_res(
         &h->l2, h->l3.buff,
-        lt_min(h->l3.buff_len, TR01_L3_SIZE_SIZE + TR01_L3_RESULT_SIZE
-                                   + (TR01_L3_R_MEM_DATA_READ_PADDING_SIZE + h->tr01_attrs.r_mem_udata_slot_size_max)
-                                   + TR01_L3_TAG_SIZE));
+        lt_min(h->l3.buff_len,
+               TR01_L3_SIZE_SIZE + TR01_L3_RESULT_SIZE +
+                   (TR01_L3_R_MEM_DATA_READ_PADDING_SIZE + h->tr01_attrs.r_mem_udata_slot_size_max) +
+                   TR01_L3_TAG_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1153,8 +1179,8 @@ lt_ret_t lt_random_value_get(lt_handle_t *h, uint8_t *rnd_bytes, const uint16_t 
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
-                                   lt_min(h->l3.buff_len, TR01_L3_RANDOM_VALUE_GET_RES_PACKET_SIZE_MAX));
+    ret = lt_l2_recv_encrypted_res(
+        &h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_RANDOM_VALUE_GET_RES_PACKET_SIZE_MAX));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1164,7 +1190,8 @@ lt_ret_t lt_random_value_get(lt_handle_t *h, uint8_t *rnd_bytes, const uint16_t 
 
 lt_ret_t lt_ecc_key_generate(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc_curve_type_t curve)
 {
-    if (!h || (slot > TR01_ECC_SLOT_31) || ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519))) {
+    if (!h || (slot > TR01_ECC_SLOT_31) ||
+        ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519))) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1190,9 +1217,11 @@ lt_ret_t lt_ecc_key_generate(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_
     return lt_in__ecc_key_generate(h);
 }
 
-lt_ret_t lt_ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc_curve_type_t curve, const uint8_t *key)
+lt_ret_t lt_ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc_curve_type_t curve,
+                          const uint8_t *key)
 {
-    if (!h || (slot > TR01_ECC_SLOT_31) || ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519)) || !key) {
+    if (!h || (slot > TR01_ECC_SLOT_31) ||
+        ((curve != TR01_CURVE_P256) && (curve != TR01_CURVE_ED25519)) || !key) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1208,7 +1237,8 @@ lt_ret_t lt_ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_ECC_KEY_STORE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_ECC_KEY_STORE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1216,8 +1246,9 @@ lt_ret_t lt_ecc_key_store(lt_handle_t *h, const lt_ecc_slot_t slot, const lt_ecc
     return lt_in__ecc_key_store(h);
 }
 
-lt_ret_t lt_ecc_key_read(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, uint8_t *key, const uint8_t key_max_size,
-                         lt_ecc_curve_type_t *curve, lt_ecc_key_origin_t *origin)
+lt_ret_t lt_ecc_key_read(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, uint8_t *key,
+                         const uint8_t key_max_size, lt_ecc_curve_type_t *curve,
+                         lt_ecc_key_origin_t *origin)
 {
     if (!h || (ecc_slot > TR01_ECC_SLOT_31) || !key || !curve || !origin) {
         return LT_PARAM_ERR;
@@ -1264,7 +1295,8 @@ lt_ret_t lt_ecc_key_erase(lt_handle_t *h, const lt_ecc_slot_t ecc_slot)
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_ECC_KEY_ERASE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_ECC_KEY_ERASE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1272,8 +1304,8 @@ lt_ret_t lt_ecc_key_erase(lt_handle_t *h, const lt_ecc_slot_t ecc_slot)
     return lt_in__ecc_key_erase(h);
 }
 
-lt_ret_t lt_ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const uint8_t *msg, const uint32_t msg_len,
-                           uint8_t *rs)
+lt_ret_t lt_ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const uint8_t *msg,
+                           const uint32_t msg_len, uint8_t *rs)
 {
     if (!h || !msg || !rs || (ecc_slot > TR01_ECC_SLOT_31)) {
         return LT_PARAM_ERR;
@@ -1292,7 +1324,8 @@ lt_ret_t lt_ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const u
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_ECDSA_SIGN_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_ECDSA_SIGN_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1300,10 +1333,11 @@ lt_ret_t lt_ecc_ecdsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const u
     return lt_in__ecc_ecdsa_sign(h, rs);
 }
 
-lt_ret_t lt_ecc_eddsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const uint8_t *msg, const uint16_t msg_len,
-                           uint8_t *rs)
+lt_ret_t lt_ecc_eddsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const uint8_t *msg,
+                           const uint16_t msg_len, uint8_t *rs)
 {
-    if (!h || !msg || !rs || (msg_len > TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX) || (ecc_slot > TR01_ECC_SLOT_31)) {
+    if (!h || !msg || !rs || (msg_len > TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX) ||
+        (ecc_slot > TR01_ECC_SLOT_31)) {
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -1320,7 +1354,8 @@ lt_ret_t lt_ecc_eddsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const u
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_EDDSA_SIGN_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_EDDSA_SIGN_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1328,7 +1363,8 @@ lt_ret_t lt_ecc_eddsa_sign(lt_handle_t *h, const lt_ecc_slot_t ecc_slot, const u
     return lt_in__ecc_eddsa_sign(h, rs);
 }
 
-lt_ret_t lt_mcounter_init(lt_handle_t *h, const enum lt_mcounter_index_t mcounter_index, const uint32_t mcounter_value)
+lt_ret_t lt_mcounter_init(lt_handle_t *h, const enum lt_mcounter_index_t mcounter_index,
+                          const uint32_t mcounter_value)
 {
     if (!h || (mcounter_index > TR01_MCOUNTER_INDEX_15) || mcounter_value > TR01_MCOUNTER_VALUE_MAX) {
         return LT_PARAM_ERR;
@@ -1347,7 +1383,8 @@ lt_ret_t lt_mcounter_init(lt_handle_t *h, const enum lt_mcounter_index_t mcounte
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_INIT_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_INIT_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1374,7 +1411,8 @@ lt_ret_t lt_mcounter_update(lt_handle_t *h, const enum lt_mcounter_index_t mcoun
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_UPDATE_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_UPDATE_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1382,7 +1420,8 @@ lt_ret_t lt_mcounter_update(lt_handle_t *h, const enum lt_mcounter_index_t mcoun
     return lt_in__mcounter_update(h);
 }
 
-lt_ret_t lt_mcounter_get(lt_handle_t *h, const enum lt_mcounter_index_t mcounter_index, uint32_t *mcounter_value)
+lt_ret_t lt_mcounter_get(lt_handle_t *h, const enum lt_mcounter_index_t mcounter_index,
+                         uint32_t *mcounter_value)
 {
     if (!h || (mcounter_index > TR01_MCOUNTER_INDEX_15) || !mcounter_value) {
         return LT_PARAM_ERR;
@@ -1401,7 +1440,8 @@ lt_ret_t lt_mcounter_get(lt_handle_t *h, const enum lt_mcounter_index_t mcounter
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_GET_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_MCOUNTER_GET_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1409,8 +1449,8 @@ lt_ret_t lt_mcounter_get(lt_handle_t *h, const enum lt_mcounter_index_t mcounter
     return lt_in__mcounter_get(h, mcounter_value);
 }
 
-lt_ret_t lt_mac_and_destroy(lt_handle_t *h, const lt_mac_and_destroy_slot_t slot, const uint8_t *data_out,
-                            uint8_t *data_in)
+lt_ret_t lt_mac_and_destroy(lt_handle_t *h, const lt_mac_and_destroy_slot_t slot,
+                            const uint8_t *data_out, uint8_t *data_in)
 {
     if (!h || !data_out || !data_in || slot > TR01_MAC_AND_DESTROY_SLOT_127) {
         return LT_PARAM_ERR;
@@ -1429,7 +1469,8 @@ lt_ret_t lt_mac_and_destroy(lt_handle_t *h, const lt_mac_and_destroy_slot_t slot
         return ret;
     }
 
-    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff, lt_min(h->l3.buff_len, TR01_L3_MAC_AND_DESTROY_RES_PACKET_SIZE));
+    ret = lt_l2_recv_encrypted_res(&h->l2, h->l3.buff,
+                                   lt_min(h->l3.buff_len, TR01_L3_MAC_AND_DESTROY_RES_PACKET_SIZE));
     if (ret != LT_OK) {
         return ret;
     }
@@ -1497,34 +1538,34 @@ const char *lt_ret_verbose(lt_ret_t ret)
 //--------------------------------------------------------------------------------------------------------//
 #ifdef LT_HELPERS
 
-struct lt_config_obj_desc_t cfg_desc_table[LT_CONFIG_OBJ_CNT]
-    = {{"TR01_CFG_START_UP                   ", TR01_CFG_START_UP_ADDR},
-       {"TR01_CFG_SENSORS                    ", TR01_CFG_SENSORS_ADDR},
-       {"TR01_CFG_DEBUG                      ", TR01_CFG_DEBUG_ADDR},
-       {"TR01_CFG_GPO_ADDR                   ", TR01_CFG_GPO_ADDR},
-       {"TR01_CFG_SLEEP_MODE                 ", TR01_CFG_SLEEP_MODE_ADDR},
-       {"TR01_CFG_UAP_PAIRING_KEY_WRITE      ", TR01_CFG_UAP_PAIRING_KEY_WRITE_ADDR},
-       {"TR01_CFG_UAP_PAIRING_KEY_READ       ", TR01_CFG_UAP_PAIRING_KEY_READ_ADDR},
-       {"TR01_CFG_UAP_PAIRING_KEY_INVALIDATE ", TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_ADDR},
-       {"TR01_CFG_UAP_R_CONFIG_WRITE_ERASE   ", TR01_CFG_UAP_R_CONFIG_WRITE_ERASE_ADDR},
-       {"TR01_CFG_UAP_R_CONFIG_READ          ", TR01_CFG_UAP_R_CONFIG_READ_ADDR},
-       {"TR01_CFG_UAP_I_CONFIG_WRITE         ", TR01_CFG_UAP_I_CONFIG_WRITE_ADDR},
-       {"TR01_CFG_UAP_I_CONFIG_READ          ", TR01_CFG_UAP_I_CONFIG_READ_ADDR},
-       {"TR01_CFG_UAP_PING                   ", TR01_CFG_UAP_PING_ADDR},
-       {"TR01_CFG_UAP_R_MEM_DATA_WRITE       ", TR01_CFG_UAP_R_MEM_DATA_WRITE_ADDR},
-       {"TR01_CFG_UAP_R_MEM_DATA_READ        ", TR01_CFG_UAP_R_MEM_DATA_READ_ADDR},
-       {"TR01_CFG_UAP_R_MEM_DATA_ERASE       ", TR01_CFG_UAP_R_MEM_DATA_ERASE_ADDR},
-       {"TR01_CFG_UAP_RANDOM_VALUE_GET       ", TR01_CFG_UAP_RANDOM_VALUE_GET_ADDR},
-       {"TR01_CFG_UAP_ECC_KEY_GENERATE       ", TR01_CFG_UAP_ECC_KEY_GENERATE_ADDR},
-       {"TR01_CFG_UAP_ECC_KEY_STORE          ", TR01_CFG_UAP_ECC_KEY_STORE_ADDR},
-       {"TR01_CFG_UAP_ECC_KEY_READ           ", TR01_CFG_UAP_ECC_KEY_READ_ADDR},
-       {"TR01_CFG_UAP_ECC_KEY_ERASE          ", TR01_CFG_UAP_ECC_KEY_ERASE_ADDR},
-       {"TR01_CFG_UAP_ECDSA_SIGN             ", TR01_CFG_UAP_ECDSA_SIGN_ADDR},
-       {"TR01_CFG_UAP_EDDSA_SIGN             ", TR01_CFG_UAP_EDDSA_SIGN_ADDR},
-       {"TR01_CFG_UAP_MCOUNTER_INIT          ", TR01_CFG_UAP_MCOUNTER_INIT_ADDR},
-       {"TR01_CFG_UAP_MCOUNTER_GET           ", TR01_CFG_UAP_MCOUNTER_GET_ADDR},
-       {"TR01_CFG_UAP_MCOUNTER_UPDATE        ", TR01_CFG_UAP_MCOUNTER_UPDATE_ADDR},
-       {"TR01_CFG_UAP_MAC_AND_DESTROY        ", TR01_CFG_UAP_MAC_AND_DESTROY_ADDR}};
+struct lt_config_obj_desc_t cfg_desc_table[LT_CONFIG_OBJ_CNT] = {
+    {"TR01_CFG_START_UP                   ", TR01_CFG_START_UP_ADDR},
+    {"TR01_CFG_SENSORS                    ", TR01_CFG_SENSORS_ADDR},
+    {"TR01_CFG_DEBUG                      ", TR01_CFG_DEBUG_ADDR},
+    {"TR01_CFG_GPO_ADDR                   ", TR01_CFG_GPO_ADDR},
+    {"TR01_CFG_SLEEP_MODE                 ", TR01_CFG_SLEEP_MODE_ADDR},
+    {"TR01_CFG_UAP_PAIRING_KEY_WRITE      ", TR01_CFG_UAP_PAIRING_KEY_WRITE_ADDR},
+    {"TR01_CFG_UAP_PAIRING_KEY_READ       ", TR01_CFG_UAP_PAIRING_KEY_READ_ADDR},
+    {"TR01_CFG_UAP_PAIRING_KEY_INVALIDATE ", TR01_CFG_UAP_PAIRING_KEY_INVALIDATE_ADDR},
+    {"TR01_CFG_UAP_R_CONFIG_WRITE_ERASE   ", TR01_CFG_UAP_R_CONFIG_WRITE_ERASE_ADDR},
+    {"TR01_CFG_UAP_R_CONFIG_READ          ", TR01_CFG_UAP_R_CONFIG_READ_ADDR},
+    {"TR01_CFG_UAP_I_CONFIG_WRITE         ", TR01_CFG_UAP_I_CONFIG_WRITE_ADDR},
+    {"TR01_CFG_UAP_I_CONFIG_READ          ", TR01_CFG_UAP_I_CONFIG_READ_ADDR},
+    {"TR01_CFG_UAP_PING                   ", TR01_CFG_UAP_PING_ADDR},
+    {"TR01_CFG_UAP_R_MEM_DATA_WRITE       ", TR01_CFG_UAP_R_MEM_DATA_WRITE_ADDR},
+    {"TR01_CFG_UAP_R_MEM_DATA_READ        ", TR01_CFG_UAP_R_MEM_DATA_READ_ADDR},
+    {"TR01_CFG_UAP_R_MEM_DATA_ERASE       ", TR01_CFG_UAP_R_MEM_DATA_ERASE_ADDR},
+    {"TR01_CFG_UAP_RANDOM_VALUE_GET       ", TR01_CFG_UAP_RANDOM_VALUE_GET_ADDR},
+    {"TR01_CFG_UAP_ECC_KEY_GENERATE       ", TR01_CFG_UAP_ECC_KEY_GENERATE_ADDR},
+    {"TR01_CFG_UAP_ECC_KEY_STORE          ", TR01_CFG_UAP_ECC_KEY_STORE_ADDR},
+    {"TR01_CFG_UAP_ECC_KEY_READ           ", TR01_CFG_UAP_ECC_KEY_READ_ADDR},
+    {"TR01_CFG_UAP_ECC_KEY_ERASE          ", TR01_CFG_UAP_ECC_KEY_ERASE_ADDR},
+    {"TR01_CFG_UAP_ECDSA_SIGN             ", TR01_CFG_UAP_ECDSA_SIGN_ADDR},
+    {"TR01_CFG_UAP_EDDSA_SIGN             ", TR01_CFG_UAP_EDDSA_SIGN_ADDR},
+    {"TR01_CFG_UAP_MCOUNTER_INIT          ", TR01_CFG_UAP_MCOUNTER_INIT_ADDR},
+    {"TR01_CFG_UAP_MCOUNTER_GET           ", TR01_CFG_UAP_MCOUNTER_GET_ADDR},
+    {"TR01_CFG_UAP_MCOUNTER_UPDATE        ", TR01_CFG_UAP_MCOUNTER_UPDATE_ADDR},
+    {"TR01_CFG_UAP_MAC_AND_DESTROY        ", TR01_CFG_UAP_MAC_AND_DESTROY_ADDR}};
 
 lt_ret_t lt_read_whole_R_config(lt_handle_t *h, struct lt_config_t *config)
 {
@@ -1606,7 +1647,8 @@ lt_ret_t lt_write_whole_I_config(lt_handle_t *h, const struct lt_config_t *confi
     return LT_OK;
 }
 
-lt_ret_t lt_verify_chip_and_start_secure_session(lt_handle_t *h, const uint8_t *shipriv, const uint8_t *shipub,
+lt_ret_t lt_verify_chip_and_start_secure_session(lt_handle_t *h, const uint8_t *shipriv,
+                                                 const uint8_t *shipub,
                                                  const lt_pkey_index_t pkey_index)
 {
     if (!h || !shipriv || !shipub || (pkey_index > TR01_PAIRING_KEY_SLOT_INDEX_3)) {
@@ -1642,11 +1684,11 @@ lt_ret_t lt_verify_chip_and_start_secure_session(lt_handle_t *h, const uint8_t *
     uint8_t cert_tr01[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0};
     uint8_t cert_root[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE] = {0};
 
-    struct lt_cert_store_t cert_store
-        = {.cert_len = {0, 0, 0, 0},
-           .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
-                       TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE},
-           .certs = {cert_ese, cert_xxxx, cert_tr01, cert_root}};
+    struct lt_cert_store_t cert_store = {
+        .cert_len = {0, 0, 0, 0},
+        .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
+                    TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE},
+        .certs = {cert_ese, cert_xxxx, cert_tr01, cert_root}};
 
     ret = lt_get_info_cert_store(h, &cert_store);
     if (ret != LT_OK) {
@@ -1668,7 +1710,8 @@ lt_ret_t lt_verify_chip_and_start_secure_session(lt_handle_t *h, const uint8_t *
     return LT_OK;
 }
 
-lt_ret_t lt_print_bytes(const uint8_t *bytes, const size_t bytes_cnt, char *out_buf, const size_t out_buf_size)
+lt_ret_t lt_print_bytes(const uint8_t *bytes, const size_t bytes_cnt, char *out_buf,
+                        const size_t out_buf_size)
 {
     if (!bytes || !out_buf || out_buf_size < (bytes_cnt * 2 + 1)) {
         // Write empty string if buffer too small
@@ -1692,7 +1735,8 @@ lt_ret_t lt_print_bytes(const uint8_t *bytes, const size_t bytes_cnt, char *out_
     return LT_OK;
 }
 
-lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(const char *format, ...))
+lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id,
+                          int (*print_func)(const char *format, ...))
 {
     if (!chip_id || !print_func) {
         return LT_PARAM_ERR;
@@ -1700,43 +1744,41 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
 
     char print_bytes_buff[LT_CHIP_ID_FIELD_MAX_SIZE];
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->chip_id_ver, sizeof(chip_id->chip_id_ver), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("CHIP_ID ver            = 0x%s (v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 ")\n",
-                          print_bytes_buff, chip_id->chip_id_ver[0], chip_id->chip_id_ver[1], chip_id->chip_id_ver[2],
-                          chip_id->chip_id_ver[3])) {
+    if (LT_OK != lt_print_bytes(chip_id->chip_id_ver, sizeof(chip_id->chip_id_ver), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("CHIP_ID ver            = 0x%s (v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8
+                       ")\n",
+                       print_bytes_buff, chip_id->chip_id_ver[0], chip_id->chip_id_ver[1],
+                       chip_id->chip_id_ver[2], chip_id->chip_id_ver[3])) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->fl_chip_info, sizeof(chip_id->fl_chip_info), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("FL_PROD_DATA           = 0x%s (%s)\n", print_bytes_buff,
-                          chip_id->fl_chip_info[0] == 0x01 ? "PASSED" : "N/A")) {
+    if (LT_OK != lt_print_bytes(chip_id->fl_chip_info, sizeof(chip_id->fl_chip_info), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("FL_PROD_DATA           = 0x%s (%s)\n", print_bytes_buff,
+                       chip_id->fl_chip_info[0] == 0x01 ? "PASSED" : "N/A")) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->func_test_info, sizeof(chip_id->func_test_info), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("MAN_FUNC_TEST          = 0x%s (%s)\n", print_bytes_buff,
-                          chip_id->func_test_info[0] == 0x01 ? "PASSED" : "N/A")) {
+    if (LT_OK != lt_print_bytes(chip_id->func_test_info, sizeof(chip_id->func_test_info),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("MAN_FUNC_TEST          = 0x%s (%s)\n", print_bytes_buff,
+                       chip_id->func_test_info[0] == 0x01 ? "PASSED" : "N/A")) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->silicon_rev, sizeof(chip_id->silicon_rev), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Silicon rev            = 0x%s (%c%c%c%c)\n", print_bytes_buff, chip_id->silicon_rev[0],
-                          chip_id->silicon_rev[1], chip_id->silicon_rev[2], chip_id->silicon_rev[3])) {
+    if (LT_OK != lt_print_bytes(chip_id->silicon_rev, sizeof(chip_id->silicon_rev), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("Silicon rev            = 0x%s (%c%c%c%c)\n", print_bytes_buff,
+                       chip_id->silicon_rev[0], chip_id->silicon_rev[1], chip_id->silicon_rev[2],
+                       chip_id->silicon_rev[3])) {
         return LT_FAIL;
     }
 
-    uint16_t packg_type_id = ((uint16_t)chip_id->packg_type_id[0] << 8) | ((uint16_t)chip_id->packg_type_id[1]);
-    if (LT_OK
-        != lt_print_bytes(chip_id->packg_type_id, sizeof(chip_id->packg_type_id), print_bytes_buff,
-                          sizeof(print_bytes_buff))) {
+    uint16_t packg_type_id = ((uint16_t)chip_id->packg_type_id[0] << 8) |
+                             ((uint16_t)chip_id->packg_type_id[1]);
+    if (LT_OK != lt_print_bytes(chip_id->packg_type_id, sizeof(chip_id->packg_type_id),
+                                print_bytes_buff, sizeof(print_bytes_buff))) {
         return LT_FAIL;
     }
     const char *packg_type_id_str;
@@ -1757,21 +1799,25 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
         return LT_FAIL;
     }
 
-    if (0 > print_func("Prov info ver          = 0x%02" PRIX8 " (v%" PRIu8 ")\n", chip_id->prov_ver_fab_id_pn[0],
-                       chip_id->prov_ver_fab_id_pn[0])) {
+    if (0 > print_func("Prov info ver          = 0x%02" PRIX8 " (v%" PRIu8 ")\n",
+                       chip_id->prov_ver_fab_id_pn[0], chip_id->prov_ver_fab_id_pn[0])) {
         return LT_FAIL;
     }
 
-    uint16_t parsed_fab_id = ((chip_id->prov_ver_fab_id_pn[1] << 4) | (chip_id->prov_ver_fab_id_pn[2] >> 4)) & 0xfff;
+    uint16_t parsed_fab_id = ((chip_id->prov_ver_fab_id_pn[1] << 4) |
+                              (chip_id->prov_ver_fab_id_pn[2] >> 4)) &
+                             0xfff;
     switch (parsed_fab_id) {
         case TR01_FAB_ID_TROPIC_SQUARE_LAB:
-            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "Tropic Square Lab")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id,
+                               "Tropic Square Lab")) {
                 return LT_FAIL;
             }
             break;
 
         case TR01_FAB_ID_EPS_BRNO:
-            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id, "EPS Global - Brno")) {
+            if (0 > print_func("Fab ID                 = 0x%03" PRIX16 " (%s)\n", parsed_fab_id,
+                               "EPS Global - Brno")) {
                 return LT_FAIL;
             }
             break;
@@ -1783,33 +1829,34 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
             break;
     }
 
-    uint16_t parsed_short_pn = ((chip_id->prov_ver_fab_id_pn[2] << 8) | (chip_id->prov_ver_fab_id_pn[3])) & 0xfff;
+    uint16_t parsed_short_pn = ((chip_id->prov_ver_fab_id_pn[2] << 8) |
+                                (chip_id->prov_ver_fab_id_pn[3])) &
+                               0xfff;
     if (0 > print_func("P/N ID (short P/N)     = 0x%03" PRIX16 "\n", parsed_short_pn)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->provisioning_date, sizeof(chip_id->provisioning_date), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Prov date              = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->provisioning_date, sizeof(chip_id->provisioning_date),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("Prov date              = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
-    if (LT_OK != lt_print_bytes(chip_id->hsm_ver, sizeof(chip_id->hsm_ver), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("HSM HW/FW/SW ver       = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->hsm_ver, sizeof(chip_id->hsm_ver), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("HSM HW/FW/SW ver       = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->prog_ver, sizeof(chip_id->prog_ver), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("Programmer ver         = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->prog_ver, sizeof(chip_id->prog_ver), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("Programmer ver         = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes((uint8_t *)&chip_id->ser_num, sizeof(chip_id->ser_num), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("S/N                    = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes((uint8_t *)&chip_id->ser_num, sizeof(chip_id->ser_num),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("S/N                    = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
@@ -1817,59 +1864,54 @@ lt_ret_t lt_print_chip_id(const struct lt_chip_id_t *chip_id, int (*print_func)(
     uint8_t pn_data[16];  // 15B for data, last byte for '\0'
     memcpy(pn_data, &chip_id->part_num_data[1], pn_len);
     pn_data[pn_len] = '\0';
-    if (LT_OK
-            != lt_print_bytes(chip_id->part_num_data, sizeof(chip_id->part_num_data), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("P/N (long)             = 0x%s (%s)\n", print_bytes_buff, pn_data)) {
+    if (LT_OK != lt_print_bytes(chip_id->part_num_data, sizeof(chip_id->part_num_data),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("P/N (long)             = 0x%s (%s)\n", print_bytes_buff, pn_data)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->prov_templ_ver, sizeof(chip_id->prov_templ_ver), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Prov template ver      = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
-                          chip_id->prov_templ_ver[0], chip_id->prov_templ_ver[1])) {
+    if (LT_OK != lt_print_bytes(chip_id->prov_templ_ver, sizeof(chip_id->prov_templ_ver),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("Prov template ver      = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
+                       chip_id->prov_templ_ver[0], chip_id->prov_templ_ver[1])) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->prov_templ_tag, sizeof(chip_id->prov_templ_tag), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Prov template tag      = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->prov_templ_tag, sizeof(chip_id->prov_templ_tag),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("Prov template tag      = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->prov_spec_ver, sizeof(chip_id->prov_spec_ver), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Prov specification ver = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
-                          chip_id->prov_spec_ver[0], chip_id->prov_spec_ver[1])) {
+    if (LT_OK != lt_print_bytes(chip_id->prov_spec_ver, sizeof(chip_id->prov_spec_ver),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("Prov specification ver = 0x%s (v%" PRIu8 ".%" PRIu8 ")\n", print_bytes_buff,
+                       chip_id->prov_spec_ver[0], chip_id->prov_spec_ver[1])) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->prov_spec_tag, sizeof(chip_id->prov_spec_tag), print_bytes_buff,
-                              sizeof(print_bytes_buff))
-        || 0 > print_func("Prov specification tag = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->prov_spec_tag, sizeof(chip_id->prov_spec_tag),
+                                print_bytes_buff, sizeof(print_bytes_buff)) ||
+        0 > print_func("Prov specification tag = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
-    if (LT_OK
-            != lt_print_bytes(chip_id->batch_id, sizeof(chip_id->batch_id), print_bytes_buff, sizeof(print_bytes_buff))
-        || 0 > print_func("Batch ID               = 0x%s\n", print_bytes_buff)) {
+    if (LT_OK != lt_print_bytes(chip_id->batch_id, sizeof(chip_id->batch_id), print_bytes_buff,
+                                sizeof(print_bytes_buff)) ||
+        0 > print_func("Batch ID               = 0x%s\n", print_bytes_buff)) {
         return LT_FAIL;
     }
 
     return LT_OK;
 }
 
-lt_ret_t lt_do_mutable_fw_update(lt_handle_t *h, const uint8_t *update_data, const uint16_t update_data_size,
-                                 const lt_bank_id_t bank_id)
+lt_ret_t lt_do_mutable_fw_update(lt_handle_t *h, const uint8_t *update_data,
+                                 const uint16_t update_data_size, const lt_bank_id_t bank_id)
 {
 #ifdef ABAB
-    if (!h || !update_data || update_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX
-        || ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) && (bank_id != TR01_FW_BANK_SPECT1)
-            && (bank_id != TR01_FW_BANK_SPECT2))) {
+    if (!h || !update_data || update_data_size > TR01_MUTABLE_FW_UPDATE_SIZE_MAX ||
+        ((bank_id != TR01_FW_BANK_FW1) && (bank_id != TR01_FW_BANK_FW2) &&
+         (bank_id != TR01_FW_BANK_SPECT1) && (bank_id != TR01_FW_BANK_SPECT2))) {
         return LT_PARAM_ERR;
     }
     lt_ret_t ret = lt_mutable_fw_erase(h, bank_id);
@@ -1907,7 +1949,8 @@ lt_ret_t lt_do_mutable_fw_update(lt_handle_t *h, const uint8_t *update_data, con
     return LT_OK;
 }
 
-lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id, int (*print_func)(const char *format, ...))
+lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id,
+                            int (*print_func)(const char *format, ...))
 {
     if (!h || !print_func) {
         return LT_PARAM_ERR;
@@ -1941,22 +1984,24 @@ lt_ret_t lt_print_fw_header(lt_handle_t *h, const lt_bank_id_t bank_id, int (*pr
     }
 
     if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1) {
-        print_func("    Bootloader v1.0.1 detected, reading %dB header\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1);
+        print_func("    Bootloader v1.0.1 detected, reading %dB header\n",
+                   TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V1);
         struct lt_header_boot_v1_t *p_h = (struct lt_header_boot_v1_t *)header;
 
-        print_func("      Type:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->type[3], p_h->type[2],
-                   p_h->type[1], p_h->type[0]);
-        print_func("      Version:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->version[3],
-                   p_h->version[2], p_h->version[1], p_h->version[0]);
-        print_func("      Size:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->size[3], p_h->size[2],
-                   p_h->size[1], p_h->size[0]);
-        print_func("      Git hash:  %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->git_hash[3],
-                   p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
-        print_func("      FW hash:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->hash[3], p_h->hash[2],
-                   p_h->hash[1], p_h->hash[0]);
+        print_func("      Type:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->type[3],
+                   p_h->type[2], p_h->type[1], p_h->type[0]);
+        print_func("      Version:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n",
+                   p_h->version[3], p_h->version[2], p_h->version[1], p_h->version[0]);
+        print_func("      Size:      %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->size[3],
+                   p_h->size[2], p_h->size[1], p_h->size[0]);
+        print_func("      Git hash:  %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n",
+                   p_h->git_hash[3], p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
+        print_func("      FW hash:   %02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "\n", p_h->hash[3],
+                   p_h->hash[2], p_h->hash[1], p_h->hash[0]);
     }
     else if (read_header_size == TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2) {
-        print_func("    Bootloader v2.0.1 detected, reading %dB header\n", TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2);
+        print_func("    Bootloader v2.0.1 detected, reading %dB header\n",
+                   TR01_L2_GET_INFO_FW_HEADER_SIZE_BOOT_V2);
         struct lt_header_boot_v2_t *p_h = (struct lt_header_boot_v2_t *)header;
 
         print_func("      Type:               %04" PRIX16 "\n", p_h->type);

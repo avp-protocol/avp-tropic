@@ -32,8 +32,9 @@
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -69,8 +70,10 @@ int main(void)
     // -DLT_GPIO_DEV_PATH=<path> to cmake if you want to change it.
     int dev_path_len = snprintf(device.gpio_dev, sizeof(device.gpio_dev), "%s", LT_GPIO_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.gpio_dev)) {
-        fprintf(stderr, "Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).\n",
-                sizeof(device.gpio_dev));
+        fprintf(
+            stderr,
+            "Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).\n",
+            sizeof(device.gpio_dev));
         mbedtls_psa_crypto_free();
         return -1;
     }
@@ -79,7 +82,8 @@ int main(void)
     // -DLT_SPI_DEV_PATH=<path> to cmake if you want to change it.
     dev_path_len = snprintf(device.spi_dev, sizeof(device.spi_dev), "%s", LT_SPI_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.spi_dev)) {
-        fprintf(stderr, "Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).\n",
+        fprintf(stderr,
+                "Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).\n",
                 sizeof(device.spi_dev));
         mbedtls_psa_crypto_free();
         return -1;
@@ -105,7 +109,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // We need to ensure we are not in the Startup Mode, as L3 commands are available only in the Application Firmware.
+    // We need to ensure we are not in the Startup Mode, as L3 commands are available only in the
+    // Application Firmware.
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -121,10 +126,11 @@ int main(void)
     ret = lt_verify_chip_and_start_secure_session(&lt_handle, LT_EX_SH0_PRIV, LT_EX_SH0_PUB,
                                                   TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (LT_OK != ret) {
-        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n", (int)TR01_PAIRING_KEY_SLOT_INDEX_0,
-                lt_ret_verbose(ret));
+        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n",
+                (int)TR01_PAIRING_KEY_SLOT_INDEX_0, lt_ret_verbose(ret));
         fprintf(stderr,
-                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, compile with "
+                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, "
+                "compile with "
                 "-DLT_SH0_KEYS=eng_sample\n");
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();

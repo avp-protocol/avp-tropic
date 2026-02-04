@@ -57,8 +57,9 @@ struct parse_ctx_t {
 static lt_ret_t consume_bytes(struct parse_ctx_t *ctx, uint8_t *buf, uint16_t n, bool copy)
 {
     if (ctx->past + n > ctx->len) {
-        LT_ASN1_DER_PARSE_ERR(ctx, "Incomplete byte stream. Past: %" PRIu16 ", n: %" PRIu16 ", len: %" PRIu16,
-                              ctx->past, n, ctx->len);
+        LT_ASN1_DER_PARSE_ERR(
+            ctx, "Incomplete byte stream. Past: %" PRIu16 ", n: %" PRIu16 ", len: %" PRIu16, ctx->past,
+            n, ctx->len);
         return LT_CERT_STORE_INVALID;
     }
 
@@ -194,11 +195,13 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
             LT_ASN1_DER_GET_BYTES(ctx, buf, len);
 
             // We skip this step if the len is shorter than 3, so this is OK.
-            uint32_t obj_id = (((uint32_t)buf[0]) << 16) | (((uint32_t)buf[1]) << 8) | (((uint32_t)buf[2]));
+            uint32_t obj_id = (((uint32_t)buf[0]) << 16) | (((uint32_t)buf[1]) << 8) |
+                              (((uint32_t)buf[2]));
 
             if (ctx->obj_id == obj_id) {
 #ifdef ASNDER_LOG_EN
-                LT_LOG_DEBUG("Found searched object: 0x%" PRIx32 ". Next object will be sampled!", ctx->obj_id);
+                LT_LOG_DEBUG("Found searched object: 0x%" PRIx32 ". Next object will be sampled!",
+                             ctx->obj_id);
 #endif
                 ctx->sample_next = true;
             }
@@ -226,10 +229,11 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
                     ctx->cropped = true;
 
 #ifdef ASNDER_LOG_EN
-                    LT_LOG_DEBUG("Sample buffer (%d) is smaller than size of the object to be sampled (%" PRIu8
-                                 "). "
-                                 "Cropping %" PRIu16 " bytes from %s of the searched object",
-                                 ctx->sbuf_len, sample_len, n_crop_bytes, crop_prefix ? "prefix" : "suffix");
+                    LT_LOG_DEBUG(
+                        "Sample buffer (%d) is smaller than size of the object to be sampled (%" PRIu8
+                        "). "
+                        "Cropping %" PRIu16 " bytes from %s of the searched object",
+                        ctx->sbuf_len, sample_len, n_crop_bytes, crop_prefix ? "prefix" : "suffix");
 #endif
 
                     if (crop_prefix) {
@@ -267,8 +271,8 @@ static lt_ret_t parse_object(struct parse_ctx_t *ctx)
  * Public API
  *******************************************************************************/
 
-lt_ret_t asn1der_find_object(const uint8_t *stream, uint16_t len, int32_t obj_id, uint8_t *buf, int buf_len,
-                             enum lt_asn1der_crop_kind_t crop_kind)
+lt_ret_t asn1der_find_object(const uint8_t *stream, uint16_t len, int32_t obj_id, uint8_t *buf,
+                             int buf_len, enum lt_asn1der_crop_kind_t crop_kind)
 {
     struct parse_ctx_t ctx = {.head = (uint8_t *)stream,
                               .len = len,

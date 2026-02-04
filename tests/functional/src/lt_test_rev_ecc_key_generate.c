@@ -21,9 +21,10 @@ lt_handle_t *g_h;
 static lt_ret_t lt_test_rev_ecc_key_generate_cleanup(void)
 {
     lt_ret_t ret;
-    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending on the used curve,
-                                                       // but we don't know what is stored in the slot, so to be safe,
-                                                       // let's assume the size of pubkey on the P256 curve.
+    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending
+                                                       // on the used curve, but we don't know what is
+                                                       // stored in the slot, so to be safe, let's
+                                                       // assume the size of pubkey on the P256 curve.
     lt_ecc_curve_type_t curve;
     lt_ecc_key_origin_t origin;
 
@@ -79,10 +80,11 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
     // Making the handle accessible to the cleanup function.
     g_h = h;
 
-    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending on the used curve,
-                                                       // and we work with both curves here, so let's use one buffer for
-                                                       // both for simplification and assume the size of pubkey on the
-                                                       // P256 curve to be safe.
+    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending
+                                                       // on the used curve, and we work with both
+                                                       // curves here, so let's use one buffer for both
+                                                       // for simplification and assume the size of
+                                                       // pubkey on the P256 curve to be safe.
     lt_ecc_curve_type_t curve;
     lt_ecc_key_origin_t origin;
 
@@ -102,7 +104,8 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
         LT_LOG_INFO("Testing ECC key slot #%" PRIu8 "...", i);
 
         LT_LOG_INFO("Checking if slot is empty...");
-        LT_TEST_ASSERT(LT_L3_INVALID_KEY, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_L3_INVALID_KEY,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Generating private key using P256 curve...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_generate(h, i, TR01_CURVE_P256));
@@ -114,7 +117,8 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
         LT_TEST_ASSERT(LT_L3_FAIL, lt_ecc_key_generate(h, i, TR01_CURVE_ED25519));
 
         LT_LOG_INFO("Reading the generated public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Checking curve type of the read key...");
         LT_TEST_ASSERT(1, (curve == TR01_CURVE_P256));
@@ -133,7 +137,8 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
         LT_LOG_INFO("Testing ECC key slot #%" PRIu8 "...", i);
 
         LT_LOG_INFO("Checking if slot is empty...");
-        LT_TEST_ASSERT(LT_L3_INVALID_KEY, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_L3_INVALID_KEY,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Generating private key using Ed25519 curve...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_generate(h, i, TR01_CURVE_ED25519));
@@ -145,7 +150,8 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
         LT_TEST_ASSERT(LT_L3_FAIL, lt_ecc_key_generate(h, i, TR01_CURVE_P256));
 
         LT_LOG_INFO("Reading the generated public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Checking curve type of the read key...");
         LT_TEST_ASSERT(1, (curve == TR01_CURVE_ED25519));
@@ -157,7 +163,8 @@ void lt_test_rev_ecc_key_generate(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_erase(h, i));
 
         LT_LOG_INFO("Trying to read the erased slot (should fail)...");
-        LT_TEST_ASSERT(LT_L3_INVALID_KEY, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_L3_INVALID_KEY,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
     }
     LT_LOG_LINE();
 

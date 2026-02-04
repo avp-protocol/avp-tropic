@@ -79,11 +79,14 @@ static lt_ret_t send_all(const int socket_fd, const uint8_t *buffer, const size_
  * @brief Send and receive data to/from the TCP port.
  *
  * @param dev TCP HAL Device structure
- * @param tx_payload_length_ptr Pointer to the length of the payload to send (excluding tag and length fields)
- * @param rx_payload_length_ptr Pointer to the length of the payload to receive (excluding tag and length fields)
+ * @param tx_payload_length_ptr Pointer to the length of the payload to send (excluding tag and length
+ * fields)
+ * @param rx_payload_length_ptr Pointer to the length of the payload to receive (excluding tag and
+ * length fields)
  * @return LT_OK on success, LT_FAIL otherwise
  */
-static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr, int *rx_payload_length_ptr)
+static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr,
+                            int *rx_payload_length_ptr)
 {
     int nb_bytes_received;
     int nb_bytes_received_total = 0;
@@ -119,7 +122,8 @@ static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr,
     LT_LOG_DEBUG("Length field: %" PRIu16 ".", dev->rx_buffer.len);
     nb_bytes_to_receive += dev->rx_buffer.len;
     nb_bytes_received_total += nb_bytes_received;
-    LT_LOG_DEBUG("Received %d bytes out of %d expected.", nb_bytes_received_total, nb_bytes_to_receive);
+    LT_LOG_DEBUG("Received %d bytes out of %d expected.", nb_bytes_received_total,
+                 nb_bytes_to_receive);
 
     if (nb_bytes_received_total < nb_bytes_to_receive) {
         rx_ptr += nb_bytes_received;
@@ -143,7 +147,8 @@ static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr,
     }
 
     if (nb_bytes_received_total != nb_bytes_to_receive) {
-        LT_LOG_ERROR("Received %d bytes in total instead of %d.", nb_bytes_received_total, nb_bytes_to_receive);
+        LT_LOG_ERROR("Received %d bytes in total instead of %d.", nb_bytes_received_total,
+                     nb_bytes_to_receive);
         return LT_FAIL;
     }
 
@@ -159,7 +164,8 @@ static lt_ret_t communicate(lt_dev_posix_tcp_t *dev, int *tx_payload_length_ptr,
     }
     // RX tag and TX tag should be identical
     else if (dev->rx_buffer.tag != dev->tx_buffer.tag) {
-        LT_LOG_ERROR("Expected tag %" PRIu8 ", received %" PRIu8 ".", dev->rx_buffer.tag, dev->tx_buffer.tag);
+        LT_LOG_ERROR("Expected tag %" PRIu8 ", received %" PRIu8 ".", dev->rx_buffer.tag,
+                     dev->tx_buffer.tag);
         return LT_FAIL;
     }
 
@@ -238,7 +244,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     return communicate(dev, NULL, NULL);
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
     LT_UNUSED(timeout_ms);
     lt_dev_posix_tcp_t *dev = (lt_dev_posix_tcp_t *)(s2->device);

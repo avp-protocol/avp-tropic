@@ -29,8 +29,8 @@ static uint16_t crc16_byte(uint8_t data, uint16_t crc)
     crc ^= current_byte << 8;
     i = 8;  // Iterate over every bit in a byte.
     do {
-        if (crc
-            & 0x8000) {  // Highest bit set -> carry -> add generator polynomial of finite field used in CRC calulation.
+        if (crc & 0x8000) {  // Highest bit set -> carry -> add generator polynomial of finite field
+                             // used in CRC calulation.
             crc <<= 1;
             crc ^= LT_CRC16_POLYNOMIAL;
         }

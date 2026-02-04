@@ -153,9 +153,10 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
     }
 
     // If reading more bytes than available in the mocked response, log. Normally, this is OK:
-    // this happens when writing, as on the MOSI there is whole L2 Request and on MISO there is just CHIP_STATUS byte.
-    // During reading, this should not happen, as the lt_l1_read always reads up to the length of the response frame. It
-    // can happen only if the queued frame is invalid (shorter than minimum, not containing length byte or CRC etc).
+    // this happens when writing, as on the MOSI there is whole L2 Request and on MISO there is just
+    // CHIP_STATUS byte. During reading, this should not happen, as the lt_l1_read always reads up to
+    // the length of the response frame. It can happen only if the queued frame is invalid (shorter
+    // than minimum, not containing length byte or CRC etc).
     if (tx_len > r->len - dev->frame_bytes_transferred) {
         LT_LOG_DEBUG("Mock HAL: SPI Transfer length exceeds mocked response length.");
     }
@@ -163,10 +164,11 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
     memcpy(s2->buff + offset, r->data + dev->frame_bytes_transferred, tx_len);
     dev->frame_bytes_transferred += tx_len;
 
-    LT_LOG_DEBUG("Mock HAL queue position: head=%zu, tail=%zu, count=%zu", dev->mock_queue_head, dev->mock_queue_tail,
-                 dev->mock_queue_count);
+    LT_LOG_DEBUG("Mock HAL queue position: head=%zu, tail=%zu, count=%zu", dev->mock_queue_head,
+                 dev->mock_queue_tail, dev->mock_queue_count);
     for (size_t i = 0; i < tx_len; i++) {
-        LT_LOG_DEBUG("Mock HAL: SPI Transfer: buff[%zu] = 0x%02" PRIX8, offset + i, s2->buff[offset + i]);
+        LT_LOG_DEBUG("Mock HAL: SPI Transfer: buff[%zu] = 0x%02" PRIX8, offset + i,
+                     s2->buff[offset + i]);
     }
 
     return LT_OK;

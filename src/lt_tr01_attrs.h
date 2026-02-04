@@ -18,7 +18,8 @@
  *
  * @param h   Handle for communication with TROPIC01
  * @retval    LT_OK Function executed successfully
- * @retval    other Function did not execute successully, you might use lt_ret_verbose() to get verbose encoding
+ * @retval    other Function did not execute successully, you might use lt_ret_verbose() to get verbose
+ * encoding
  */
 lt_ret_t lt_init_tr01_attrs(lt_handle_t *h) __attribute__((warn_unused_result));
 

@@ -35,10 +35,10 @@
 #error "Interrupt PIN not supported in the USB dongle port!"
 #endif
 
-// getentropy() has a limit of random bytes it can generate in one call. The POSIX.1-2024 standard requires
-// GETENTROPY_MAX to be defined in limits.h, but because this standard is quite new, we will define the macro here in
-// case the current limits.h does not define it yet. The value 256 is safe to use because it was always the minimum
-// value.
+// getentropy() has a limit of random bytes it can generate in one call. The POSIX.1-2024 standard
+// requires GETENTROPY_MAX to be defined in limits.h, but because this standard is quite new, we will
+// define the macro here in case the current limits.h does not define it yet. The value 256 is safe to
+// use because it was always the minimum value.
 #ifndef GETENTROPY_MAX
 #define GETENTROPY_MAX 256
 #endif
@@ -239,7 +239,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     return LT_OK;
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
     LT_UNUSED(timeout_ms);
 

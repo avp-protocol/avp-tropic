@@ -227,7 +227,8 @@ int main(void)
     }
     printf("OK\n");
 
-    /* We need to ensure we are not in the Startup Mode, as L3 commands are available only in the Application Firmware.
+    /* We need to ensure we are not in the Startup Mode, as L3 commands are available only in the
+     * Application Firmware.
      */
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
@@ -244,10 +245,11 @@ int main(void)
     ret = lt_verify_chip_and_start_secure_session(&lt_handle, LT_EX_SH0_PRIV, LT_EX_SH0_PUB,
                                                   TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (LT_OK != ret) {
-        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n", (int)TR01_PAIRING_KEY_SLOT_INDEX_0,
-                lt_ret_verbose(ret));
+        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n",
+                (int)TR01_PAIRING_KEY_SLOT_INDEX_0, lt_ret_verbose(ret));
         fprintf(stderr,
-                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, compile with "
+                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, "
+                "compile with "
                 "-DLT_SH0_KEYS=eng_sample\n");
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
@@ -368,8 +370,8 @@ static void SystemClock_Config(void)
 
     /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
        clocks dividers */
-    RCC_ClkInitStruct.ClockType
-        = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 |
+                                   RCC_CLOCKTYPE_PCLK2);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;

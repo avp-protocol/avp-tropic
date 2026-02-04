@@ -81,8 +81,9 @@ int main(void)
     // LT_GPIO_DEV_PATH is defined in CMakeLists.txt.
     int dev_path_len = snprintf(device.gpio_dev, sizeof(device.gpio_dev), "%s", LT_GPIO_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.gpio_dev)) {
-        LT_LOG_ERROR("Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).",
-                     sizeof(device.gpio_dev));
+        LT_LOG_ERROR(
+            "Error: LT_GPIO_DEV_PATH is too long for device.gpio_dev buffer (limit is %zu bytes).",
+            sizeof(device.gpio_dev));
         LT_UNUSED(cleanup());  // Not caring about return val - we fail anyway.
         return -1;
     }
@@ -90,8 +91,9 @@ int main(void)
     // LT_SPI_DEV_PATH is defined in CMakeLists.txt.
     dev_path_len = snprintf(device.spi_dev, sizeof(device.spi_dev), "%s", LT_SPI_DEV_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.spi_dev)) {
-        LT_LOG_ERROR("Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).",
-                     sizeof(device.spi_dev));
+        LT_LOG_ERROR(
+            "Error: LT_SPI_DEV_PATH is too long for device.spi_dev buffer (limit is %zu bytes).",
+            sizeof(device.spi_dev));
         LT_UNUSED(cleanup());  // Not caring about return val - we fail anyway.
         return -1;
     }

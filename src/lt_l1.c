@@ -88,13 +88,15 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
             return LT_L1_CHIP_ALARM_MODE;
         }
 
-        // Proceed further in case CHIP_STATUS contains READY bit, signalizing that chip is ready to receive request
+        // Proceed further in case CHIP_STATUS contains READY bit, signalizing that chip is ready to
+        // receive request
         if (s2->buff[0] & TR01_L1_CHIP_MODE_READY_bit) {
             // receive STATUS byte and length byte
             ret = lt_l1_spi_transfer(s2, 1, 2, timeout_ms);
             if (ret != LT_OK) {  // offset 1
                 lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
-                LT_UNUSED(ret_unused);  // We don't care about it, we return ret from SPI transfer anyway.
+                LT_UNUSED(
+                    ret_unused);  // We don't care about it, we return ret from SPI transfer anyway.
                 return ret;
             }
 
@@ -115,14 +117,16 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
             uint16_t length = s2->buff[2] + 2;
             if (length > (TR01_L1_LEN_MAX - 2)) {
                 lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
-                LT_UNUSED(ret_unused);  // We don't care about it, we return LT_L1_DATA_LEN_ERROR anyway.
+                LT_UNUSED(
+                    ret_unused);  // We don't care about it, we return LT_L1_DATA_LEN_ERROR anyway.
                 return LT_L1_DATA_LEN_ERROR;
             }
             // Receive the rest of incomming bytes, including crc
             ret = lt_l1_spi_transfer(s2, 3, length, timeout_ms);
             if (ret != LT_OK) {  // offset 3
                 lt_ret_t ret_unused = lt_l1_spi_csn_high(s2);
-                LT_UNUSED(ret_unused);  // We don't care about it, we return ret from SPI transfer anyway.
+                LT_UNUSED(
+                    ret_unused);  // We don't care about it, we return ret from SPI transfer anyway.
                 return ret;
             }
             ret = lt_l1_spi_csn_high(s2);
@@ -152,7 +156,8 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
             }
             else {
 #if LT_USE_INT_PIN
-                // Wait for rising edge on the INT pin, which signalizes that L2 Response frame is ready to be received
+                // Wait for rising edge on the INT pin, which signalizes that L2 Response frame is
+                // ready to be received
                 ret = lt_l1_delay_on_int(s2, LT_L1_TIMEOUT_MS_MAX);
                 if (ret != LT_OK) {
                     return ret;
@@ -244,7 +249,8 @@ lt_ret_t lt_l1_retrieve_alarm_log(lt_l2_state_t *s2, const uint32_t timeout_ms)
     LT_LOG_DEBUG("LOG SIZE: %" PRIu8, log_size);
 
     LT_LOG_DEBUG("------------ DECODED CPU Log BEGIN ------------");
-    for (size_t i = 0; i < log_size; i++) {  // log_size is guaranteed to be <= TR01_L2_CHUNK_MAX_DATA_SIZE
+    for (size_t i = 0; i < log_size;
+         i++) {  // log_size is guaranteed to be <= TR01_L2_CHUNK_MAX_DATA_SIZE
         lt_port_log("%c", s2->buff[i + TR01_L2_RSP_DATA_RSP_CRC_OFFSET]);
     }
     lt_port_log("\n");

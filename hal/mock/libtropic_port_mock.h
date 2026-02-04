@@ -18,8 +18,9 @@ extern "C" {
 /**
  * @brief Mocked MISO data structure.
  *
- * @details This can be either L2 Response frame or a single CHIP_STATUS byte (in a case of writing REQ_ID=0xAA).
- * Basically, anything that can be returned by the chip during a period between CSN low and CSN high on the MISO line.
+ * @details This can be either L2 Response frame or a single CHIP_STATUS byte (in a case of writing
+ * REQ_ID=0xAA). Basically, anything that can be returned by the chip during a period between CSN low
+ * and CSN high on the MISO line.
  */
 typedef struct mock_miso_data_t {
     size_t len;
@@ -53,15 +54,16 @@ typedef struct lt_dev_mock_t {
 /**
  * @brief Reset internal mock state (clear queued responses and flags).
  *
- * @warning This has to be called by the test developer before starting a new test case. It is not called automatically
- * by HAL, as mocked reponses may be needed before/after initializing Libtropic.
+ * @warning This has to be called by the test developer before starting a new test case. It is not
+ * called automatically by HAL, as mocked reponses may be needed before/after initializing Libtropic.
  */
 lt_ret_t lt_mock_hal_reset(lt_l2_state_t *s2);
 
 /**
  * @brief Enqueue a raw response that the mock will return on the next SPI transfer.
  *
- * @details The mock copies `len` bytes from `data` into its internal queue. `len` must be <= TR01_L1_LEN_MAX.
+ * @details The mock copies `len` bytes from `data` into its internal queue. `len` must be <=
+ * TR01_L1_LEN_MAX.
  *
  * @param data Pointer to response bytes.
  * @param len Length of response bytes.

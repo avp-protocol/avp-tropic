@@ -40,24 +40,27 @@ lt_ret_t lt_aesgcm_encrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
     // Set cipher type.
     if (!EVP_EncryptInit_ex(_ctx->aesgcm_encrypt_ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM encryption context with cipher type, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR(
+            "Failed to initialize AES-GCM encryption context with cipher type, err_code=%lu (%s)",
+            err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
     // Set IV length.
-    if (!EVP_CIPHER_CTX_ctrl(_ctx->aesgcm_encrypt_ctx, EVP_CTRL_GCM_SET_IVLEN, TR01_L3_IV_SIZE, NULL)) {
+    if (!EVP_CIPHER_CTX_ctrl(_ctx->aesgcm_encrypt_ctx, EVP_CTRL_GCM_SET_IVLEN, TR01_L3_IV_SIZE,
+                             NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM encryption context with IV length, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR(
+            "Failed to initialize AES-GCM encryption context with IV length, err_code=%lu (%s)",
+            err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
     // Set encryption key.
     if (!EVP_EncryptInit_ex(_ctx->aesgcm_encrypt_ctx, NULL, NULL, key, NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM encryption context with key, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to initialize AES-GCM encryption context with key, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
@@ -87,24 +90,27 @@ lt_ret_t lt_aesgcm_decrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
     // Set cipher type.
     if (!EVP_DecryptInit_ex(_ctx->aesgcm_decrypt_ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM decryption context with cipher type, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR(
+            "Failed to initialize AES-GCM decryption context with cipher type, err_code=%lu (%s)",
+            err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
     // Set IV length.
-    if (!EVP_CIPHER_CTX_ctrl(_ctx->aesgcm_decrypt_ctx, EVP_CTRL_GCM_SET_IVLEN, TR01_L3_IV_SIZE, NULL)) {
+    if (!EVP_CIPHER_CTX_ctrl(_ctx->aesgcm_decrypt_ctx, EVP_CTRL_GCM_SET_IVLEN, TR01_L3_IV_SIZE,
+                             NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM decryption context with IV length, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR(
+            "Failed to initialize AES-GCM decryption context with IV length, err_code=%lu (%s)",
+            err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
     // Set decryption key.
     if (!EVP_DecryptInit_ex(_ctx->aesgcm_decrypt_ctx, NULL, NULL, key, NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize AES-GCM decryption context with key, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to initialize AES-GCM decryption context with key, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
@@ -112,11 +118,13 @@ lt_ret_t lt_aesgcm_decrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
 }
 
 lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *plaintext, const uint32_t plaintext_len,
-                           uint8_t *ciphertext, const uint32_t ciphertext_len)
+                           const uint32_t add_len, const uint8_t *plaintext,
+                           const uint32_t plaintext_len, uint8_t *ciphertext,
+                           const uint32_t ciphertext_len)
 {
     if (iv_len != TR01_L3_IV_SIZE) {
-        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len, TR01_L3_IV_SIZE);
+        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len,
+                     TR01_L3_IV_SIZE);
         return LT_PARAM_ERR;
     }
 
@@ -135,12 +143,14 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Process AAD (Additional Authenticated Data).
     if (!EVP_EncryptUpdate(_ctx->aesgcm_encrypt_ctx, NULL, &out_len, add, (int)add_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code,
+                     ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
     // Encrypt plaintext.
-    if (!EVP_EncryptUpdate(_ctx->aesgcm_encrypt_ctx, ciphertext, &out_len, plaintext, (int)plaintext_len)) {
+    if (!EVP_EncryptUpdate(_ctx->aesgcm_encrypt_ctx, ciphertext, &out_len, plaintext,
+                           (int)plaintext_len)) {
         err_code = ERR_get_error();
         LT_LOG_ERROR("Failed to encrypt AES-GCM plaintext, err_code=%lu (%s)", err_code,
                      ERR_error_string(err_code, NULL));
@@ -149,8 +159,9 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
 
     // Check that all plaintext data was processed.
     if (out_len != (int)(ciphertext_len - TR01_L3_TAG_SIZE)) {
-        LT_LOG_ERROR("AES-GCM encryption length mismatch! Current: %d bytes, expected: %" PRIu32 " bytes", out_len,
-                     ciphertext_len - TR01_L3_TAG_SIZE);
+        LT_LOG_ERROR("AES-GCM encryption length mismatch! Current: %d bytes, expected: %" PRIu32
+                     " bytes",
+                     out_len, ciphertext_len - TR01_L3_TAG_SIZE);
         return LT_CRYPTO_ERR;
     }
 
@@ -175,11 +186,13 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
 }
 
 lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *ciphertext, const uint32_t ciphertext_len,
-                           uint8_t *plaintext, const uint32_t plaintext_len)
+                           const uint32_t add_len, const uint8_t *ciphertext,
+                           const uint32_t ciphertext_len, uint8_t *plaintext,
+                           const uint32_t plaintext_len)
 {
     if (iv_len != TR01_L3_IV_SIZE) {
-        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len, TR01_L3_IV_SIZE);
+        LT_LOG_ERROR("Invalid AES-GCM IV length: got %" PRIu32 " bytes, expected %d bytes", iv_len,
+                     TR01_L3_IV_SIZE);
         return LT_PARAM_ERR;
     }
 
@@ -198,7 +211,8 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Process AAD (Additional Authenticated Data).
     if (!EVP_DecryptUpdate(_ctx->aesgcm_decrypt_ctx, NULL, &out_len, add, (int)add_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to process AES-GCM AAD, err_code=%lu (%s)", err_code,
+                     ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
@@ -213,8 +227,9 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
 
     // Check that all ciphertext data was processed.
     if (out_len != (int)(plaintext_len)) {
-        LT_LOG_ERROR("AES-GCM decryption length mismatch! Current: %d bytes, expected: %" PRIu32 " bytes", out_len,
-                     plaintext_len);
+        LT_LOG_ERROR("AES-GCM decryption length mismatch! Current: %d bytes, expected: %" PRIu32
+                     " bytes",
+                     out_len, plaintext_len);
         return LT_CRYPTO_ERR;
     }
 

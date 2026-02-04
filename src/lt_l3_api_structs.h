@@ -35,7 +35,8 @@ extern "C" {
 /** @brief Result max length (fields: RESULT + RES_DATA) */
 #define TR01_L3_PING_RES_SIZE_MAX 4097u
 /** @brief Max packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_PING_RES_PACKET_SIZE_MAX TR01_L3_SIZE_SIZE + TR01_L3_PING_RES_SIZE_MAX + TR01_L3_TAG_SIZE
+#define TR01_L3_PING_RES_PACKET_SIZE_MAX \
+    TR01_L3_SIZE_SIZE + TR01_L3_PING_RES_SIZE_MAX + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -300,7 +301,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_R_CONFIG_WRITE_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_R_CONFIG_WRITE_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_WRITE_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_R_CONFIG_WRITE_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_WRITE_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -370,7 +372,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_R_CONFIG_READ_RES_SIZE 8u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_R_CONFIG_READ_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_READ_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_R_CONFIG_READ_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_READ_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -440,7 +443,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_R_CONFIG_ERASE_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_R_CONFIG_ERASE_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_ERASE_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_R_CONFIG_ERASE_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_R_CONFIG_ERASE_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -492,7 +496,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_I_CONFIG_WRITE_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_I_CONFIG_WRITE_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_I_CONFIG_WRITE_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_I_CONFIG_WRITE_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_I_CONFIG_WRITE_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -556,7 +561,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_I_CONFIG_READ_RES_SIZE 8u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_I_CONFIG_READ_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_I_CONFIG_READ_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_I_CONFIG_READ_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_I_CONFIG_READ_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1141,7 +1147,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_ECC_KEY_ERASE_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_ECC_KEY_ERASE_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_ECC_KEY_ERASE_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_ECC_KEY_ERASE_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_ECC_KEY_ERASE_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1199,7 +1206,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_ECDSA_SIGN_RES_SIZE 80u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_ECDSA_SIGN_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_ECDSA_SIGN_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_ECDSA_SIGN_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_ECDSA_SIGN_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1291,7 +1299,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_EDDSA_SIGN_RES_SIZE 80u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_EDDSA_SIGN_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_EDDSA_SIGN_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_EDDSA_SIGN_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_EDDSA_SIGN_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1379,7 +1388,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_MCOUNTER_INIT_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_MCOUNTER_INIT_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_INIT_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_MCOUNTER_INIT_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_INIT_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1449,7 +1459,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + zero RES_DATA) */
 #define TR01_L3_MCOUNTER_UPDATE_RES_SIZE 1u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_MCOUNTER_UPDATE_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_UPDATE_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_MCOUNTER_UPDATE_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_UPDATE_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1507,7 +1518,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_MCOUNTER_GET_RES_SIZE 8u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_MCOUNTER_GET_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_GET_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_MCOUNTER_GET_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_MCOUNTER_GET_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1577,7 +1589,8 @@ LT_STATIC_ASSERT(
 /** @brief Result length (fields: RESULT + RES_DATA) */
 #define TR01_L3_MAC_AND_DESTROY_RES_SIZE 36u
 /** @brief Packet length (incl. RES_SIZE and TAG) */
-#define TR01_L3_MAC_AND_DESTROY_RES_PACKET_SIZE TR01_L3_SIZE_SIZE + TR01_L3_MAC_AND_DESTROY_RES_SIZE + TR01_L3_TAG_SIZE
+#define TR01_L3_MAC_AND_DESTROY_RES_PACKET_SIZE \
+    TR01_L3_SIZE_SIZE + TR01_L3_MAC_AND_DESTROY_RES_SIZE + TR01_L3_TAG_SIZE
 
 /**
  * @brief
@@ -1588,8 +1601,8 @@ struct lt_l3_mac_and_destroy_cmd_t {
     uint8_t cmd_id;    /**< Command Identifier */
     /**
      * @brief
-     * The slot (from the MAC-and-Destroy data partition in R-Memory) to execute the MAC_And_Destroy sequence. Valid
-     * values are 0 - 127.
+     * The slot (from the MAC-and-Destroy data partition in R-Memory) to execute the MAC_And_Destroy
+     * sequence. Valid values are 0 - 127.
      */
     uint16_t slot; /**< Mac-and-Destroy slot */
     /**

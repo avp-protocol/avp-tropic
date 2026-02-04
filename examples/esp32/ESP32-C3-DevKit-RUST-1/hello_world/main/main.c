@@ -99,8 +99,9 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "OK");
 
-    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-    // Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot.
+    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+    // be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+    // automatically on boot.
     ESP_LOGI(TAG, "Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -115,10 +116,11 @@ void app_main(void)
     ret = lt_verify_chip_and_start_secure_session(&lt_handle, LT_EX_SH0_PRIV, LT_EX_SH0_PUB,
                                                   TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (LT_OK != ret) {
-        ESP_LOGE(TAG, "Failed to start Secure Session with key %d, ret=%s", (int)TR01_PAIRING_KEY_SLOT_INDEX_0,
-                 lt_ret_verbose(ret));
+        ESP_LOGE(TAG, "Failed to start Secure Session with key %d, ret=%s",
+                 (int)TR01_PAIRING_KEY_SLOT_INDEX_0, lt_ret_verbose(ret));
         ESP_LOGE(TAG,
-                 "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, compile with "
+                 "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, "
+                 "compile with "
                  "-DLT_SH0_KEYS=eng_sample");
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();

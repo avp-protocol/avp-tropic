@@ -1,6 +1,7 @@
 /**
  * @file main.c
- * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic and USB devkit.
+ * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic and
+ * USB devkit.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -18,8 +19,9 @@
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -55,8 +57,10 @@ int main(void)
     // to cmake if you want to change it.
     int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {
-        fprintf(stderr, "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n",
-                sizeof(device.dev_path));
+        fprintf(
+            stderr,
+            "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).\n",
+            sizeof(device.dev_path));
         mbedtls_psa_crypto_free();
         return -1;
     }
@@ -77,8 +81,9 @@ int main(void)
     }
     printf("OK\n");
 
-    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-    // Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot.
+    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+    // be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+    // automatically on boot.
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -99,8 +104,8 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3], fw_ver[2], fw_ver[1],
-           fw_ver[0]);
+    printf("  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3],
+           fw_ver[2], fw_ver[1], fw_ver[0]);
 
     ret = lt_get_info_spect_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
@@ -109,10 +114,11 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3], fw_ver[2], fw_ver[1],
-           fw_ver[0]);
+    printf("  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3],
+           fw_ver[2], fw_ver[1], fw_ver[0]);
 
-    // We need to do the maintenance reboot to check bootloader version and FW bank headers in the Startup Mode.
+    // We need to do the maintenance reboot to check bootloader version and FW bank headers in the
+    // Startup Mode.
     printf("Sending maintenance reboot request...");
     ret = lt_reboot(&lt_handle, TR01_MAINTENANCE_REBOOT);
     if (ret != LT_OK) {
@@ -125,7 +131,8 @@ int main(void)
 
     printf("Reading data from chip...\n");
 
-    // When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version.
+    // When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got
+    // RISC-V FW version.
     ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
         fprintf(stderr, "Failed to get RISC-V bootloader version, ret=%s\n", lt_ret_verbose(ret));
@@ -133,8 +140,8 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  RISC-V bootloader version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3] & 0x7f, fw_ver[2],
-           fw_ver[1], fw_ver[0]);
+    printf("  RISC-V bootloader version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n",
+           fw_ver[3] & 0x7f, fw_ver[2], fw_ver[1], fw_ver[0]);
 
     printf("Firmware bank headers:\n");
     ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_FW1, printf);

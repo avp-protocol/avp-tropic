@@ -29,18 +29,21 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
 
     ret = wc_curve25519_init(&wc_priv);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to initialize X25519 private key, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to initialize X25519 private key, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         return LT_CRYPTO_ERR;
     }
 
     ret = wc_curve25519_init(&wc_pub);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to initialize X25519 public key, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to initialize X25519 public key, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
 
-    ret = wc_curve25519_import_private_ex(privkey, TR01_X25519_KEY_LEN, &wc_priv, EC25519_LITTLE_ENDIAN);
+    ret = wc_curve25519_import_private_ex(privkey, TR01_X25519_KEY_LEN, &wc_priv,
+                                          EC25519_LITTLE_ENDIAN);
     if (ret != 0) {
         LT_LOG_ERROR("Failed to import X25519 private key, ret=%d (%s)", ret, wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
@@ -50,7 +53,8 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
 #ifdef WOLFSSL_CURVE25519_BLINDING
     ret = wc_InitRng(&rng);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to init RNG for X25519 blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to init RNG for X25519 blinding, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -58,7 +62,8 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
 
     ret = wc_curve25519_set_rng(&wc_priv, &rng);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to set RNG for X25519 key blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to set RNG for X25519 key blinding, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -72,9 +77,11 @@ lt_ret_t lt_X25519(const uint8_t *privkey, const uint8_t *pubkey, uint8_t *secre
     }
 
     word32 secret_out_len = TR01_X25519_KEY_LEN;
-    ret = wc_curve25519_shared_secret_ex(&wc_priv, &wc_pub, secret, &secret_out_len, EC25519_LITTLE_ENDIAN);
+    ret = wc_curve25519_shared_secret_ex(&wc_priv, &wc_pub, secret, &secret_out_len,
+                                         EC25519_LITTLE_ENDIAN);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to compute X25519 shared secret key, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to compute X25519 shared secret key, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_cleanup;
     }
@@ -90,7 +97,8 @@ lt_X25519_cleanup:
     if (rng_initialized) {
         ret = wc_FreeRng(&rng);
         if (ret != 0) {
-            LT_LOG_WARN("Failed to free RNG used for X25519 blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+            LT_LOG_WARN("Failed to free RNG used for X25519 blinding, ret=%d (%s)", ret,
+                        wc_GetErrorString(ret));
         }
     }
 #endif
@@ -111,7 +119,8 @@ lt_ret_t lt_X25519_scalarmult(const uint8_t *sk, uint8_t *pk)
 
     ret = wc_curve25519_init(&wc_secret);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to initialize X25519 private key, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to initialize X25519 private key, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         return LT_CRYPTO_ERR;
     }
 
@@ -125,7 +134,8 @@ lt_ret_t lt_X25519_scalarmult(const uint8_t *sk, uint8_t *pk)
 #ifdef WOLFSSL_CURVE25519_BLINDING
     ret = wc_InitRng(&rng);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to init RNG for X25519 blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to init RNG for X25519 blinding, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_scalarmult_cleanup;
     }
@@ -133,7 +143,8 @@ lt_ret_t lt_X25519_scalarmult(const uint8_t *sk, uint8_t *pk)
 
     ret = wc_curve25519_set_rng(&wc_secret, &rng);
     if (ret != 0) {
-        LT_LOG_ERROR("Failed to set RNG for X25519 key blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+        LT_LOG_ERROR("Failed to set RNG for X25519 key blinding, ret=%d (%s)", ret,
+                     wc_GetErrorString(ret));
         lt_ret = LT_CRYPTO_ERR;
         goto lt_X25519_scalarmult_cleanup;
     }
@@ -158,7 +169,8 @@ lt_X25519_scalarmult_cleanup:
     if (rng_initialized) {
         ret = wc_FreeRng(&rng);
         if (ret != 0) {
-            LT_LOG_WARN("Failed to free RNG used for X25519 blinding, ret=%d (%s)", ret, wc_GetErrorString(ret));
+            LT_LOG_WARN("Failed to free RNG used for X25519 blinding, ret=%d (%s)", ret,
+                        wc_GetErrorString(ret));
         }
     }
 #endif

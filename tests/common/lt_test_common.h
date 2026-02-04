@@ -62,7 +62,8 @@ void lt_assert_fail_handler(void);
         assert(_exp_ == _val_);                                                    \
     }
 
-// Used to instruct the test runner that the test finshed and may disconnect (useful in embedded ports).
+// Used to instruct the test runner that the test finshed and may disconnect (useful in embedded
+// ports).
 #define LT_FINISH_TEST()               \
     {                                  \
         LT_LOG_INFO("TEST FINISHED!"); \
@@ -79,12 +80,12 @@ void hexdump_8byte(const uint8_t *data, uint16_t size);
 /**
  * @brief Printf-like wrapper for LT_LOG_INFO used with lt_print_chip_id().
  *
- * @param format  A printf-style format string describing how to format the subsequent arguments. Must be a
- * null-terminated string.
+ * @param format  A printf-style format string describing how to format the subsequent arguments. Must
+ * be a null-terminated string.
  * @param ...     Additional arguments corresponding to the format specifiers in `format`.
  *
- * @return       The number of characters printed (excluding the terminating null byte), or a negative value if an
- * output error occurs.
+ * @return       The number of characters printed (excluding the terminating null byte), or a negative
+ * value if an output error occurs.
  */
 int chip_id_printf_wrapper(const char *format, ...);
 

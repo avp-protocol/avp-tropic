@@ -73,8 +73,9 @@ lt_ret_t lt_l2_receive(lt_l2_state_t *s2)
     // if the chip started to reboot. See Erratum CI_TR01_ERR_2025091800.
     //
     // If the reboot was successful, we only check the frame up to the first CRC byte.
-    if (s2->startup_req_sent && s2->buff[TR01_L2_STATUS_OFFSET] == TR01_L2_STATUS_REQUEST_OK
-        && s2->buff[TR01_L2_RSP_LEN_OFFSET] == 0x00 && s2->buff[TR01_L2_RSP_DATA_RSP_CRC_OFFSET] == 0x03) {
+    if (s2->startup_req_sent && s2->buff[TR01_L2_STATUS_OFFSET] == TR01_L2_STATUS_REQUEST_OK &&
+        s2->buff[TR01_L2_RSP_LEN_OFFSET] == 0x00 &&
+        s2->buff[TR01_L2_RSP_DATA_RSP_CRC_OFFSET] == 0x03) {
         return LT_OK;
     }
 
@@ -112,7 +113,8 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
 
     // Prevent sending more data than is the max size of L3 packet.
     if (packet_size > TR01_L3_PACKET_MAX_SIZE) {
-        LT_LOG_ERROR("Packet size %" PRIu16 "exceeds maximum L3 packet size %u", packet_size, TR01_L3_PACKET_MAX_SIZE);
+        LT_LOG_ERROR("Packet size %" PRIu16 "exceeds maximum L3 packet size %u", packet_size,
+                     TR01_L3_PACKET_MAX_SIZE);
         return LT_L3_DATA_LEN_ERROR;
     }
     // Prevent sending more data than is the size of passed buffer.
@@ -127,9 +129,10 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
     // Calculate number of chunks to send.
     // First, get the number of full chunks.
     uint16_t full_chunk_num = (packet_size / TR01_L2_CHUNK_MAX_DATA_SIZE);
-    // Second, if packet_size is not divisible by the maximum chunk size, one additional smaller chunk will be created,
-    // which we add to the total count.
-    uint16_t chunk_num = (packet_size % TR01_L2_CHUNK_MAX_DATA_SIZE) == 0 ? full_chunk_num : full_chunk_num + 1;
+    // Second, if packet_size is not divisible by the maximum chunk size, one additional smaller chunk
+    // will be created, which we add to the total count.
+    uint16_t chunk_num = (packet_size % TR01_L2_CHUNK_MAX_DATA_SIZE) == 0 ? full_chunk_num
+                                                                          : full_chunk_num + 1;
     // Calculate the length of the last chunk
     uint16_t last_chunk_len = packet_size - ((chunk_num - 1) * TR01_L2_CHUNK_MAX_DATA_SIZE);
 
@@ -138,7 +141,8 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
     // Split encrypted buffer into chunks and proceed them into l2 transfers:
     for (int i = 0; i < chunk_num; i++) {
         req->req_id = TR01_L2_ENCRYPTED_CMD_REQ_ID;
-        // If the currently processed chunk is the last one, get its length (may be shorter than L2_CHUNK_MAX_DATA_SIZE)
+        // If the currently processed chunk is the last one, get its length (may be shorter than
+        // L2_CHUNK_MAX_DATA_SIZE)
         if (i == (chunk_num - 1)) {
             req->req_len = last_chunk_len;
         }

@@ -36,7 +36,8 @@
 #define MACANDD_ROUNDS 12
 
 #if (MACANDD_ROUNDS > 12)
-#error "For this example, MACANDD_ROUNDS must be less than 12. Generally, the maximum is TR01_MACANDD_ROUNDS_MAX."
+#error \
+    "For this example, MACANDD_ROUNDS must be less than 12. Generally, the maximum is TR01_MACANDD_ROUNDS_MAX."
 #endif
 
 /** @brief Minimal size of MAC-and-Destroy additional data (only in this example). */
@@ -97,8 +98,8 @@ static void decrypt(const uint8_t *data, const uint8_t *key, uint8_t *destinatio
  * @param output    Output buffer for HMAC result
  * @return          psa_status_t
  */
-static psa_status_t hmac_sha256(const uint8_t *key, const size_t key_len, const uint8_t *data, const size_t data_len,
-                                uint8_t *output)
+static psa_status_t hmac_sha256(const uint8_t *key, const size_t key_len, const uint8_t *data,
+                                const size_t data_len, uint8_t *output)
 {
     psa_key_attributes_t attributes = PSA_KEY_ATTRIBUTES_INIT;
     psa_key_id_t key_id = 0;
@@ -131,21 +132,22 @@ cleanup:
 /**
  * @brief Example function for setting PIN with Mac And Destroy.
  *
- * @details The New PIN Setup procedure takes the user PIN, add data and high entropy master_secret as an input,
- * initializes the scheme slots and returns a 32-byte key final_key as derivative of the master_secret.
+ * @details The New PIN Setup procedure takes the user PIN, add data and high entropy master_secret as
+ * an input, initializes the scheme slots and returns a 32-byte key final_key as derivative of the
+ * master_secret.
  *
- * The MAC-and-Destroy PIN veriﬁcation scheme uses slots located in the TROPIC01’s ﬂash memory – one slot per
- * PIN entry attempt. These slots are ﬁrst initialized when a new PIN is being set up.
- * The slots are then invalidated (destroyed) one by one with each PIN entry attempt. When the correct PIN is
- * entered, the slots are initialized again, therefore the PIN entry limit is reset.
- * PIN entry attempt fails if:
+ * The MAC-and-Destroy PIN veriﬁcation scheme uses slots located in the TROPIC01’s ﬂash memory – one
+ * slot per PIN entry attempt. These slots are ﬁrst initialized when a new PIN is being set up. The
+ * slots are then invalidated (destroyed) one by one with each PIN entry attempt. When the correct PIN
+ * is entered, the slots are initialized again, therefore the PIN entry limit is reset. PIN entry
+ * attempt fails if:
  *  * PIN is invalid
  *  * The current slot is not initialized for a given PIN
  *  * The current slot is destroyed by previous invalid PIN entry attempt.
  *
- * There are more ways how to implement Mac And Destroy 'PIN set' functionality, differences could be in way of
- * handling nvm data, number of tries, algorithm used for encryption, etc. This function is just one of the possible
- * implementations of "PIN set".
+ * There are more ways how to implement Mac And Destroy 'PIN set' functionality, differences could be
+ * in way of handling nvm data, number of tries, algorithm used for encryption, etc. This function is
+ * just one of the possible implementations of "PIN set".
  *
  * Take it as an inspiration, copy it into your project and adapt it to your specific hw resources.
  *
@@ -160,12 +162,14 @@ cleanup:
  * @param final_key      Buffer into which final key will be placed when all went successfully
  * @return lt_ret_t   LT_OK if correct, otherwise LT_FAIL
  */
-static lt_ret_t new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, const uint8_t *PIN, const uint8_t PIN_size,
-                              const uint8_t *add, const uint8_t add_size, uint8_t *final_key)
+static lt_ret_t new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, const uint8_t *PIN,
+                              const uint8_t PIN_size, const uint8_t *add, const uint8_t add_size,
+                              uint8_t *final_key)
 {
-    if (!h || !master_secret || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) || (PIN_size > MACANDD_PIN_SIZE_MAX)
-        || (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
-        // `add` parameter is not checked for NULL, because it can be NULL (handled in the lines below).
+    if (!h || !master_secret || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) ||
+        (PIN_size > MACANDD_PIN_SIZE_MAX) || (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
+        // `add` parameter is not checked for NULL, because it can be NULL (handled in the lines
+        // below).
         return LT_PARAM_ERR;
     }
 
@@ -176,8 +180,8 @@ static lt_ret_t new_PIN_setup(lt_handle_t *h, const uint8_t *master_secret, cons
 
     psa_status_t psa_ret;
 
-    // Clear variable for released final_key so there is known data (zeroes) in case this function ended sooner then
-    // final_key was prepared.
+    // Clear variable for released final_key so there is known data (zeroes) in case this function
+    // ended sooner then final_key was prepared.
     memset(final_key, 0, TR01_MAC_AND_DESTROY_DATA_SIZE);
 
     // Variable used during a process of getting a encryption key k_i.
@@ -314,12 +318,12 @@ exit:
 /**
  * @brief Example function for checking PIN with Mac And Destroy.
  *
- * @details The Pin Entry Check procedure takes the PIN and additional add data entered by the user as an input, and
- * checks the PIN. If successful, the correct key k is returned.
+ * @details The Pin Entry Check procedure takes the PIN and additional add data entered by the user as
+ * an input, and checks the PIN. If successful, the correct key k is returned.
  *
- * There are more ways how to implement Mac And Destroy 'PIN check' functionality, differences could be in way
- * of handling nvm data, number of tries, algorithm used for decryption, etc. This function is just one of the possible
- * implementations of "PIN check".
+ * There are more ways how to implement Mac And Destroy 'PIN check' functionality, differences could be
+ * in way of handling nvm data, number of tries, algorithm used for decryption, etc. This function is
+ * just one of the possible implementations of "PIN check".
  *
  * Take it as an inspiration, copy it into your project and adapt it to your specific hw resources.
  *
@@ -333,12 +337,13 @@ exit:
  * @param final_key   Buffer into which final_key will be saved
  * @return lt_ret_t   LT_OK if correct, otherwise LT_FAIL
  */
-static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_t PIN_size, const uint8_t *add,
-                                const uint8_t add_size, uint8_t *final_key)
+static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_t PIN_size,
+                                const uint8_t *add, const uint8_t add_size, uint8_t *final_key)
 {
-    if (!h || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) || (PIN_size > MACANDD_PIN_SIZE_MAX)
-        || (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
-        // `add` parameter is not checked for NULL, because it can be NULL (handled in the lines below).
+    if (!h || !PIN || (PIN_size < MACANDD_PIN_SIZE_MIN) || (PIN_size > MACANDD_PIN_SIZE_MAX) ||
+        (add_size > MACANDD_ADD_SIZE_MAX) || !final_key) {
+        // `add` parameter is not checked for NULL, because it can be NULL (handled in the lines
+        // below).
         return LT_PARAM_ERR;
     }
     if (h->l3.session_status != LT_SECURE_SESSION_ON) {
@@ -352,8 +357,8 @@ static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_
 
     psa_status_t psa_ret;
 
-    // Clear variable for released final_key so there is known data (zeroes) in case this function ended sooner then
-    // final_key was prepared.
+    // Clear variable for released final_key so there is known data (zeroes) in case this function
+    // ended sooner then final_key was prepared.
     memset(final_key, 0, TR01_MAC_AND_DESTROY_DATA_SIZE);
 
     // Variable used during a process of getting a decryption key k_i.
@@ -388,7 +393,8 @@ static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_
     // Load M&D data from TROPIC01's R-Memory.
     printf("\tReading M&D data from R_Mem User slot %d...", MACANDD_R_MEM_DATA_SLOT);
     uint16_t read_size;
-    lt_ret_t ret = lt_r_mem_data_read(h, MACANDD_R_MEM_DATA_SLOT, (uint8_t *)&nvm, sizeof(nvm), &read_size);
+    lt_ret_t ret = lt_r_mem_data_read(h, MACANDD_R_MEM_DATA_SLOT, (uint8_t *)&nvm, sizeof(nvm),
+                                      &read_size);
     if (ret != LT_OK) {
         fprintf(stderr, "\n\tFailed to read User slot, ret=%s\n", lt_ret_verbose(ret));
         goto exit;
@@ -409,7 +415,8 @@ static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_
     nvm.i--;
 
     // and store M&D data back to TROPIC01's R-Memory.
-    printf("\tWriting back M&D data into R_Mem User slot %d (erase, then write)...", MACANDD_R_MEM_DATA_SLOT);
+    printf("\tWriting back M&D data into R_Mem User slot %d (erase, then write)...",
+           MACANDD_R_MEM_DATA_SLOT);
     ret = lt_r_mem_data_erase(h, MACANDD_R_MEM_DATA_SLOT);
     if (ret != LT_OK) {
         fprintf(stderr, "\n\tFailed to erase User slot, ret=%s\n", lt_ret_verbose(ret));
@@ -487,7 +494,8 @@ static lt_ret_t PIN_entry_check(lt_handle_t *h, const uint8_t *PIN, const uint8_
     nvm.i = MACANDD_ROUNDS;
 
     // Store NVM data for future use
-    printf("\tWriting M&D data into R_Mem User slot %d for future use (erase, then write)...", MACANDD_R_MEM_DATA_SLOT);
+    printf("\tWriting M&D data into R_Mem User slot %d for future use (erase, then write)...",
+           MACANDD_R_MEM_DATA_SLOT);
     ret = lt_r_mem_data_erase(h, MACANDD_R_MEM_DATA_SLOT);
     if (ret != LT_OK) {
         fprintf(stderr, "\n\tFailed to erase User slot, ret=%s\n", lt_ret_verbose(ret));
@@ -525,8 +533,9 @@ exit:
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -559,7 +568,8 @@ int main(void)
     lt_handle.l2.device = &device;
 
     // Generate seed for the PRNG and seed it.
-    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be used in production.
+    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be
+    // used in production.
     unsigned int prng_seed;
     if (0 != getentropy(&prng_seed, sizeof(prng_seed))) {
         fprintf(stderr, "main: getentropy() failed (%s)!\n", strerror(errno));
@@ -582,7 +592,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // We need to ensure we are not in the Start-up Mode, as L3 commands are available only in the Application Firmware.
+    // We need to ensure we are not in the Start-up Mode, as L3 commands are available only in the
+    // Application Firmware.
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -597,10 +608,11 @@ int main(void)
     ret = lt_verify_chip_and_start_secure_session(&lt_handle, DEFAULT_SH0_PRIV, DEFAULT_SH0_PUB,
                                                   TR01_PAIRING_KEY_SLOT_INDEX_0);
     if (ret != LT_OK) {
-        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n", (int)TR01_PAIRING_KEY_SLOT_INDEX_0,
-                lt_ret_verbose(ret));
+        fprintf(stderr, "\nFailed to start Secure Session with key %d, ret=%s\n",
+                (int)TR01_PAIRING_KEY_SLOT_INDEX_0, lt_ret_verbose(ret));
         fprintf(stderr,
-                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, compile with "
+                "Check if you use correct SH0 keys! Hint: if you use an engineering sample chip, "
+                "compile with "
                 "-DLT_SH0_KEYS=eng_sample\n");
         lt_deinit(&lt_handle);
         mbedtls_psa_crypto_free();
@@ -608,13 +620,14 @@ int main(void)
     }
     printf("OK\n");
 
-    // This variable stores final_key which is released to the user after successful PIN check or PIN set.
+    // This variable stores final_key which is released to the user after successful PIN check or PIN
+    // set.
     uint8_t final_key_initialized[TR01_MAC_AND_DESTROY_DATA_SIZE] = {0};
 
     // Additional data passed by user besides PIN - this is optional, but recommended.
-    uint8_t additional_data[]
-        = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88,
-           0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
+    uint8_t additional_data[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x11, 0x22, 0x33,
+                                 0x44, 0x55, 0x66, 0x77, 0x88, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
+                                 0x77, 0x88, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
 
     // User's PIN.
     uint8_t pin[] = {1, 2, 3, 4};
@@ -646,8 +659,8 @@ int main(void)
 
     // Set the PIN and log out the final_key
     printf("Setting the user PIN...\n");
-    ret = new_PIN_setup(&lt_handle, master_secret, pin, sizeof(pin), additional_data, sizeof(additional_data),
-                        final_key_initialized);
+    ret = new_PIN_setup(&lt_handle, master_secret, pin, sizeof(pin), additional_data,
+                        sizeof(additional_data), final_key_initialized);
     if (ret != LT_OK) {
         fprintf(stderr, "\nFailed to set the user PIN, ret=%s\n", lt_ret_verbose(ret));
         lt_session_abort(&lt_handle);
@@ -657,7 +670,8 @@ int main(void)
     }
     printf("PIN was set successfully\n");
 
-    ret = lt_print_bytes(final_key_initialized, sizeof(final_key_initialized), print_buff, PRINT_BUFF_SIZE);
+    ret = lt_print_bytes(final_key_initialized, sizeof(final_key_initialized), print_buff,
+                         PRINT_BUFF_SIZE);
     if (ret != LT_OK) {
         fprintf(stderr, "lt_print_bytes failed, ret=%s\n", lt_ret_verbose(ret));
         lt_session_abort(&lt_handle);
@@ -671,8 +685,8 @@ int main(void)
     printf("\nWill do %d PIN check attempts with wrong PIN:\n", MACANDD_ROUNDS);
     for (int i = 1; i < MACANDD_ROUNDS; i++) {
         printf("\tInputting wrong PIN -> slot #%d will be destroyed...\n", i);
-        ret = PIN_entry_check(&lt_handle, pin_wrong, sizeof(pin_wrong), additional_data, sizeof(additional_data),
-                              final_key_exported);
+        ret = PIN_entry_check(&lt_handle, pin_wrong, sizeof(pin_wrong), additional_data,
+                              sizeof(additional_data), final_key_exported);
         if (ret != LT_FAIL) {
             fprintf(stderr, "\nReturn value is not LT_FAIL, ret=%s\n", lt_ret_verbose(ret));
             lt_session_abort(&lt_handle);
@@ -681,7 +695,8 @@ int main(void)
             return -1;
         }
 
-        ret = lt_print_bytes(final_key_exported, sizeof(final_key_exported), print_buff, PRINT_BUFF_SIZE);
+        ret = lt_print_bytes(final_key_exported, sizeof(final_key_exported), print_buff,
+                             PRINT_BUFF_SIZE);
         if (ret != LT_OK) {
             fprintf(stderr, "lt_print_bytes failed, ret=%s\n", lt_ret_verbose(ret));
             lt_session_abort(&lt_handle);
@@ -693,7 +708,8 @@ int main(void)
     }
 
     printf("Doing final PIN attempt with correct PIN, slots are reinitialized again...\n");
-    ret = PIN_entry_check(&lt_handle, pin, sizeof(pin), additional_data, sizeof(additional_data), final_key_exported);
+    ret = PIN_entry_check(&lt_handle, pin, sizeof(pin), additional_data, sizeof(additional_data),
+                          final_key_exported);
     if (ret != LT_OK) {
         fprintf(stderr, "\nAttempt with correct PIN failed, ret=%s\n", lt_ret_verbose(ret));
         lt_session_abort(&lt_handle);

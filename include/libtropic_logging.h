@@ -54,9 +54,10 @@ extern "C" {
 #endif
 
 // This has no effect, test runner just simply copies these lines to the log.
-#define LT_LOG_LINE(f_, ...)                                                                                \
-    LT_LOG_INFO("\t-----------------------------------------------------------------------------------" f_, \
-                ##__VA_ARGS__)
+#define LT_LOG_LINE(f_, ...)                                                                        \
+    LT_LOG_INFO(                                                                                    \
+        "\t-----------------------------------------------------------------------------------" f_, \
+        ##__VA_ARGS__)
 
 // Assertions. Will log as a system message and call native assert function.
 // Note that parameters are stored to _val_ and _exp_ for a case when there

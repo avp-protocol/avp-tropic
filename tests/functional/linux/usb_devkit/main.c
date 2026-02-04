@@ -81,8 +81,9 @@ int main(void)
     // LT_USB_DEVKIT_PATH is defined in CMakeLists.txt.
     int dev_path_len = snprintf(device.dev_path, sizeof(device.dev_path), "%s", LT_USB_DEVKIT_PATH);
     if (dev_path_len < 0 || (size_t)dev_path_len >= sizeof(device.dev_path)) {
-        LT_LOG_ERROR("Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).",
-                     sizeof(device.dev_path));
+        LT_LOG_ERROR(
+            "Error: LT_USB_DEVKIT_PATH is too long for device.dev_path buffer (limit is %zu bytes).",
+            sizeof(device.dev_path));
         LT_UNUSED(cleanup());  // Not caring about return val - we fail anyway.
         return -1;
     }

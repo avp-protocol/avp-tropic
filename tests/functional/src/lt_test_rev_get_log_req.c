@@ -23,12 +23,12 @@ static void lt_test_rev_get_log_req_body(uint32_t i_config_cfg_debug, uint32_t r
 {
     uint8_t log_msg[TR01_GET_LOG_MAX_MSG_LEN + 1];  // +1 for '\0' added later
     uint16_t log_msg_read_size;
-    int fw_log_en = (i_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK)
-                    && (r_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
+    int fw_log_en = (i_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK) &&
+                    (r_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
 
     LT_LOG_INFO("Getting RISC-V FW log...");
-    LT_TEST_ASSERT_COND(lt_get_log_req(g_h, log_msg, TR01_GET_LOG_MAX_MSG_LEN, &log_msg_read_size), fw_log_en, LT_OK,
-                        LT_L2_RESP_DISABLED);
+    LT_TEST_ASSERT_COND(lt_get_log_req(g_h, log_msg, TR01_GET_LOG_MAX_MSG_LEN, &log_msg_read_size),
+                        fw_log_en, LT_OK, LT_L2_RESP_DISABLED);
 
     if (fw_log_en) {
         if (log_msg_read_size) {
@@ -42,8 +42,10 @@ static void lt_test_rev_get_log_req_body(uint32_t i_config_cfg_debug, uint32_t r
     }
     else {
         LT_LOG_INFO("RISC-V FW logging is disabled:");
-        LT_LOG_INFO("I config FW_LOG_EN=%d", (int)i_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
-        LT_LOG_INFO("R config FW_LOG_EN=%d", (int)r_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
+        LT_LOG_INFO("I config FW_LOG_EN=%d",
+                    (int)i_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
+        LT_LOG_INFO("R config FW_LOG_EN=%d",
+                    (int)r_config_cfg_debug & BOOTLOADER_CO_CFG_DEBUG_FW_LOG_EN_MASK);
     }
 }
 
@@ -85,8 +87,8 @@ void lt_test_rev_get_log_req(lt_handle_t *h)
     LT_TEST_ASSERT(LT_OK, lt_reboot(h, TR01_REBOOT));
 
     LT_LOG_INFO("Starting Secure Session with key %d", (int)TR01_PAIRING_KEY_SLOT_INDEX_0);
-    LT_TEST_ASSERT(LT_OK, lt_verify_chip_and_start_secure_session(g_h, LT_TEST_SH0_PRIV, LT_TEST_SH0_PUB,
-                                                                  TR01_PAIRING_KEY_SLOT_INDEX_0));
+    LT_TEST_ASSERT(LT_OK, lt_verify_chip_and_start_secure_session(
+                              g_h, LT_TEST_SH0_PRIV, LT_TEST_SH0_PUB, TR01_PAIRING_KEY_SLOT_INDEX_0));
 
     LT_LOG_INFO("Reading CFG_DEBUG from I config...");
     LT_TEST_ASSERT(LT_OK, lt_i_config_read(g_h, TR01_CFG_DEBUG_ADDR, &i_config_cfg_debug));
