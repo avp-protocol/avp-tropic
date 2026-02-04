@@ -9,9 +9,14 @@ issues that other tools (compiler, ASAN, ...) can miss.
 Note that the CodeChecker is supported on Linux and macOS only.
 
 ## Generating Reports
-Firstly, you need to install CodeChecker and dependencies. Check out the [official repository](https://github.com/Ericsson/codechecker) for guidance. Do not forget to also install checkers, otherwise
-the CodeChecker will fail silently without generating any reports. Currently we use `clangsa` and
-`clang-tidy`.
+You need to install following dependencies:
+
+- CodeChecker
+    - Check out the [official repository](https://github.com/Ericsson/codechecker) for guidance.
+- Checkers for CodeChecker:
+    - clang-tidy
+    - clangsa
+- jq (used by our script for merging JSON reports)
 
 We generate reports from multiple projects (examples and tests) to cover as much CALs and HALs
 as possible. The reports are then merged and exported to HTML.
