@@ -9,7 +9,7 @@ issues that other tools (compiler, ASAN, ...) can miss.
 Note that the CodeChecker is supported on Linux and macOS only.
 
 ## Generating Reports
-You need to install following dependencies:
+You need to install the following dependencies:
 
 - CodeChecker
     - Check out the [official repository](https://github.com/Ericsson/codechecker) for guidance.
