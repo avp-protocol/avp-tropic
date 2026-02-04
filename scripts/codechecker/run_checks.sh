@@ -19,6 +19,18 @@ else
     echo "Libtropic root directory set to: $LT_ROOT_DIR"
 fi
 
+echo "Checking dependencies..."
+if ! command -v CodeChecker >/dev/null 2>&1; then
+    echo "Missing CodeChecker! Install and try again."
+    exit 1
+fi
+if ! command -v jq >/dev/null 2>&1; then
+    echo "Missing jq! Install and try again."
+    exit 1
+fi
+
+# Recreating directories
+rm -fr "$LT_ROOT_DIR/.codechecker/"
 mkdir -p "$LT_ROOT_DIR/.codechecker/compile_commands"
 mkdir -p "$LT_ROOT_DIR/.codechecker/reports"
 mkdir -p "$LT_ROOT_DIR/.codechecker/reports_html"
