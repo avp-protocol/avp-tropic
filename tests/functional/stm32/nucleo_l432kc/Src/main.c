@@ -206,7 +206,7 @@ int main(void)
         return -1;
     }
 #elif LT_USE_WOLFCRYPT
-    ret = wolfCrypt_Init();
+    int ret = wolfCrypt_Init();
     if (ret != 0) {
         LT_LOG_ERROR("WolfCrypt initialization failed, ret=%d (%s)", ret, wc_GetErrorString(ret));
         return ret;
