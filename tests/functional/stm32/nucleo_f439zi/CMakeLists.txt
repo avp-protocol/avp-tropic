@@ -90,6 +90,16 @@ endif()
 # Add path to libtropic's repository root folder
 add_subdirectory(${PATH_FN_TESTS} "libtropic_functional_tests")
 
+# Additional configuration for WolfCrypt.
+if(LT_CAL STREQUAL "wolfcrypt")
+    # Additional configuration for wolfCrypt.
+    target_compile_definitions(wolfssl PUBLIC WOLFSSL_USER_SETTINGS)
+    # Use BUILD_INTERFACE to strictly limit this path to the build phase
+    target_include_directories(wolfssl PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Src/wolfcrypt>
+    )
+endif()
+
 ###########################################################################
 #                                                                         #
 #   Sources                                                               #
@@ -130,6 +140,11 @@ if (LT_CAL STREQUAL "mbedtls_v4")
     set(SOURCES ${SOURCES}
         # MbedTLS platform-specific implementations
         ${CMAKE_CURRENT_SOURCE_DIR}/Src/mbedtls_v4/mbedtls_platform.c
+    )
+elseif (LT_CAL STREQUAL "wolfcrypt")
+    set(SOURCES ${SOURCES}
+        # WolfCrypt platform-specific implementations
+        ${CMAKE_CURRENT_SOURCE_DIR}/Src/wolfcrypt/wolfcrypt_platform.c
     )
 endif()
 
