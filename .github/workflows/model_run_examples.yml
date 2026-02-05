@@ -24,6 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+            sudo apt-get update
             sudo apt-get install cmake build-essential valgrind ninja-build
             ./tests/functional/model/download_deps.sh
             ./scripts/tropic01_model/install_linux.sh
