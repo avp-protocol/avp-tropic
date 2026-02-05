@@ -1,11 +1,11 @@
 #include <stdint.h>
 #include <string.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
 
 #include "main.h"
-#include <wolfssl/wolfcrypt/error-crypt.h>
 #include "stm32l4xx_hal.h"
 
-int wolfcrypt_custom_seed_gen(unsigned char* output, unsigned int sz)
+int wolfcrypt_custom_seed_gen(unsigned char *output, unsigned int sz)
 {
     HAL_StatusTypeDef hal_status = HAL_OK;
     uint32_t random_data;
