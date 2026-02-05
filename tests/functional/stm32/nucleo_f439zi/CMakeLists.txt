@@ -92,7 +92,6 @@ add_subdirectory(${PATH_FN_TESTS} "libtropic_functional_tests")
 
 # Additional configuration for WolfCrypt.
 if(LT_CAL STREQUAL "wolfcrypt")
-    # Additional configuration for wolfCrypt.
     target_compile_definitions(wolfssl PUBLIC WOLFSSL_USER_SETTINGS)
     # Use BUILD_INTERFACE to strictly limit this path to the build phase
     target_include_directories(wolfssl PUBLIC 
