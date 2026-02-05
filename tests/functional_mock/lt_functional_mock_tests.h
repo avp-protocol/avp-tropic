@@ -46,9 +46,9 @@ void lt_test_mock_invalid_in_crc(lt_handle_t *h);
  *
  * Test steps:
  * 1. Mock Secure Session initialization.
- * 2. For each of Pairing_Key_Write, Pairing_Key_Invalidate, R_Config_Write, I_Config_Write, R_Mem_Data_Write:
- *   a. Mock L3 Result with RESULT=HARDWARE_FAIL.
- *   b. Call Libtropic function corresponding to the L3 Command and verify that Libtropic returns LT_L3_HARDWARE_FAIL.
+ * 2. For each of Pairing_Key_Write, Pairing_Key_Invalidate, R_Config_Write, I_Config_Write,
+ * R_Mem_Data_Write: a. Mock L3 Result with RESULT=HARDWARE_FAIL. b. Call Libtropic function
+ * corresponding to the L3 Command and verify that Libtropic returns LT_L3_HARDWARE_FAIL.
  * 3. Mock Secure Session deinitialization.
  *
  * @param h Handle for communication with TROPIC01

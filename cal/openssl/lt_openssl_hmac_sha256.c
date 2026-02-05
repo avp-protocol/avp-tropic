@@ -14,8 +14,8 @@
 #include "libtropic_logging.h"
 #include "lt_hmac_sha256.h"
 
-lt_ret_t lt_hmac_sha256(const uint8_t *key, const uint32_t key_len, const uint8_t *input, const uint32_t input_len,
-                        uint8_t *output)
+lt_ret_t lt_hmac_sha256(const uint8_t *key, const uint32_t key_len, const uint8_t *input,
+                        const uint32_t input_len, uint8_t *output)
 {
     EVP_MD_CTX *ctx = NULL;
     EVP_PKEY *pkey = NULL;
@@ -71,8 +71,8 @@ lt_ret_t lt_hmac_sha256(const uint8_t *key, const uint32_t key_len, const uint8_
     }
 
     if (out_len != LT_HMAC_SHA256_HASH_LEN) {
-        LT_LOG_ERROR("HMAC-SHA256 output length mismatch! Current: %zu bytes, expected: %d bytes", out_len,
-                     LT_HMAC_SHA256_HASH_LEN);
+        LT_LOG_ERROR("HMAC-SHA256 output length mismatch! Current: %zu bytes, expected: %d bytes",
+                     out_len, LT_HMAC_SHA256_HASH_LEN);
         ret = LT_CRYPTO_ERR;
         goto lt_hmac_sha256_cleanup;
     }

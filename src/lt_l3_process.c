@@ -75,8 +75,9 @@ lt_ret_t lt_l3_encrypt_request(lt_l3_state_t *s3)
 
     // p_frame->data is both input plaintext and output ciphertext buffer,
     // it is large enough to hold both plaintext and ciphertext + tag.
-    int ret = lt_aesgcm_encrypt(s3->crypto_ctx, s3->encryption_IV, TR01_L3_IV_SIZE, (uint8_t *)"", 0, p_frame->data,
-                                p_frame->cmd_size, p_frame->data, p_frame->cmd_size + TR01_L3_TAG_SIZE);
+    int ret = lt_aesgcm_encrypt(s3->crypto_ctx, s3->encryption_IV, TR01_L3_IV_SIZE, (uint8_t *)"", 0,
+                                p_frame->data, p_frame->cmd_size, p_frame->data,
+                                p_frame->cmd_size + TR01_L3_TAG_SIZE);
     if (ret != LT_OK) {
         lt_l3_invalidate_host_session_data(s3);
         return ret;
@@ -106,9 +107,9 @@ lt_ret_t lt_l3_decrypt_response(lt_l3_state_t *s3)
         return LT_L3_BUFFER_TOO_SMALL;
     }
 
-    lt_ret_t ret
-        = lt_aesgcm_decrypt(s3->crypto_ctx, s3->decryption_IV, TR01_L3_IV_SIZE, (uint8_t *)"", 0, p_frame->data,
-                            p_frame->cmd_size + TR01_L3_TAG_SIZE, p_frame->data, p_frame->cmd_size);
+    lt_ret_t ret = lt_aesgcm_decrypt(s3->crypto_ctx, s3->decryption_IV, TR01_L3_IV_SIZE, (uint8_t *)"",
+                                     0, p_frame->data, p_frame->cmd_size + TR01_L3_TAG_SIZE,
+                                     p_frame->data, p_frame->cmd_size);
     if (ret != LT_OK) {
         lt_l3_invalidate_host_session_data(s3);
         return ret;

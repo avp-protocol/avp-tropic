@@ -89,16 +89,17 @@ void lt_test_rev_mcounter(lt_handle_t *h)
         LT_LOG_INFO("Generating random init value...");
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &init_val, sizeof(init_val)));
         LT_LOG_INFO("Initializing monotonic counter %d with %" PRIu32 "...", i, init_val);
-        LT_TEST_ASSERT_COND(lt_mcounter_init(h, i, init_val), (init_val <= TR01_MCOUNTER_VALUE_MAX), LT_OK,
-                            LT_PARAM_ERR);
+        LT_TEST_ASSERT_COND(lt_mcounter_init(h, i, init_val), (init_val <= TR01_MCOUNTER_VALUE_MAX),
+                            LT_OK, LT_PARAM_ERR);
 
         LT_LOG_INFO("Initializing monotonic counter %d again (should be ok)...", i);
-        LT_TEST_ASSERT_COND(lt_mcounter_init(h, i, init_val), (init_val <= TR01_MCOUNTER_VALUE_MAX), LT_OK,
-                            LT_PARAM_ERR);
+        LT_TEST_ASSERT_COND(lt_mcounter_init(h, i, init_val), (init_val <= TR01_MCOUNTER_VALUE_MAX),
+                            LT_OK, LT_PARAM_ERR);
 
         LT_LOG_INFO("Trying a few decrements...");
         current_decrements = 0;
-        for (int expected_val = init_val; expected_val > 0 && current_decrements < max_decrements; expected_val--) {
+        for (int expected_val = init_val; expected_val > 0 && current_decrements < max_decrements;
+             expected_val--) {
             LT_LOG_INFO("Reading mcounter %d value...", i);
             LT_TEST_ASSERT(LT_OK, lt_mcounter_get(h, i, &mcounter_val));
             LT_LOG_INFO("Verifying mcounter value, should be: %d", expected_val);

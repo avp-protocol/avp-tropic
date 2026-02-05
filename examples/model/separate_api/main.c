@@ -33,8 +33,9 @@
 
 int main(void)
 {
-    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if you don't care
-    // about stdout/stderr output being shuffled or you use stdout only (or different output mechanism altogether).
+    // Cosmetics: Disable buffering to keep output in order. You do not need to do this in your app if
+    // you don't care about stdout/stderr output being shuffled or you use stdout only (or different
+    // output mechanism altogether).
     setvbuf(stdout, NULL, _IONBF, 0);
     setvbuf(stderr, NULL, _IONBF, 0);
 
@@ -67,7 +68,8 @@ int main(void)
     lt_handle.l2.device = &device;
 
     // Generate seed for the PRNG and seed it.
-    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be used in production.
+    // Note: model uses rand(), which is not cryptographically secure. Better alternative should be
+    // used in production.
     unsigned int prng_seed;
     if (0 != getentropy(&prng_seed, sizeof(prng_seed))) {
         fprintf(stderr, "main: getentropy() failed (%s)!\n", strerror(errno));
@@ -90,7 +92,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // We need to ensure we are not in the Startup Mode, as L3 commands are available only in the Application Firmware.
+    // We need to ensure we are not in the Startup Mode, as L3 commands are available only in the
+    // Application Firmware.
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -104,10 +107,10 @@ int main(void)
     printf("Getting Certificate Store from TROPIC01...");
     uint8_t cert1[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE], cert2[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE],
         cert3[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE], cert4[TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE];
-    struct lt_cert_store_t store
-        = {.certs = {cert1, cert2, cert3, cert4},
-           .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
-                       TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE}};
+    struct lt_cert_store_t store = {
+        .certs = {cert1, cert2, cert3, cert4},
+        .buf_len = {TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE,
+                    TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE, TR01_L2_GET_INFO_REQ_CERT_SIZE_SINGLE}};
     ret = lt_get_info_cert_store(&lt_handle, &store);
     if (LT_OK != ret) {
         fprintf(stderr, "\nFailed to get Certificate Store, ret=%s\n", lt_ret_verbose(ret));
@@ -145,7 +148,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // handle's buffer (lt_handle.l2_buff) now contains data which must be transferred over a tunnel to TROPIC01.
+    // handle's buffer (lt_handle.l2_buff) now contains data which must be transferred over a tunnel to
+    // TROPIC01.
 
     // Following L2 functions are called on a remote host.
     printf("Executing lt_l2_send()...");
@@ -168,14 +172,15 @@ int main(void)
     }
     printf("OK\n");
 
-    // Handle's buffer (lt_handle.l2_buff) now contains data which must be transferred over a tunnel back to the server.
+    // Handle's buffer (lt_handle.l2_buff) now contains data which must be transferred over a tunnel
+    // back to the server.
 
     // Once data are back on server's side, bytes are copied into lt_handle.l2_buff.
     // Then, the following L2 function is called on the server side.
     // This function prepares AES-GCM contexts for the session.
     printf("Executing lt_in__session_start()...");
-    ret = lt_in__session_start(&lt_handle, stpub, TR01_PAIRING_KEY_SLOT_INDEX_0, LT_EX_SH0_PRIV, LT_EX_SH0_PUB,
-                               &host_eph_keys);
+    ret = lt_in__session_start(&lt_handle, stpub, TR01_PAIRING_KEY_SLOT_INDEX_0, LT_EX_SH0_PRIV,
+                               LT_EX_SH0_PUB, &host_eph_keys);
     if (LT_OK != ret) {
         fprintf(stderr, "\nlt_in__session_start failed, ret=%s\n", lt_ret_verbose(ret));
         lt_deinit(&lt_handle);
@@ -184,7 +189,8 @@ int main(void)
     }
     printf("OK\n");
 
-    // Now, we can use separate API for the Ping command to send a message to TROPIC01 and receive a response.
+    // Now, we can use separate API for the Ping command to send a message to TROPIC01 and receive a
+    // response.
     uint8_t recv_buf[PING_MSG_SIZE];
     printf("Executing lt_out__ping()...");
     ret = lt_out__ping(&lt_handle, (const uint8_t *)PING_MSG, PING_MSG_SIZE);

@@ -127,7 +127,8 @@ void lt_test_rev_write_r_config(lt_handle_t *h)
 
     LT_LOG_INFO("Writing the whole R config again (should fail)");
     for (int i = 0; i < LT_CONFIG_OBJ_CNT; i++) {
-        LT_TEST_ASSERT(LT_L3_FAIL, lt_r_config_write(h, cfg_desc_table[i].addr, r_config_backup.obj[i]));
+        LT_TEST_ASSERT(LT_L3_FAIL,
+                       lt_r_config_write(h, cfg_desc_table[i].addr, r_config_backup.obj[i]));
     }
 
     LT_LOG_INFO("Reading the whole R config");

@@ -25,8 +25,8 @@ static int pin_check(lt_handle_t *h, uint8_t *pin, uint16_t pin_len, lt_mac_and_
                      uint8_t ciphertexts[TR01_MACANDD_ROUNDS_MAX][TR01_MAC_AND_DESTROY_DATA_SIZE],
                      uint8_t t[LT_HMAC_SHA256_HASH_LEN], uint8_t s[TR01_MAC_AND_DESTROY_DATA_SIZE])
 {
-    uint8_t v[LT_HMAC_SHA256_HASH_LEN], w[TR01_MAC_AND_DESTROY_DATA_SIZE], k_i[LT_HMAC_SHA256_HASH_LEN],
-        t_[LT_HMAC_SHA256_HASH_LEN];
+    uint8_t v[LT_HMAC_SHA256_HASH_LEN], w[TR01_MAC_AND_DESTROY_DATA_SIZE],
+        k_i[LT_HMAC_SHA256_HASH_LEN], t_[LT_HMAC_SHA256_HASH_LEN];
 
     LT_LOG_INFO("Computing v = KDF(0, PIN_DATA)...");
     LT_TEST_ASSERT(LT_OK, lt_hmac_sha256(kdf_key_zeros, sizeof(kdf_key_zeros), pin, pin_len, v));
@@ -63,9 +63,9 @@ void lt_test_rev_mac_and_destroy(lt_handle_t *h)
 
     uint8_t n, wrong_attempts, s[TR01_MAC_AND_DESTROY_DATA_SIZE], t[LT_HMAC_SHA256_HASH_LEN],
         u[LT_HMAC_SHA256_HASH_LEN], v[LT_HMAC_SHA256_HASH_LEN], w[TR01_MAC_AND_DESTROY_DATA_SIZE],
-        k_from_setup[LT_HMAC_SHA256_HASH_LEN], k_from_check[LT_HMAC_SHA256_HASH_LEN], k_i[LT_HMAC_SHA256_HASH_LEN],
-        ignored[TR01_MAC_AND_DESTROY_DATA_SIZE], pin[PIN_LEN_MAX], pin_wrong[PIN_LEN_MAX],
-        ciphertexts[TR01_MACANDD_ROUNDS_MAX][TR01_MAC_AND_DESTROY_DATA_SIZE];
+        k_from_setup[LT_HMAC_SHA256_HASH_LEN], k_from_check[LT_HMAC_SHA256_HASH_LEN],
+        k_i[LT_HMAC_SHA256_HASH_LEN], ignored[TR01_MAC_AND_DESTROY_DATA_SIZE], pin[PIN_LEN_MAX],
+        pin_wrong[PIN_LEN_MAX], ciphertexts[TR01_MACANDD_ROUNDS_MAX][TR01_MAC_AND_DESTROY_DATA_SIZE];
     uint16_t pin_len;
 
     LT_LOG_INFO("Initializing handle");
@@ -79,7 +79,8 @@ void lt_test_rev_mac_and_destroy(lt_handle_t *h)
     LT_LOG_INFO("Setup PIN");
     LT_LOG_INFO();
 
-    LT_LOG_INFO("Generating random number of max attempts n from {1...%d}...", (int)TR01_MAC_AND_DESTROY_SLOT_127);
+    LT_LOG_INFO("Generating random number of max attempts n from {1...%d}...",
+                (int)TR01_MAC_AND_DESTROY_SLOT_127);
     LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &n, sizeof(n)));
     n = (n % TR01_MAC_AND_DESTROY_SLOT_127) + 1;
 

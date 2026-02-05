@@ -13,8 +13,8 @@ mbedtls_ms_time_t mbedtls_ms_time(void)
     return (mbedtls_ms_time_t)HAL_GetTick();
 }
 
-int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *estimate_bits, unsigned char *output,
-                                 size_t output_size)
+int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *estimate_bits,
+                                 unsigned char *output, size_t output_size)
 {
     // We don't implement any flags.
     if (flags != 0) {

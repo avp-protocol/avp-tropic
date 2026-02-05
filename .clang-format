@@ -11,7 +11,7 @@ BasedOnStyle: Google
 BreakBeforeBraces: Stroustrup
 
 # --- INDENTATION & WIDTH ---
-ColumnLimit: 120
+ColumnLimit: 103
 
 # "You shall indent the code with 4 spaces" 
 IndentWidth: 4
@@ -41,4 +41,7 @@ SpaceBeforeAssignmentOperators: true
 # Misc Cleanup
 SortIncludes: true
 IndentCaseLabels: true
-BreakBeforeBinaryOperators: All
+# Keep operators at the end of the line
+BreakBeforeBinaryOperators: None
+# Make breaking at '=' very expensive so it forces breaks inside arguments instead
+PenaltyBreakAssignment: 100

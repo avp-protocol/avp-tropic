@@ -23,8 +23,10 @@ extern "C" {
 #define TR01_L2_GET_INFO_REQ_ID 0x01
 /** @brief Request length */
 #define TR01_L2_GET_INFO_REQ_LEN 2u
-//------- Certificate -------------------------------------------------------------------------------------//
-/** @brief The X.509 chip certificate read from I-Memory and signed by Tropic Square (max length of 512B). */
+//------- Certificate
+//-------------------------------------------------------------------------------------//
+/** @brief The X.509 chip certificate read from I-Memory and signed by Tropic Square (max length of
+ * 512B). */
 #define TR01_L2_GET_INFO_REQ_OBJECT_ID_X509_CERTIFICATE 0x00
 /** @brief Request for data bytes 0-127 of the object. */
 #define TR01_L2_GET_INFO_REQ_BLOCK_INDEX_DATA_CHUNK_0_127 0x00
@@ -40,8 +42,10 @@ extern "C" {
 #define TR01_L2_GET_INFO_REQ_OBJECT_ID_RISCV_FW_VERSION 0x02
 /** @brief The SPECT FW version (4 Bytes) */
 #define TR01_L2_GET_INFO_REQ_OBJECT_ID_SPECT_FW_VERSION 0x04
-//------- FW Bank -----------------------------------------------------------------------------------------//
-/** @brief The FW header read from the selected bank id (shown as an index). Supported only in Start-up mode. */
+//------- FW Bank
+//-----------------------------------------------------------------------------------------//
+/** @brief The FW header read from the selected bank id (shown as an index). Supported only in Start-up
+ * mode. */
 #define TR01_L2_GET_INFO_REQ_OBJECT_ID_FW_BANK 0xb0
 
 /** @brief Response length */
@@ -49,11 +53,12 @@ extern "C" {
 
 /**
  * @brief
- * Request to obtain information about TROPIC01. The type of information obtained is distinguished by OBJECT_ID.
+ * Request to obtain information about TROPIC01. The type of information obtained is distinguished by
+ * OBJECT_ID.
  *
- * NOTE: If Start-up mode is active, TROPIC01 executes the immutable FW. Any version identification then has the highest
- * bit set to 1. SPECT_FW_VERSION then returns a dummy value of 0x80000000 because the SPECT FW is part of the immutable
- * FW.
+ * NOTE: If Start-up mode is active, TROPIC01 executes the immutable FW. Any version identification
+ * then has the highest bit set to 1. SPECT_FW_VERSION then returns a dummy value of 0x80000000 because
+ * the SPECT FW is part of the immutable FW.
  */
 struct lt_l2_get_info_req_t {
     uint8_t req_id;  /**< Request ID byte */
@@ -88,11 +93,12 @@ LT_STATIC_ASSERT(
 
 /**
  * @brief
- * Request to obtain information about TROPIC01. The type of information obtained is distinguished by OBJECT_ID.
+ * Request to obtain information about TROPIC01. The type of information obtained is distinguished by
+ * OBJECT_ID.
  *
- * NOTE: If Start-up mode is active, TROPIC01 executes the immutable FW. Any version identification then has the highest
- * bit set to 1. SPECT_FW_VERSION then returns a dummy value of 0x80000000 because the SPECT FW is part of the immutable
- * FW.
+ * NOTE: If Start-up mode is active, TROPIC01 executes the immutable FW. Any version identification
+ * then has the highest bit set to 1. SPECT_FW_VERSION then returns a dummy value of 0x80000000 because
+ * the SPECT FW is part of the immutable FW.
  */
 struct lt_l2_get_info_rsp_t {
     uint8_t chip_status; /**< CHIP_STATUS byte */
@@ -130,22 +136,22 @@ LT_STATIC_ASSERT(
 
 /**
  * @brief
- * Request to execute a Secure Channel Handshake and establish a new Secure Channel Session (TROPIC01 moves to Secure
- * Channel Mode).
+ * Request to execute a Secure Channel Handshake and establish a new Secure Channel Session (TROPIC01
+ * moves to Secure Channel Mode).
  */
 struct lt_l2_handshake_req_t {
     uint8_t req_id;  /**< Request ID byte */
     uint8_t req_len; /**< Length byte */
     /**
      * @brief
-     * The Host MCU's Ephemeral X25519 public key. A little endian encoding of the x-coordinate from the public
-     * Curve25519 point.
+     * The Host MCU's Ephemeral X25519 public key. A little endian encoding of the x-coordinate from
+     * the public Curve25519 point.
      */
     uint8_t e_hpub[32]; /**< Ephemeral Key of Host MCU. */
     /**
      * @brief
-     * The index of the Pairing Key slot to establish a Secure Channel Session with (TROPIC01 fetches $S_{HiPub}$ from
-     * the Pairing Key slot specified in this field).
+     * The index of the Pairing Key slot to establish a Secure Channel Session with (TROPIC01 fetches
+     * $S_{HiPub}$ from the Pairing Key slot specified in this field).
      */
     uint8_t pkey_index; /**< Pairing Key slot */
     uint8_t crc[2];     /**< Checksum */
@@ -168,8 +174,8 @@ LT_STATIC_ASSERT(
 
 /**
  * @brief
- * Request to execute a Secure Channel Handshake and establish a new Secure Channel Session (TROPIC01 moves to Secure
- * Channel Mode).
+ * Request to execute a Secure Channel Handshake and establish a new Secure Channel Session (TROPIC01
+ * moves to Secure Channel Mode).
  */
 struct lt_l2_handshake_rsp_t {
     uint8_t chip_status; /**< CHIP_STATUS byte */
@@ -283,7 +289,8 @@ LT_STATIC_ASSERT(
 
 /**
  * @brief
- * Request to abort current Secure Channel Session and execution of L3 command (TROPIC01 moves to Idle Mode).
+ * Request to abort current Secure Channel Session and execution of L3 command (TROPIC01 moves to Idle
+ * Mode).
  */
 struct lt_l2_encrypted_session_abt_req_t {
     uint8_t req_id;  /**< Request ID byte */
@@ -306,7 +313,8 @@ LT_STATIC_ASSERT(
 
 /**
  * @brief
- * Request to abort current Secure Channel Session and execution of L3 command (TROPIC01 moves to Idle Mode).
+ * Request to abort current Secure Channel Session and execution of L3 command (TROPIC01 moves to Idle
+ * Mode).
  */
 struct lt_l2_encrypted_session_abt_rsp_t {
     uint8_t chip_status; /**< CHIP_STATUS byte */
@@ -610,12 +618,12 @@ LT_STATIC_ASSERT(
  * NOTE: Chip automatically selects memory space for FW storage and erases it.
  */
 struct lt_l2_mutable_fw_update_req_t {
-    uint8_t req_id;         /**< Request ID byte */
-    uint8_t req_len;        /**< Length byte */
-    uint8_t signature[64];  /**< Signature of SHA256 hash of all following data in this packet */
-    uint8_t hash[32];       /**< SHA256 HASH of first FW chunk of data sent using Mutable_FW_Update_Data */
-    uint16_t type;          /**< FW type which is going to be updated */
-    uint8_t padding;        /**< Padding, zero value */
+    uint8_t req_id;        /**< Request ID byte */
+    uint8_t req_len;       /**< Length byte */
+    uint8_t signature[64]; /**< Signature of SHA256 hash of all following data in this packet */
+    uint8_t hash[32]; /**< SHA256 HASH of first FW chunk of data sent using Mutable_FW_Update_Data */
+    uint16_t type;    /**< FW type which is going to be updated */
+    uint8_t padding;  /**< Padding, zero value */
     uint8_t header_version; /**< Version of used header */
     uint32_t version;       /**< Version of FW */
     uint8_t crc[2];         /**< Checksum */
@@ -672,10 +680,11 @@ LT_STATIC_ASSERT(
  * Supported only in Start-up mode after Mutable_FW_Update_Req successfully processed.
  */
 struct lt_l2_mutable_fw_update_data_req_t {
-    uint8_t req_id;    /**< Request ID byte */
-    uint8_t req_len;   /**< Length byte */
-    uint8_t hash[32];  /**< SHA256 HASH of the next FW chunk of data sent using Mutable_FW_Update_Data */
-    uint16_t offset;   /**< The offset of the specific bank to write the FW chunk data to */
+    uint8_t req_id;  /**< Request ID byte */
+    uint8_t req_len; /**< Length byte */
+    uint8_t
+        hash[32];    /**< SHA256 HASH of the next FW chunk of data sent using Mutable_FW_Update_Data */
+    uint16_t offset; /**< The offset of the specific bank to write the FW chunk data to */
     uint8_t data[220]; /**< The binary data to write. Data size should be a multiple of 4 */
     uint8_t crc[2];    /**< Checksum */
 } __attribute__((__packed__));

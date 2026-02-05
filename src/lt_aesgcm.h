@@ -52,8 +52,9 @@ lt_ret_t lt_aesgcm_decrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
  * @return                  LT_OK if success, otherwise returns other error code.
  */
 lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *plaintext, const uint32_t plaintext_len,
-                           uint8_t *ciphertext, const uint32_t ciphertext_len) __attribute__((warn_unused_result));
+                           const uint32_t add_len, const uint8_t *plaintext,
+                           const uint32_t plaintext_len, uint8_t *ciphertext,
+                           const uint32_t ciphertext_len) __attribute__((warn_unused_result));
 
 /**
  * @brief Decrypts data and expects initialized context with valid keys.
@@ -70,13 +71,14 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
  * @return                  LT_OK if success, otherwise returns other error code.
  */
 lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *ciphertext, const uint32_t ciphertext_len,
-                           uint8_t *plaintext, const uint32_t plaintext_len) __attribute__((warn_unused_result));
+                           const uint32_t add_len, const uint8_t *ciphertext,
+                           const uint32_t ciphertext_len, uint8_t *plaintext,
+                           const uint32_t plaintext_len) __attribute__((warn_unused_result));
 
 /**
  * @brief Deinitializes AES-GCM encryption context.
- * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume that
- * `lt_aesgcm_encrypt_init` was called before.
+ * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume
+ * that `lt_aesgcm_encrypt_init` was called before.
  *
  * @param ctx  Crypto context structure
  * @return     LT_OK if success, otherwise returns other error code.
@@ -85,8 +87,8 @@ lt_ret_t lt_aesgcm_encrypt_deinit(void *ctx) __attribute__((warn_unused_result))
 
 /**
  * @brief Deinitializes AES-GCM decryption context.
- * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume that
- * `lt_aesgcm_decrypt_init` was called before.
+ * @warning Implementation can assume that `lt_crypto_ctx_init` was called before, but must not assume
+ * that `lt_aesgcm_decrypt_init` was called before.
  *
  * @param ctx  Crypto context structure
  * @return     LT_OK if success, otherwise returns other error code.

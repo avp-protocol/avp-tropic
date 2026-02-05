@@ -22,9 +22,9 @@
 #define MSG_TO_SIGN_LEN_MAX 4096
 
 // Pre-generated key for testing using OpenSSL
-uint8_t priv_test_key[]
-    = {0x5e, 0xc6, 0xf1, 0xef, 0x96, 0x1f, 0x69, 0xb5, 0xd4, 0x34, 0xe1, 0x50, 0x6e, 0xa1, 0xcc, 0x51,
-       0x11, 0x91, 0x94, 0x65, 0x87, 0xcb, 0x36, 0x82, 0x24, 0x07, 0x70, 0x32, 0x10, 0x1d, 0x62, 0xd1};
+uint8_t priv_test_key[] = {0x5e, 0xc6, 0xf1, 0xef, 0x96, 0x1f, 0x69, 0xb5, 0xd4, 0x34, 0xe1,
+                           0x50, 0x6e, 0xa1, 0xcc, 0x51, 0x11, 0x91, 0x94, 0x65, 0x87, 0xcb,
+                           0x36, 0x82, 0x24, 0x07, 0x70, 0x32, 0x10, 0x1d, 0x62, 0xd1};
 
 // Shared with cleanup function
 lt_handle_t *g_h;
@@ -32,10 +32,11 @@ lt_handle_t *g_h;
 static lt_ret_t lt_test_rev_ecdsa_sign_cleanup(void)
 {
     lt_ret_t ret;
-    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending on the used curve,
-                                                       // and we work with both curves here, so let's use one buffer for
-                                                       // both for simplification and assume the size of pubkey on the
-                                                       // P256 curve to be safe.
+    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending
+                                                       // on the used curve, and we work with both
+                                                       // curves here, so let's use one buffer for both
+                                                       // for simplification and assume the size of
+                                                       // pubkey on the P256 curve to be safe.
     lt_ecc_curve_type_t curve;
     lt_ecc_key_origin_t origin;
 
@@ -117,7 +118,8 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &msg_to_sign_len, sizeof(msg_to_sign_len)));
         msg_to_sign_len %= MSG_TO_SIGN_LEN_MAX + 1;  // 0-MSG_TO_SIGN_LEN_MAX
 
-        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...", msg_to_sign_len);
+        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...",
+                    msg_to_sign_len);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, msg_to_sign, msg_to_sign_len));
 
         LT_LOG_INFO("Signing message with empty slot (should fail)...");
@@ -127,7 +129,8 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_store(h, i, TR01_CURVE_P256, priv_test_key));
 
         LT_LOG_INFO("Reading the stored public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Signing message...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_ecdsa_sign(h, i, msg_to_sign, msg_to_sign_len, rs));
@@ -159,7 +162,8 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &msg_to_sign_len, sizeof(msg_to_sign_len)));
         msg_to_sign_len %= MSG_TO_SIGN_LEN_MAX + 1;  // 0-MSG_TO_SIGN_LEN_MAX
 
-        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...", msg_to_sign_len);
+        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...",
+                    msg_to_sign_len);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, msg_to_sign, msg_to_sign_len));
 
         LT_LOG_INFO("Signing message with empty slot (should fail)...");
@@ -169,7 +173,8 @@ void lt_test_rev_ecdsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_generate(h, i, TR01_CURVE_P256));
 
         LT_LOG_INFO("Reading the generated public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Signing message...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_ecdsa_sign(h, i, msg_to_sign, msg_to_sign_len, rs));

@@ -25,7 +25,8 @@ void lt_test_mock_invalid_in_crc(lt_handle_t *h)
 
     lt_mock_hal_reset(&h->l2);
     LT_LOG_INFO("Mocking initialization...");
-    LT_TEST_ASSERT(LT_OK, mock_init_communication(h, (uint8_t[]){0x00, 0x00, 0x00, 0x02}));  // Version 2.0.0
+    LT_TEST_ASSERT(LT_OK,
+                   mock_init_communication(h, (uint8_t[]){0x00, 0x00, 0x00, 0x02}));  // Version 2.0.0
 
     LT_LOG_INFO("Initializing handle");
     LT_TEST_ASSERT(LT_OK, lt_init(h));
@@ -38,8 +39,8 @@ void lt_test_mock_invalid_in_crc(lt_handle_t *h)
         .rsp_len = TR01_L2_GET_INFO_RISCV_FW_SIZE,
         .object = {0x00, 0x00, 0x00, 0x02, 0xFF, 0xFF}  // dummy data with invalid CRC appended
     };
-    LT_TEST_ASSERT(
-        LT_OK, lt_mock_hal_enqueue_response(&h->l2, (uint8_t *)&get_info_resp, calc_mocked_resp_len(&get_info_resp)));
+    LT_TEST_ASSERT(LT_OK, lt_mock_hal_enqueue_response(&h->l2, (uint8_t *)&get_info_resp,
+                                                       calc_mocked_resp_len(&get_info_resp)));
 
     LT_LOG_INFO("Sending Get_Info request with invalid CRC in response...");
     uint8_t dummy_out[TR01_L2_GET_INFO_RISCV_FW_SIZE];

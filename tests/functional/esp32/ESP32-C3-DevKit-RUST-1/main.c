@@ -26,8 +26,9 @@
 void app_main(void)
 {
     // Declarations
-    psa_status_t psa_init_status = PSA_ERROR_GENERIC_ERROR;  // The value needs to be different than PSA_SUCCESS to
-                                                             // indicate that psa_crypto_init was not called.
+    psa_status_t psa_init_status =
+        PSA_ERROR_GENERIC_ERROR;  // The value needs to be different than PSA_SUCCESS to
+                                  // indicate that psa_crypto_init was not called.
     esp_err_t esp_ret = ESP_OK;
     lt_handle_t *__lt_handle__ = NULL;  // __lt_handle__ identifier is used by the test registry.
 #if LT_SEPARATE_L3_BUFF

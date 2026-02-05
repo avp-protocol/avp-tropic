@@ -70,29 +70,32 @@ void lt_test_rev_param_check(lt_handle_t *h)
         uint8_t dummy_header[1];
         uint16_t dummy_size = 0;
 
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_get_info_fw_bank(NULL, TR01_FW_BANK_FW1, dummy_header,
+                                                         sizeof(dummy_header), &dummy_size));
         LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_get_info_fw_bank(NULL, TR01_FW_BANK_FW1, dummy_header, sizeof(dummy_header), &dummy_size));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_get_info_fw_bank(h, 0xFF, dummy_header, sizeof(dummy_header), &dummy_size));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_get_info_fw_bank(h, TR01_FW_BANK_FW1, NULL, sizeof(dummy_header), &dummy_size));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_get_info_fw_bank(h, TR01_FW_BANK_FW1, dummy_header, sizeof(dummy_header), NULL));
+                       lt_get_info_fw_bank(h, 0xFF, dummy_header, sizeof(dummy_header), &dummy_size));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_get_info_fw_bank(h, TR01_FW_BANK_FW1, NULL,
+                                                         sizeof(dummy_header), &dummy_size));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_get_info_fw_bank(h, TR01_FW_BANK_FW1, dummy_header,
+                                                         sizeof(dummy_header), NULL));
     }
 
-    LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_start(NULL, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0,
-                                                  (const uint8_t *)1, (const uint8_t *)1));
-
     LT_TEST_ASSERT(LT_PARAM_ERR,
-                   lt_session_start(h, NULL, TR01_PAIRING_KEY_SLOT_INDEX_0, (const uint8_t *)1, (const uint8_t *)1));
-
-    LT_TEST_ASSERT(LT_PARAM_ERR,
-                   lt_session_start(h, (const uint8_t *)1, (lt_pkey_index_t)(TR01_PAIRING_KEY_SLOT_INDEX_3 + 1),
+                   lt_session_start(NULL, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0,
                                     (const uint8_t *)1, (const uint8_t *)1));
 
-    LT_TEST_ASSERT(LT_PARAM_ERR,
-                   lt_session_start(h, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0, NULL, (const uint8_t *)1));
+    LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_start(h, NULL, TR01_PAIRING_KEY_SLOT_INDEX_0,
+                                                  (const uint8_t *)1, (const uint8_t *)1));
 
-    LT_TEST_ASSERT(LT_PARAM_ERR,
-                   lt_session_start(h, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0, (const uint8_t *)1, NULL));
+    LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_start(h, (const uint8_t *)1,
+                                                  (lt_pkey_index_t)(TR01_PAIRING_KEY_SLOT_INDEX_3 + 1),
+                                                  (const uint8_t *)1, (const uint8_t *)1));
+
+    LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_start(h, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0,
+                                                  NULL, (const uint8_t *)1));
+
+    LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_start(h, (const uint8_t *)1, TR01_PAIRING_KEY_SLOT_INDEX_0,
+                                                  (const uint8_t *)1, NULL));
 
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_session_abort(NULL));
 
@@ -157,15 +160,15 @@ void lt_test_rev_param_check(lt_handle_t *h)
     {
         uint8_t data[TR01_R_MEM_DATA_SIZE_MIN];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_write(NULL, 0, data, sizeof(data)));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_r_mem_data_write(h, (uint16_t)(TR01_R_MEM_DATA_SLOT_MAX + 1), data, sizeof(data)));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_write(h, (uint16_t)(TR01_R_MEM_DATA_SLOT_MAX + 1),
+                                                         data, sizeof(data)));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_write(h, 0, NULL, sizeof(data)));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_write(h, 0, data, 0));
 
         uint16_t data_read_size;
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_read(NULL, 0, data, sizeof(data), &data_read_size));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_read(h, (uint16_t)(TR01_R_MEM_DATA_SLOT_MAX + 1), data, sizeof(data),
-                                                        &data_read_size));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_read(h, (uint16_t)(TR01_R_MEM_DATA_SLOT_MAX + 1),
+                                                        data, sizeof(data), &data_read_size));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_read(h, 0, NULL, sizeof(data), &data_read_size));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_r_mem_data_read(h, 0, data, sizeof(data), NULL));
 
@@ -177,19 +180,22 @@ void lt_test_rev_param_check(lt_handle_t *h)
         uint8_t buf[1];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_random_value_get(NULL, buf, sizeof(buf)));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_random_value_get(h, NULL, sizeof(buf)));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_random_value_get(h, buf, (uint16_t)(TR01_RANDOM_VALUE_GET_LEN_MAX + 1)));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_random_value_get(h, buf, (uint16_t)(TR01_RANDOM_VALUE_GET_LEN_MAX + 1)));
     }
 
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_generate(NULL, TR01_ECC_SLOT_0, TR01_CURVE_ED25519));
-    LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_generate(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), TR01_CURVE_ED25519));
+    LT_TEST_ASSERT(LT_PARAM_ERR,
+                   lt_ecc_key_generate(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), TR01_CURVE_ED25519));
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_generate(h, TR01_ECC_SLOT_0, 0xFF));
 
     {
         uint8_t key[32];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_store(NULL, TR01_ECC_SLOT_0, TR01_CURVE_ED25519, key));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_store(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1),
+                                                      TR01_CURVE_ED25519, key));
         LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_ecc_key_store(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), TR01_CURVE_ED25519, key));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_store(h, TR01_ECC_SLOT_0, (lt_ecc_curve_type_t)0xFF, key));
+                       lt_ecc_key_store(h, TR01_ECC_SLOT_0, (lt_ecc_curve_type_t)0xFF, key));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_store(h, TR01_ECC_SLOT_0, TR01_CURVE_ED25519, NULL));
     }
 
@@ -197,12 +203,16 @@ void lt_test_rev_param_check(lt_handle_t *h)
         uint8_t key[64];
         lt_ecc_curve_type_t curve;
         lt_ecc_key_origin_t origin;
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_read(NULL, TR01_ECC_SLOT_0, key, sizeof(key), &curve, &origin));
         LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_ecc_key_read(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), key, sizeof(key), &curve, &origin));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_read(h, TR01_ECC_SLOT_0, NULL, sizeof(key), &curve, &origin));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_read(h, TR01_ECC_SLOT_0, key, sizeof(key), NULL, &origin));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_read(h, TR01_ECC_SLOT_0, key, sizeof(key), &curve, NULL));
+                       lt_ecc_key_read(NULL, TR01_ECC_SLOT_0, key, sizeof(key), &curve, &origin));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_read(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), key,
+                                                     sizeof(key), &curve, &origin));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_ecc_key_read(h, TR01_ECC_SLOT_0, NULL, sizeof(key), &curve, &origin));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_ecc_key_read(h, TR01_ECC_SLOT_0, key, sizeof(key), NULL, &origin));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_ecc_key_read(h, TR01_ECC_SLOT_0, key, sizeof(key), &curve, NULL));
     }
 
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_key_erase(NULL, TR01_ECC_SLOT_0));
@@ -211,8 +221,8 @@ void lt_test_rev_param_check(lt_handle_t *h)
     {
         uint8_t msg[1], sig[64];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(NULL, TR01_ECC_SLOT_0, msg, sizeof(msg), sig));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_ecc_ecdsa_sign(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), msg, sizeof(msg), sig));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), msg,
+                                                       sizeof(msg), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, TR01_ECC_SLOT_0, NULL, sizeof(msg), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_ecdsa_sign(h, TR01_ECC_SLOT_0, msg, sizeof(msg), NULL));
     }
@@ -220,38 +230,47 @@ void lt_test_rev_param_check(lt_handle_t *h)
     {
         uint8_t msg[1], sig[64];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_eddsa_sign(NULL, TR01_ECC_SLOT_0, msg, sizeof(msg), sig));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_ecc_eddsa_sign(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), msg, sizeof(msg), sig));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_eddsa_sign(h, (lt_ecc_slot_t)(TR01_ECC_SLOT_31 + 1), msg,
+                                                       sizeof(msg), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_eddsa_sign(h, TR01_ECC_SLOT_0, NULL, sizeof(msg), sig));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_eddsa_sign(h, TR01_ECC_SLOT_0, msg,
-                                                       (uint16_t)(TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX + 1), sig));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_ecc_eddsa_sign(h, TR01_ECC_SLOT_0, msg,
+                                         (uint16_t)(TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX + 1), sig));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_ecc_eddsa_sign(h, TR01_ECC_SLOT_0, msg, sizeof(msg), NULL));
     }
 
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_init(NULL, TR01_MCOUNTER_INDEX_0, 0));
-    LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_init(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1), 0));
-    LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_init(h, TR01_MCOUNTER_INDEX_0, TR01_MCOUNTER_VALUE_MAX + 1));
+    LT_TEST_ASSERT(LT_PARAM_ERR,
+                   lt_mcounter_init(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1), 0));
+    LT_TEST_ASSERT(LT_PARAM_ERR,
+                   lt_mcounter_init(h, TR01_MCOUNTER_INDEX_0, TR01_MCOUNTER_VALUE_MAX + 1));
 
     LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_update(NULL, TR01_MCOUNTER_INDEX_0));
-    LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_update(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1)));
+    LT_TEST_ASSERT(LT_PARAM_ERR,
+                   lt_mcounter_update(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1)));
 
     {
         uint32_t mv;
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_get(NULL, TR01_MCOUNTER_INDEX_0, &mv));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_get(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1), &mv));
+        LT_TEST_ASSERT(
+            LT_PARAM_ERR,
+            lt_mcounter_get(h, (enum lt_mcounter_index_t)(TR01_MCOUNTER_INDEX_15 + 1), &mv));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mcounter_get(h, TR01_MCOUNTER_INDEX_0, NULL));
     }
 
     {
         uint8_t out[1], in[1];
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mac_and_destroy(NULL, TR01_MAC_AND_DESTROY_SLOT_0, out, in));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_mac_and_destroy(h, (lt_mac_and_destroy_slot_t)(TR01_MAC_AND_DESTROY_SLOT_127 + 1), out, in));
+        LT_TEST_ASSERT(
+            LT_PARAM_ERR,
+            lt_mac_and_destroy(h, (lt_mac_and_destroy_slot_t)(TR01_MAC_AND_DESTROY_SLOT_127 + 1), out,
+                               in));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mac_and_destroy(h, TR01_MAC_AND_DESTROY_SLOT_0, NULL, in));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mac_and_destroy(h, TR01_MAC_AND_DESTROY_SLOT_0, out, NULL));
     }
 
-    LT_TEST_ASSERT(0, strcmp(lt_ret_verbose(LT_RET_T_LAST_VALUE), "FATAL ERROR, unknown return value"));
+    LT_TEST_ASSERT(0,
+                   strcmp(lt_ret_verbose(LT_RET_T_LAST_VALUE), "FATAL ERROR, unknown return value"));
 
     // --------------------------------------------------------
     // Silicon revision specific functions
@@ -262,11 +281,15 @@ void lt_test_rev_param_check(lt_handle_t *h)
 
     {
         uint8_t dummy_data[1];
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update(NULL, dummy_data, sizeof(dummy_data), TR01_FW_BANK_FW1));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update(h, NULL, sizeof(dummy_data), TR01_FW_BANK_FW1));
         LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_mutable_fw_update(h, dummy_data, TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1, TR01_FW_BANK_FW1));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update(h, dummy_data, sizeof(dummy_data), 0xFFFFFFFF));
+                       lt_mutable_fw_update(NULL, dummy_data, sizeof(dummy_data), TR01_FW_BANK_FW1));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update(h, NULL, sizeof(dummy_data), TR01_FW_BANK_FW1));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update(h, dummy_data, TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1,
+                                            TR01_FW_BANK_FW1));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update(h, dummy_data, sizeof(dummy_data), 0xFFFFFFFF));
     }
 #elif ACAB
     {
@@ -274,9 +297,12 @@ void lt_test_rev_param_check(lt_handle_t *h)
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update(NULL, dummy_data));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update(h, NULL));
 
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update_data(NULL, dummy_data, TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update_data(h, NULL, TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_mutable_fw_update_data(h, dummy_data, TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update_data(NULL, dummy_data, TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update_data(h, NULL, TR01_L2_MUTABLE_FW_UPDATE_REQ_LEN));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_mutable_fw_update_data(h, dummy_data, TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1));
     }
 #else
 #warning "Unknown silicon revision, no revision specific parameter checks implemented!"
@@ -304,14 +330,15 @@ void lt_test_rev_param_check(lt_handle_t *h)
     {
         uint8_t shipriv[TR01_SHIPRIV_LEN] = {0};
         uint8_t shipub[TR01_SHIPUB_LEN] = {0};
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_verify_chip_and_start_secure_session(NULL, shipriv, shipub, TR01_PAIRING_KEY_SLOT_INDEX_0));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_verify_chip_and_start_secure_session(h, NULL, shipub, TR01_PAIRING_KEY_SLOT_INDEX_0));
-        LT_TEST_ASSERT(LT_PARAM_ERR,
-                       lt_verify_chip_and_start_secure_session(h, shipriv, NULL, TR01_PAIRING_KEY_SLOT_INDEX_0));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_verify_chip_and_start_secure_session(
-                                         h, shipriv, shipub, (lt_pkey_index_t)(TR01_PAIRING_KEY_SLOT_INDEX_3 + 1)));
+                                         NULL, shipriv, shipub, TR01_PAIRING_KEY_SLOT_INDEX_0));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_verify_chip_and_start_secure_session(
+                                         h, NULL, shipub, TR01_PAIRING_KEY_SLOT_INDEX_0));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_verify_chip_and_start_secure_session(
+                                         h, shipriv, NULL, TR01_PAIRING_KEY_SLOT_INDEX_0));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_verify_chip_and_start_secure_session(
+                           h, shipriv, shipub, (lt_pkey_index_t)(TR01_PAIRING_KEY_SLOT_INDEX_3 + 1)));
     }
 
     {
@@ -331,10 +358,12 @@ void lt_test_rev_param_check(lt_handle_t *h)
 
     {
         uint8_t data[1] = {0};
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_do_mutable_fw_update(NULL, data, sizeof(data), TR01_FW_BANK_FW1));
+        LT_TEST_ASSERT(LT_PARAM_ERR,
+                       lt_do_mutable_fw_update(NULL, data, sizeof(data), TR01_FW_BANK_FW1));
         LT_TEST_ASSERT(LT_PARAM_ERR, lt_do_mutable_fw_update(h, NULL, sizeof(data), TR01_FW_BANK_FW1));
-        LT_TEST_ASSERT(LT_PARAM_ERR, lt_do_mutable_fw_update(h, data, (uint16_t)(TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1),
-                                                             TR01_FW_BANK_FW1));
+        LT_TEST_ASSERT(LT_PARAM_ERR, lt_do_mutable_fw_update(
+                                         h, data, (uint16_t)(TR01_MUTABLE_FW_UPDATE_SIZE_MAX + 1),
+                                         TR01_FW_BANK_FW1));
     }
 
     {

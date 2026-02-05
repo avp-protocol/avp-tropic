@@ -4,7 +4,8 @@
 /**
  * @file libtropic_port_linux_spi_native_cs.h
  * @copyright Copyright (c) 2020-2025 Tropic Square s.r.o.
- * @brief Port for communication using Generic SPI UAPI with native CS handling and GPIO UAPI for interrupt handling.
+ * @brief Port for communication using Generic SPI UAPI with native CS handling and GPIO UAPI for
+ * interrupt handling.
  *
  * @warning This HAL is experimental. It can be modified or removed in the next release without notice.
  *
@@ -63,10 +64,10 @@ typedef struct lt_dev_linux_spi_native_cs_t {
     /** @private @brief True if lt_port_spi_transfer was already called during current frame. If true,
      * lt_port_spi_transfer does not do any communication and immediately returns.
      *
-     * Normally, Libtropic transfers frame by parts. E.g., it first transfers 1 byte to receive CHIP_STATUS.
-     * This is possible thanks to separate CS handling. In this HAL, separate CS is not available and as such
-     * we have to transfer whole buffer (even though actual frame may be smaller) at once. Hence only single SPI
-     * transfer is done.
+     * Normally, Libtropic transfers frame by parts. E.g., it first transfers 1 byte to receive
+     * CHIP_STATUS. This is possible thanks to separate CS handling. In this HAL, separate CS is not
+     * available and as such we have to transfer whole buffer (even though actual frame may be smaller)
+     * at once. Hence only single SPI transfer is done.
      */
     int frame_completed;
 

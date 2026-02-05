@@ -39,8 +39,8 @@ lt_ret_t lt_sha256_start(void *ctx)
 
     if (!EVP_DigestInit_ex(_ctx->sha256_ctx, EVP_sha256(), NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to initialize SHA-256 context with hash type, err_code=%lu (%s)", err_code,
-                     ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to initialize SHA-256 context with hash type, err_code=%lu (%s)",
+                     err_code, ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
@@ -54,7 +54,8 @@ lt_ret_t lt_sha256_update(void *ctx, const uint8_t *input, const size_t input_le
 
     if (!EVP_DigestUpdate(_ctx->sha256_ctx, input, input_len)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to update SHA-256 hash, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to update SHA-256 hash, err_code=%lu (%s)", err_code,
+                     ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 
@@ -68,7 +69,8 @@ lt_ret_t lt_sha256_finish(void *ctx, uint8_t *output)
 
     if (!EVP_DigestFinal_ex(_ctx->sha256_ctx, output, NULL)) {
         err_code = ERR_get_error();
-        LT_LOG_ERROR("Failed to finalize SHA-256 hash, err_code=%lu (%s)", err_code, ERR_error_string(err_code, NULL));
+        LT_LOG_ERROR("Failed to finalize SHA-256 hash, err_code=%lu (%s)", err_code,
+                     ERR_error_string(err_code, NULL));
         return LT_CRYPTO_ERR;
     }
 

@@ -58,8 +58,9 @@ lt_ret_t lt_aesgcm_decrypt_init(void *ctx, const uint8_t *key, const uint32_t ke
 }
 
 lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *plaintext, const uint32_t plaintext_len,
-                           uint8_t *ciphertext, const uint32_t ciphertext_len)
+                           const uint32_t add_len, const uint8_t *plaintext,
+                           const uint32_t plaintext_len, uint8_t *ciphertext,
+                           const uint32_t ciphertext_len)
 {
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
@@ -70,8 +71,9 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Copy plaintext into ciphertext, as Trezor's gcm_encrypt_message() works in-place
     memcpy(ciphertext, plaintext, plaintext_len);
 
-    int ret = gcm_encrypt_message(iv, iv_len, add, add_len, ciphertext, plaintext_len, ciphertext + plaintext_len,
-                                  TR01_L3_TAG_SIZE, &_ctx->aesgcm_encrypt_ctx);
+    int ret = gcm_encrypt_message(iv, iv_len, add, add_len, ciphertext, plaintext_len,
+                                  ciphertext + plaintext_len, TR01_L3_TAG_SIZE,
+                                  &_ctx->aesgcm_encrypt_ctx);
     if (ret != RETURN_GOOD) {
         return LT_CRYPTO_ERR;
     }
@@ -80,8 +82,9 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
 }
 
 lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, const uint8_t *add,
-                           const uint32_t add_len, const uint8_t *ciphertext, const uint32_t ciphertext_len,
-                           uint8_t *plaintext, const uint32_t plaintext_len)
+                           const uint32_t add_len, const uint8_t *ciphertext,
+                           const uint32_t ciphertext_len, uint8_t *plaintext,
+                           const uint32_t plaintext_len)
 {
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
@@ -92,8 +95,9 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     // Copy ciphertext into plaintext, as Trezor's gcm_decrypt_message() works in-place
     memcpy(plaintext, ciphertext, plaintext_len);
 
-    int ret = gcm_decrypt_message(iv, iv_len, add, add_len, plaintext, plaintext_len, ciphertext + plaintext_len,
-                                  TR01_L3_TAG_SIZE, &_ctx->aesgcm_decrypt_ctx);
+    int ret = gcm_decrypt_message(iv, iv_len, add, add_len, plaintext, plaintext_len,
+                                  ciphertext + plaintext_len, TR01_L3_TAG_SIZE,
+                                  &_ctx->aesgcm_decrypt_ctx);
     if (ret != RETURN_GOOD) {
         return LT_CRYPTO_ERR;
     }

@@ -26,7 +26,8 @@ void add_resp_crc(void *resp_buf)
     uint8_t *resp_buf_bytes = (uint8_t *)resp_buf;
 
     // CRC is calculated from STATUS, RSP_LEN and RSP_DATA, skipping CHIP_STATUS.
-    uint16_t resp_len = TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE + resp_buf_bytes[TR01_L2_RSP_LEN_OFFSET];
+    uint16_t resp_len = TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE +
+                        resp_buf_bytes[TR01_L2_RSP_LEN_OFFSET];
     uint16_t crc = crc16(resp_buf_bytes + TR01_L1_CHIP_STATUS_SIZE, resp_len);
 
     // Append CRC at the end of the response buffer.
@@ -39,8 +40,8 @@ size_t calc_mocked_resp_len(const void *resp_buf)
     const uint8_t *resp_buf_bytes = (const uint8_t *)resp_buf;
 
     // Total length is CHIP_STATUS + STATUS + RSP_LEN + RSP_DATA + CRC
-    return TR01_L1_CHIP_STATUS_SIZE + TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE
-           + resp_buf_bytes[TR01_L2_RSP_LEN_OFFSET] + TR01_L2_REQ_RSP_CRC_SIZE;
+    return TR01_L1_CHIP_STATUS_SIZE + TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE +
+           resp_buf_bytes[TR01_L2_RSP_LEN_OFFSET] + TR01_L2_REQ_RSP_CRC_SIZE;
 }
 
 lt_ret_t mock_init_communication(lt_handle_t *h, const uint8_t riscv_fw_ver[4])
@@ -65,8 +66,8 @@ lt_ret_t mock_init_communication(lt_handle_t *h, const uint8_t riscv_fw_ver[4])
     add_resp_crc(&get_info_resp);
 
     // Mock response data for Get_Info, for both L2 Response.
-    if (LT_OK
-        != lt_mock_hal_enqueue_response(&h->l2, (uint8_t *)&get_info_resp, calc_mocked_resp_len(&get_info_resp))) {
+    if (LT_OK != lt_mock_hal_enqueue_response(&h->l2, (uint8_t *)&get_info_resp,
+                                              calc_mocked_resp_len(&get_info_resp))) {
         return LT_FAIL;
     }
 
@@ -77,8 +78,8 @@ lt_ret_t mock_session_start(lt_handle_t *h, const uint8_t kcmd[TR01_AES256_KEY_L
                             const uint8_t kres[TR01_AES256_KEY_LEN])
 {
     // Check if kcmd and kres are equal.
-    // This is needed so we can reuse AES-GCM functions currently provided by CAL and not having to reinitialize AES
-    // with swapped encryption and decryption keys every time.
+    // This is needed so we can reuse AES-GCM functions currently provided by CAL and not having to
+    // reinitialize AES with swapped encryption and decryption keys every time.
     if (memcmp(kcmd, kres, TR01_AES256_KEY_LEN) != 0) {
         LT_LOG_ERROR("kcmd and kres have to match for L3 mocking to work (simplification).");
         return LT_PARAM_ERR;
@@ -110,22 +111,26 @@ lt_ret_t mock_session_abort(lt_handle_t *h)
     return LT_OK;
 }
 
-lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const size_t result_plaintext_size)
+lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext,
+                        const size_t result_plaintext_size)
 {
     uint8_t l2_frame[TR01_L2_MAX_FRAME_SIZE];
 
     size_t packet_size = TR01_L3_SIZE_SIZE + result_plaintext_size + TR01_L3_TAG_SIZE;
-    size_t frame_size = TR01_L1_CHIP_STATUS_SIZE + TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE + packet_size
-                        + TR01_L2_REQ_RSP_CRC_SIZE;
+    size_t frame_size = TR01_L1_CHIP_STATUS_SIZE + TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE +
+                        packet_size + TR01_L2_REQ_RSP_CRC_SIZE;
 
     if (packet_size > TR01_L2_CHUNK_MAX_DATA_SIZE) {
-        LT_LOG_ERROR("Payloads >%u B not supported due to chunking not implemented.", TR01_L2_CHUNK_MAX_DATA_SIZE);
+        LT_LOG_ERROR("Payloads >%u B not supported due to chunking not implemented.",
+                     TR01_L2_CHUNK_MAX_DATA_SIZE);
         return LT_PARAM_ERR;
     }
 
     // This will happen only if the internal macros are implemented incorrectly.
     if (frame_size > TR01_L2_MAX_FRAME_SIZE) {
-        LT_LOG_ERROR("Implementation error! Total frame size won't fit to the buffer. Need at least: %zu", frame_size);
+        LT_LOG_ERROR(
+            "Implementation error! Total frame size won't fit to the buffer. Need at least: %zu",
+            frame_size);
         return LT_FAIL;
     }
 
@@ -136,20 +141,19 @@ lt_ret_t mock_l3_result(lt_handle_t *h, const uint8_t *result_plaintext, const s
     l2_frame[TR01_L2_RSP_DATA_RSP_CRC_OFFSET] = result_plaintext_size;
     l2_frame[TR01_L2_RSP_DATA_RSP_CRC_OFFSET + 1] = 0x00;
 
-    lt_ret_t ret;
-    if (LT_OK
-        != (ret
-            = lt_aesgcm_encrypt(h->l3.crypto_ctx, h->l3.decryption_IV, TR01_L3_IV_SIZE, NULL, 0, result_plaintext,
-                                result_plaintext_size, &l2_frame[TR01_L2_RSP_DATA_RSP_CRC_OFFSET + TR01_L3_SIZE_SIZE],
-                                result_plaintext_size + TR01_L3_TAG_SIZE))) {
+    lt_ret_t ret = lt_aesgcm_encrypt(h->l3.crypto_ctx, h->l3.decryption_IV, TR01_L3_IV_SIZE, NULL, 0,
+                                     result_plaintext, result_plaintext_size,
+                                     &l2_frame[TR01_L2_RSP_DATA_RSP_CRC_OFFSET + TR01_L3_SIZE_SIZE],
+                                     result_plaintext_size + TR01_L3_TAG_SIZE);
+    if (LT_OK != ret) {
         LT_LOG_ERROR("Encryption failed! ret=%d", ret);
         return ret;
     }
-    // As the mock helpers share CAL interface with Libtropic (simplification), IV is handled in the Libtropic itself ->
-    // no need to increment here.
+    // As the mock helpers share CAL interface with Libtropic (simplification), IV is handled in the
+    // Libtropic itself -> no need to increment here.
 
-    uint16_t crc
-        = crc16(&l2_frame[TR01_L2_STATUS_OFFSET], TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE + packet_size);
+    uint16_t crc = crc16(&l2_frame[TR01_L2_STATUS_OFFSET],
+                         TR01_L2_STATUS_SIZE + TR01_L2_REQ_RSP_LEN_SIZE + packet_size);
     size_t crc_offset = TR01_L2_RSP_DATA_RSP_CRC_OFFSET + packet_size;
     l2_frame[crc_offset] = crc >> 8;
     l2_frame[crc_offset + 1] = crc & 0x00FF;

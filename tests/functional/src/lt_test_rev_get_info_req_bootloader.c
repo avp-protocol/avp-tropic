@@ -28,16 +28,16 @@ static void print_fw_header_bootloader_v1_0_1(uint8_t *header, uint16_t header_s
 
     struct lt_header_boot_v1_t *p_h = (struct lt_header_boot_v1_t *)header;
 
-    LT_LOG_INFO("Type:     0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->type[3], p_h->type[2], p_h->type[1],
-                p_h->type[0]);
-    LT_LOG_INFO("Version:  0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->version[3], p_h->version[2],
-                p_h->version[1], p_h->version[0]);
-    LT_LOG_INFO("Size:     0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->size[3], p_h->size[2], p_h->size[1],
-                p_h->size[0]);
-    LT_LOG_INFO("Git hash: 0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->git_hash[3], p_h->git_hash[2],
-                p_h->git_hash[1], p_h->git_hash[0]);
-    LT_LOG_INFO("FW hash:  0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->hash[3], p_h->hash[2], p_h->hash[1],
-                p_h->hash[0]);
+    LT_LOG_INFO("Type:     0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->type[3],
+                p_h->type[2], p_h->type[1], p_h->type[0]);
+    LT_LOG_INFO("Version:  0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->version[3],
+                p_h->version[2], p_h->version[1], p_h->version[0]);
+    LT_LOG_INFO("Size:     0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->size[3],
+                p_h->size[2], p_h->size[1], p_h->size[0]);
+    LT_LOG_INFO("Git hash: 0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->git_hash[3],
+                p_h->git_hash[2], p_h->git_hash[1], p_h->git_hash[0]);
+    LT_LOG_INFO("FW hash:  0x%02" PRIX8 "%02" PRIX8 "%02" PRIX8 "%02" PRIX8, p_h->hash[3],
+                p_h->hash[2], p_h->hash[1], p_h->hash[0]);
 }
 
 static void print_fw_header_bootloader_v2_0_1(uint8_t *header, uint16_t header_size)
@@ -53,8 +53,8 @@ static void print_fw_header_bootloader_v2_0_1(uint8_t *header, uint16_t header_s
     char hash_str[BOOTLOADER_V2_0_1_HASH_PRINT_BUFF_SIZE];
 
     LT_LOG_INFO("Calling lt_print_bytes()...");
-    LT_TEST_ASSERT(LT_OK,
-                   lt_print_bytes(p_h->hash, sizeof(p_h->hash), hash_str, BOOTLOADER_V2_0_1_HASH_PRINT_BUFF_SIZE));
+    LT_TEST_ASSERT(LT_OK, lt_print_bytes(p_h->hash, sizeof(p_h->hash), hash_str,
+                                         BOOTLOADER_V2_0_1_HASH_PRINT_BUFF_SIZE));
 
     LT_LOG_INFO("Type:              0x%04" PRIX16, p_h->type);
     LT_LOG_INFO("Padding:           0x%02" PRIX8, p_h->padding);
@@ -72,24 +72,26 @@ static void read_fw_banks_bootloader_v1_0_1(void)
     uint16_t read_header_size;
 
     LT_LOG_INFO("Reading FW bank %d...", (int)TR01_FW_BANK_FW1);
-    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW1, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW1, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v1_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading FW bank %d...", (int)TR01_FW_BANK_FW2);
-    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW2, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW2, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v1_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading SPECT bank %d...", (int)TR01_FW_BANK_SPECT1);
-    LT_TEST_ASSERT(LT_OK,
-                   lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT1, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT1, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v1_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading SPECT bank %d...", (int)TR01_FW_BANK_SPECT2);
-    LT_TEST_ASSERT(LT_OK,
-                   lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT2, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT2, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v1_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 }
@@ -100,24 +102,26 @@ static void read_fw_banks_bootloader_v2_0_1(void)
     uint16_t read_header_size;
 
     LT_LOG_INFO("Reading FW bank %d...", (int)TR01_FW_BANK_FW1);
-    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW1, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW1, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v2_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading FW bank %d...", (int)TR01_FW_BANK_FW2);
-    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW2, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_FW2, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v2_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading SPECT bank %d...", (int)TR01_FW_BANK_SPECT1);
-    LT_TEST_ASSERT(LT_OK,
-                   lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT1, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT1, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v2_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 
     LT_LOG_INFO("Reading SPECT bank %d...", (int)TR01_FW_BANK_SPECT2);
-    LT_TEST_ASSERT(LT_OK,
-                   lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT2, fw_header, sizeof(fw_header), &read_header_size));
+    LT_TEST_ASSERT(LT_OK, lt_get_info_fw_bank(g_h, TR01_FW_BANK_SPECT2, fw_header, sizeof(fw_header),
+                                              &read_header_size));
     print_fw_header_bootloader_v2_0_1(fw_header, read_header_size);
     LT_LOG_INFO();
 }
@@ -153,8 +157,9 @@ void lt_test_rev_get_info_req_bootloader(lt_handle_t *h)
 #ifdef ACAB
     uint8_t cert1[CERTS_BUF_LEN] = {0}, cert2[CERTS_BUF_LEN] = {0}, cert3[CERTS_BUF_LEN] = {0},
             cert4[CERTS_BUF_LEN] = {0};
-    struct lt_cert_store_t store = {.certs = {cert1, cert2, cert3, cert4},
-                                    .buf_len = {CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN}};
+    struct lt_cert_store_t store = {
+        .certs = {cert1, cert2, cert3, cert4},
+        .buf_len = {CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN, CERTS_BUF_LEN}};
 #endif
     uint8_t riscv_ver[TR01_L2_GET_INFO_RISCV_FW_SIZE], spect_ver[TR01_L2_GET_INFO_SPECT_FW_SIZE];
     struct lt_chip_id_t chip_id = {0};
@@ -181,11 +186,12 @@ void lt_test_rev_get_info_req_bootloader(lt_handle_t *h)
         LT_LOG_INFO("Size in bytes: %" PRIu16, store.cert_len[i]);
 
         for (int j = 0; j < store.cert_len[i]; j += 16) {
-            LT_LOG_INFO("%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8
-                        "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8,
-                        cert[j], cert[j + 1], cert[j + 2], cert[j + 3], cert[j + 4], cert[j + 5], cert[j + 6],
-                        cert[j + 7], cert[j + 8], cert[j + 9], cert[j + 10], cert[j + 11], cert[j + 12], cert[j + 13],
-                        cert[j + 14], cert[j + 15]);
+            LT_LOG_INFO("%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8
+                        "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8
+                        "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8,
+                        cert[j], cert[j + 1], cert[j + 2], cert[j + 3], cert[j + 4], cert[j + 5],
+                        cert[j + 6], cert[j + 7], cert[j + 8], cert[j + 9], cert[j + 10], cert[j + 11],
+                        cert[j + 12], cert[j + 13], cert[j + 14], cert[j + 15]);
         }
         LT_LOG_INFO();
     }
@@ -202,24 +208,26 @@ void lt_test_rev_get_info_req_bootloader(lt_handle_t *h)
 
     LT_LOG_INFO("Reading RISC-V bootloader version...");
     LT_TEST_ASSERT(LT_OK, lt_get_info_riscv_fw_ver(h, riscv_ver));
-    LT_LOG_INFO("RISC-V Bootloader version: v%" PRIu8 ".%" PRIu8 ".%" PRIu8 "(.%" PRIu8 ")", riscv_ver[3] & 0x7f,
-                riscv_ver[2], riscv_ver[1], riscv_ver[0]);
+    LT_LOG_INFO("RISC-V Bootloader version: v%" PRIu8 ".%" PRIu8 ".%" PRIu8 "(.%" PRIu8 ")",
+                riscv_ver[3] & 0x7f, riscv_ver[2], riscv_ver[1], riscv_ver[0]);
     LT_LOG_LINE();
 
     LT_LOG_INFO("Reading SPECT bootloader version (should be dummy)...");
     LT_TEST_ASSERT(LT_OK, lt_get_info_spect_fw_ver(h, spect_ver));
-    LT_LOG_INFO("SPECT Bootloader version: v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 "", spect_ver[3], spect_ver[2],
-                spect_ver[1], spect_ver[0]);
+    LT_LOG_INFO("SPECT Bootloader version: v%" PRIu8 ".%" PRIu8 ".%" PRIu8 ".%" PRIu8 "", spect_ver[3],
+                spect_ver[2], spect_ver[1], spect_ver[0]);
     LT_LOG_INFO("Checking SPECT bootloader version dummy value...");
     LT_TEST_ASSERT(0, memcmp(spect_ver, "\x00\x00\x00\x80", sizeof(spect_ver)));
     LT_LOG_LINE();
 
     // Bootloader version 1.0.1 (ABAB)
-    if (((riscv_ver[3] & 0x7f) == 1) && (riscv_ver[2] == 0) && (riscv_ver[1] == 1) && (riscv_ver[0] == 0)) {
+    if (((riscv_ver[3] & 0x7f) == 1) && (riscv_ver[2] == 0) && (riscv_ver[1] == 1) &&
+        (riscv_ver[0] == 0)) {
         read_fw_banks_bootloader_v1_0_1();
     }
     // Bootloader version 2.0.1 (ACAB)
-    else if (((riscv_ver[3] & 0x7f) == 2) && (riscv_ver[2] == 0) && (riscv_ver[1] == 1) && (riscv_ver[0] == 0)) {
+    else if (((riscv_ver[3] & 0x7f) == 2) && (riscv_ver[2] == 0) && (riscv_ver[1] == 1) &&
+             (riscv_ver[0] == 0)) {
         read_fw_banks_bootloader_v2_0_1();
     }
     else {

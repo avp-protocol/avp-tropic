@@ -27,7 +27,8 @@ uint16_t crc16(const uint8_t *buf, int16_t size) __attribute__((warn_unused_resu
 /**
  * @brief Takes pointer to filled l2 buffer and adds checksum
  *
- * @note Current implementation rely on that passed data come from l2 functions which always prepare data correctly
+ * @note Current implementation rely on that passed data come from l2 functions which always prepare
+ * data correctly
  *
  * @param req
  */

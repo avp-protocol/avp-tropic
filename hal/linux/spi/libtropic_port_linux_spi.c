@@ -213,7 +213,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     return LT_OK;
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
     LT_UNUSED(timeout_ms);
     lt_dev_linux_spi_t *device = (lt_dev_linux_spi_t *)(s2->device);
@@ -259,8 +260,9 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     }
 
     if ((size_t)ret != count) {
-        LT_LOG_ERROR("lt_port_random_bytes: getrandom() generated %zd bytes instead of requested %zu bytes!", ret,
-                     count);
+        LT_LOG_ERROR(
+            "lt_port_random_bytes: getrandom() generated %zd bytes instead of requested %zu bytes!",
+            ret, count);
         return LT_FAIL;
     }
 

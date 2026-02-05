@@ -23,7 +23,8 @@ typedef struct lt_dev_stm32_nucleo_l432kc_t {
     SPI_TypeDef *spi_instance;
 
     /**
-     * @brief @public Baudrate prescaler value, used to set SPI speed. Use STM32 macro (e.g. SPI_BAUDRATEPRESCALER_32).
+     * @brief @public Baudrate prescaler value, used to set SPI speed. Use STM32 macro (e.g.
+     * SPI_BAUDRATEPRESCALER_32).
      *
      * @note If set to zero, it will default to SPI_BAUDRATEPRESCALER_32.
      */

@@ -1,6 +1,7 @@
 /**
  * @file main.c
- * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic and ESP32-DevKitC-V4.
+ * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic and
+ * ESP32-DevKitC-V4.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -102,8 +103,9 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "OK");
 
-    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-    // Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot.
+    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+    // be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+    // automatically on boot.
     ESP_LOGI(TAG, "Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -124,8 +126,8 @@ void app_main(void)
         mbedtls_psa_crypto_free();
         return;
     }
-    ESP_LOGI(TAG, "  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3], fw_ver[2],
-             fw_ver[1], fw_ver[0]);
+    ESP_LOGI(TAG, "  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3],
+             fw_ver[2], fw_ver[1], fw_ver[0]);
 
     ret = lt_get_info_spect_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
@@ -134,10 +136,11 @@ void app_main(void)
         mbedtls_psa_crypto_free();
         return;
     }
-    ESP_LOGI(TAG, "  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3], fw_ver[2], fw_ver[1],
-             fw_ver[0]);
+    ESP_LOGI(TAG, "  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")", fw_ver[3],
+             fw_ver[2], fw_ver[1], fw_ver[0]);
 
-    // We need to do the maintenance reboot to check bootloader version and FW bank headers in the Startup Mode.
+    // We need to do the maintenance reboot to check bootloader version and FW bank headers in the
+    // Startup Mode.
     ESP_LOGI(TAG, "Sending maintenance reboot request...");
     ret = lt_reboot(&lt_handle, TR01_MAINTENANCE_REBOOT);
     if (ret != LT_OK) {
@@ -150,7 +153,8 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Reading data from chip...");
 
-    // When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version.
+    // When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got
+    // RISC-V FW version.
     ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
         ESP_LOGE(TAG, "Failed to get RISC-V bootloader version, ret=%s", lt_ret_verbose(ret));

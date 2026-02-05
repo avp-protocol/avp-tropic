@@ -50,7 +50,8 @@ lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
     lt_dev_stm32_nucleo_l432kc_t *device = (lt_dev_stm32_nucleo_l432kc_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_RESET);
-    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_L432KC_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_L432KC_GPIO_OUTPUT_CHECK_ATTEMPTS;
+         read_attempts++) {
         if (!HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
@@ -65,7 +66,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
     lt_dev_stm32_nucleo_l432kc_t *device = (lt_dev_stm32_nucleo_l432kc_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
-    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_L432KC_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_L432KC_GPIO_OUTPUT_CHECK_ATTEMPTS;
+         read_attempts++) {
         if (HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
@@ -132,7 +134,8 @@ lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
     return LT_OK;
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
     lt_dev_stm32_nucleo_l432kc_t *device = (lt_dev_stm32_nucleo_l432kc_t *)(s2->device);
 
@@ -140,8 +143,8 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_dat
         LT_LOG_ERROR("Invalid data length!");
         return LT_L1_DATA_LEN_ERROR;
     }
-    int ret = HAL_SPI_TransmitReceive(&device->spi_handle, s2->buff + offset, s2->buff + offset, tx_data_length,
-                                      timeout_ms);
+    int ret = HAL_SPI_TransmitReceive(&device->spi_handle, s2->buff + offset, s2->buff + offset,
+                                      tx_data_length, timeout_ms);
     if (ret != HAL_OK) {
         LT_LOG_ERROR("HAL_SPI_TransmitReceive failed, ret=%d", ret);
         return LT_L1_SPI_ERROR;

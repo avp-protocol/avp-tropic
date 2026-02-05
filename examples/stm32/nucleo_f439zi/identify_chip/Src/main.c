@@ -1,7 +1,7 @@
 /**
  * @file main.c
- * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic on STM32 Nucleo F439ZI
- * board.
+ * @brief Example of reading information about the TROPIC01 chip and its firmware using Libtropic on
+ * STM32 Nucleo F439ZI board.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -224,8 +224,9 @@ int main(void)
     }
     printf("OK\n");
 
-    /* First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-       Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot. */
+    /* First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+       be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+       automatically on boot. */
     printf("Sending reboot request...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {
@@ -246,8 +247,8 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3], fw_ver[2], fw_ver[1],
-           fw_ver[0]);
+    printf("  RISC-V FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3],
+           fw_ver[2], fw_ver[1], fw_ver[0]);
 
     ret = lt_get_info_spect_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
@@ -256,10 +257,11 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3], fw_ver[2], fw_ver[1],
-           fw_ver[0]);
+    printf("  SPECT FW version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3],
+           fw_ver[2], fw_ver[1], fw_ver[0]);
 
-    /* We need to do the maintenance reboot to check bootloader version and FW bank headers in the Startup Mode. */
+    /* We need to do the maintenance reboot to check bootloader version and FW bank headers in the
+     * Startup Mode. */
     printf("Sending maintenance reboot request...");
     ret = lt_reboot(&lt_handle, TR01_MAINTENANCE_REBOOT);
     if (ret != LT_OK) {
@@ -272,7 +274,8 @@ int main(void)
 
     printf("Reading data from chip...\n");
 
-    /* When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got RISC-V FW version.
+    /* When TROPIC01 is in Start-up Mode, we can get RISC-V bootloader version the same way as we got
+     * RISC-V FW version.
      */
     ret = lt_get_info_riscv_fw_ver(&lt_handle, fw_ver);
     if (ret != LT_OK) {
@@ -281,8 +284,8 @@ int main(void)
         mbedtls_psa_crypto_free();
         return -1;
     }
-    printf("  RISC-V bootloader version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n", fw_ver[3] & 0x7f, fw_ver[2],
-           fw_ver[1], fw_ver[0]);
+    printf("  RISC-V bootloader version: %" PRIX8 ".%" PRIX8 ".%" PRIX8 " (.%" PRIX8 ")\n",
+           fw_ver[3] & 0x7f, fw_ver[2], fw_ver[1], fw_ver[0]);
 
     printf("Firmware bank headers:\n");
     ret = lt_print_fw_header(&lt_handle, TR01_FW_BANK_FW1, printf);
@@ -435,8 +438,8 @@ static void SystemClock_Config(void)
 
     /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
        clocks dividers */
-    RCC_ClkInitStruct.ClockType
-        = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 |
+                                   RCC_CLOCKTYPE_PCLK2);
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;

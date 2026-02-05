@@ -4,8 +4,9 @@
 /**
  * @defgroup group_port_functions 7. HAL Interface
  * @brief Functions defined for each supported platform.
- * @details Function used by host platform during hardware-specific operations. Check 'hal/' folder to see what is
- * supported. All of these functions have to be impemented by the port for libtropic to work.
+ * @details Function used by host platform during hardware-specific operations. Check 'hal/' folder to
+ * see what is supported. All of these functions have to be impemented by the port for libtropic to
+ * work.
  *
  * @{
  */
@@ -85,8 +86,8 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2);
 lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len, uint32_t timeout_ms);
 
 /**
- * @brief Platform defined function for delay, specifies what host platform should do when libtropic's functions need
- * some delay.
+ * @brief Platform defined function for delay, specifies what host platform should do when libtropic's
+ * functions need some delay.
  *
  * @param s2          Structure holding l2 state
  * @param ms          Time to wait in miliseconds
@@ -98,8 +99,8 @@ lt_ret_t lt_port_delay(lt_l2_state_t *s2, uint32_t ms);
 
 #if LT_USE_INT_PIN
 /**
- * @brief Platform defined function used to specify reading of an interrupt pin, used as a signal that chip has a
- * response.
+ * @brief Platform defined function used to specify reading of an interrupt pin, used as a signal that
+ * chip has a response.
  *
  * @param s2          Structure holding l2 state
  * @param ms          Max time to wait in miliseconds
@@ -111,8 +112,8 @@ lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms);
 #endif
 /**
  * @brief Fill buffer with random bytes, platform defined function.
- * @note This function should use some cryptographically secure mechanism to generate the random bytes. Its speed should
- * not be a concern, as this function is not called often.
+ * @note This function should use some cryptographically secure mechanism to generate the random bytes.
+ * Its speed should not be a concern, as this function is not called often.
  *
  * @param s2          Structure holding l2 state
  * @param buff        Buffer to be filled
@@ -124,9 +125,11 @@ lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms);
 lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count);
 
 /**
- * @brief Port-specific printf-like function used by Libtropic for logging debug information and test outputs.
+ * @brief Port-specific printf-like function used by Libtropic for logging debug information and test
+ * outputs.
  * @note  The implementation shall not modify output in any way (e.g., by appending arbitrary newlines)
- * apart from behavior expected from a standard printf-like function (e.g., replacing format specifiers).
+ * apart from behavior expected from a standard printf-like function (e.g., replacing format
+ * specifiers).
  * @warning Some implementations use size limited buffer for temporarily storing the log message.
  *
  * @param format      Pointer to a null-terminated byte string specifying how to interpret the data

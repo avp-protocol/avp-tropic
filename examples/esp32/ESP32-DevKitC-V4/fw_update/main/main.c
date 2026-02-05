@@ -1,6 +1,7 @@
 /**
  * @file main.c
- * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic and ESP32-DevKitC-V4.
+ * @brief Example showing how to perform an update of the TROPIC01 firmware using Libtropic and
+ * ESP32-DevKitC-V4.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
@@ -112,8 +113,9 @@ void app_main(void)
     }
     ESP_LOGI(TAG, "OK");
 
-    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not** be in the Start-up
-    // Mode. If there are valid firmwares, TROPIC01 will begin to execute them automatically on boot.
+    // First, we check versions of both updateable firmwares. To do that, we need TROPIC01 to **not**
+    // be in the Start-up Mode. If there are valid firmwares, TROPIC01 will begin to execute them
+    // automatically on boot.
     ESP_LOGI(TAG, "Rebooting TROPIC01...");
     ret = lt_reboot(&lt_handle, TR01_REBOOT);
     if (ret != LT_OK) {

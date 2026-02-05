@@ -19,9 +19,9 @@
 #include "string.h"
 
 // Pre-generated key for testing using OpenSSL
-uint8_t priv_test_key[]
-    = {0x42, 0xb2, 0xee, 0x0e, 0x9b, 0xb5, 0x72, 0x50, 0x6e, 0xda, 0x06, 0x3e, 0xcb, 0x98, 0x43, 0x51,
-       0x6f, 0xeb, 0xe6, 0x5f, 0x94, 0x3e, 0xf1, 0xb6, 0x0c, 0x74, 0x6d, 0x4c, 0x46, 0x83, 0xde, 0x15};
+uint8_t priv_test_key[] = {0x42, 0xb2, 0xee, 0x0e, 0x9b, 0xb5, 0x72, 0x50, 0x6e, 0xda, 0x06,
+                           0x3e, 0xcb, 0x98, 0x43, 0x51, 0x6f, 0xeb, 0xe6, 0x5f, 0x94, 0x3e,
+                           0xf1, 0xb6, 0x0c, 0x74, 0x6d, 0x4c, 0x46, 0x83, 0xde, 0x15};
 
 // Shared with cleanup function
 lt_handle_t *g_h;
@@ -29,10 +29,11 @@ lt_handle_t *g_h;
 static lt_ret_t lt_test_rev_eddsa_sign_cleanup(void)
 {
     lt_ret_t ret;
-    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending on the used curve,
-                                                       // and we work with both curves here, so let's use one buffer for
-                                                       // both for simplification and assume the size of pubkey on the
-                                                       // P256 curve to be safe.
+    uint8_t read_pub_key[TR01_CURVE_P256_PUBKEY_LEN];  // The read key can have 32B or 64B, depending
+                                                       // on the used curve, and we work with both
+                                                       // curves here, so let's use one buffer for both
+                                                       // for simplification and assume the size of
+                                                       // pubkey on the P256 curve to be safe.
     lt_ecc_curve_type_t curve;
     lt_ecc_key_origin_t origin;
 
@@ -88,8 +89,8 @@ void lt_test_rev_eddsa_sign(lt_handle_t *h)
     // Making the handle accessible to the cleanup function.
     g_h = h;
 
-    uint8_t read_pub_key[TR01_CURVE_ED25519_PUBKEY_LEN], msg_to_sign[TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX],
-        rs[TR01_ECDSA_EDDSA_SIGNATURE_LENGTH];
+    uint8_t read_pub_key[TR01_CURVE_ED25519_PUBKEY_LEN],
+        msg_to_sign[TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX], rs[TR01_ECDSA_EDDSA_SIGNATURE_LENGTH];
     lt_ecc_curve_type_t curve;
     lt_ecc_key_origin_t origin;
     uint32_t msg_to_sign_len;
@@ -109,11 +110,13 @@ void lt_test_rev_eddsa_sign(lt_handle_t *h)
         LT_LOG_INFO();
         LT_LOG_INFO("Testing signing with ECC key slot #%" PRIu8 "...", i);
 
-        LT_LOG_INFO("Generating random message length <= %d...", (int)TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX);
+        LT_LOG_INFO("Generating random message length <= %d...",
+                    (int)TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &msg_to_sign_len, sizeof(msg_to_sign_len)));
         msg_to_sign_len %= TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX + 1;  // 0-4096
 
-        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...", msg_to_sign_len);
+        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...",
+                    msg_to_sign_len);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, msg_to_sign, msg_to_sign_len));
 
         LT_LOG_INFO("Signing message with empty slot (should fail)...");
@@ -123,7 +126,8 @@ void lt_test_rev_eddsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_store(h, i, TR01_CURVE_ED25519, priv_test_key));
 
         LT_LOG_INFO("Reading the stored public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Signing message...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_eddsa_sign(h, i, msg_to_sign, msg_to_sign_len, rs));
@@ -144,11 +148,13 @@ void lt_test_rev_eddsa_sign(lt_handle_t *h)
         LT_LOG_INFO();
         LT_LOG_INFO("Testing signing with ECC key slot #%" PRIu8 "...", i);
 
-        LT_LOG_INFO("Generating random message length <= %d...", (int)TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX);
+        LT_LOG_INFO("Generating random message length <= %d...",
+                    (int)TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, &msg_to_sign_len, sizeof(msg_to_sign_len)));
         msg_to_sign_len %= TR01_L3_EDDSA_SIGN_CMD_MSG_LEN_MAX + 1;  // 0-4096
 
-        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...", msg_to_sign_len);
+        LT_LOG_INFO("Generating random message with length %" PRIu32 " for signing...",
+                    msg_to_sign_len);
         LT_TEST_ASSERT(LT_OK, lt_random_bytes(h, msg_to_sign, msg_to_sign_len));
 
         LT_LOG_INFO("Signing message with empty slot (should fail)...");
@@ -158,7 +164,8 @@ void lt_test_rev_eddsa_sign(lt_handle_t *h)
         LT_TEST_ASSERT(LT_OK, lt_ecc_key_generate(h, i, TR01_CURVE_ED25519));
 
         LT_LOG_INFO("Reading the generated public key...");
-        LT_TEST_ASSERT(LT_OK, lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_ecc_key_read(h, i, read_pub_key, sizeof(read_pub_key), &curve, &origin));
 
         LT_LOG_INFO("Signing message...");
         LT_TEST_ASSERT(LT_OK, lt_ecc_eddsa_sign(h, i, msg_to_sign, msg_to_sign_len, rs));

@@ -31,8 +31,9 @@ void lt_test_rev_handshake_req(lt_handle_t *h)
     LT_LOG_INFO("Part 2/3: Start Secure Session multiple times without aborting.");
     for (int i = 0; i < 3; i++) {
         LT_LOG_INFO("Starting Secure Session (attempt %d)...", i);
-        LT_TEST_ASSERT(LT_OK, lt_verify_chip_and_start_secure_session(h, LT_TEST_SH0_PRIV, LT_TEST_SH0_PUB,
-                                                                      TR01_PAIRING_KEY_SLOT_INDEX_0));
+        LT_TEST_ASSERT(LT_OK,
+                       lt_verify_chip_and_start_secure_session(h, LT_TEST_SH0_PRIV, LT_TEST_SH0_PUB,
+                                                               TR01_PAIRING_KEY_SLOT_INDEX_0));
     }
 
     LT_LOG_INFO("Part 3/3: Abort Secure Session multiple times.");
