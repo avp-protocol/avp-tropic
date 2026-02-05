@@ -11,3 +11,7 @@ All HAL files can be found in the `libtropic/hal/` directory.
 
 !!! tip
     Cannot see your platform in the list above? Refer to [Adding a New Host Platform](../../for_contributors/adding_host_platform.md) section with instructions on how to add a support for it.
+
+!!! warning "Warning: Endianness"
+    Currently, the Libtropic code is compatible with little-endian machines only due to handling
+    of integers in packed structures.

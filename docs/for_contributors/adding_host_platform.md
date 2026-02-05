@@ -1,5 +1,10 @@
 # Adding a New Host Platform
-Libtropic is written to be *platform-independent*, so no changes to the main code base are needed when adding support for a new host platform. However, to define how communication on the L1 Layer will work, a new Hardware Abstraction Layer (HAL) must be implemented. Currently available HALs are located in `hal/`.
+Libtropic is written to be *platform-independent*, so it is possible to add support for a new host platform by creating a new Hardware Abstraction Layer (HAL). The HAL implements low-level functionality, mainly communication on the L1 Layer. Currently available HALs are located in `hal/`.
+
+!!! warning "Warning: Endianness"
+    Currently, the Libtropic code is compatible with little-endian machines only due to handling
+    of integers in packed structures. If your platform uses different endianness, it cannot be
+    supported for now without patching the code base.
 
 ## Guide
 This guide will walk you through adding support for a new platform. In this guide, we will add a support for a microcontroller called `my_mcu` on a board `my_board`. The directory structure will be different if you create a port e.g., for an operating system. In that case, please get inspired by existing ports (POSIX, Linux).
