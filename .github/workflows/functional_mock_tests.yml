@@ -26,6 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+            sudo apt-get update
             sudo apt-get install cmake build-essential ninja-build
             pip install jsonschema jinja2
 
@@ -58,6 +59,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+            sudo apt-get update
             sudo apt-get install cmake build-essential valgrind ninja-build
             pip install jsonschema jinja2
 
