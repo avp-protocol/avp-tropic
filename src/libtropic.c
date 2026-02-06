@@ -69,8 +69,10 @@ lt_ret_t lt_init(lt_handle_t *h)
     }
 
     // Initialize the TROPIC01 attributes based on its Application FW.
+    // We allow LT_REBOOT_UNSUCCESSFUL, because TROPIC01 might contain invalid Application FW, but
+    // should not be restricted from using Libtropic in Start-up Mode.
     ret = lt_init_tr01_attrs(h);
-    if (ret != LT_OK) {
+    if (ret != LT_OK && ret != LT_REBOOT_UNSUCCESSFUL) {
         goto crypto_ctx_cleanup;
     }
 
