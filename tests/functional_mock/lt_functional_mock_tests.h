@@ -55,6 +55,18 @@ void lt_test_mock_invalid_in_crc(lt_handle_t *h);
  */
 void lt_test_mock_hardware_fail(lt_handle_t *h);
 
+/**
+ * @brief Test for checking that lt_init suceeds if Application FW cannot be booted.
+ *
+ * Test steps:
+ *  1. Mock responses to simulate a scenario where Application FW cannot be booted, i.e. TROPIC01 stays
+ *     in Start-up Mode.
+ *  2. Call lt_init and verify that it succeeds.
+ *
+ * @param h Handle for communication with TROPIC01
+ */
+void lt_test_mock_invalid_app_fw_init(lt_handle_t *h);
+
 #ifdef __cplusplus
 }
 #endif
