@@ -105,7 +105,7 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
 
     int ret = LT_FAIL;
 
-    // There is l3 payload in passed buffer.
+    // There is L3 payload in provided buffer (buff).
     // First check how much data are to be send and if it actually fits into that buffer,
     // there must be a space for 2B of size value, ?B of command (ID + data) and 16B of TAG.
     struct lt_l3_gen_frame_t *p_frame = (struct lt_l3_gen_frame_t *)buff;
@@ -117,13 +117,13 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
                      TR01_L3_PACKET_MAX_SIZE);
         return LT_L3_DATA_LEN_ERROR;
     }
-    // Prevent sending more data than is the size of passed buffer.
+    // Prevent sending more data than is the size of the provided buffer.
     if (packet_size > buff_len) {
         LT_LOG_ERROR("Packet size %" PRIu16 "exceeds L3 buffer size %" PRIu16, packet_size, buff_len);
         return LT_PARAM_ERR;
     }
 
-    // Setup a request pointer to l2 buffer, which is placed in handle
+    // Setup a request pointer to L2 buffer, which is placed in handle
     struct lt_l2_encrypted_cmd_req_t *req = (struct lt_l2_encrypted_cmd_req_t *)s2->buff;
 
     // Calculate number of chunks to send.
@@ -138,7 +138,7 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
 
     uint16_t buff_offset = 0;
 
-    // Split encrypted buffer into chunks and proceed them into l2 transfers:
+    // Split encrypted buffer into chunks and proceed them into L2 transfers:
     for (int i = 0; i < chunk_num; i++) {
         req->req_id = TR01_L2_ENCRYPTED_CMD_REQ_ID;
         // If the currently processed chunk is the last one, get its length (may be shorter than
@@ -153,13 +153,13 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
         buff_offset += req->req_len;  // Move offset for next chunk
         add_crc(req);
 
-        // Send l2 request cointaining a chunk from l3 buff
+        // Send L2 request containing a chunk from L3 buff
         ret = lt_l1_write(s2, 2 + req->req_len + 2, LT_L1_TIMEOUT_MS_DEFAULT);
         if (ret != LT_OK) {
             return ret;
         }
 
-        // Read a response on this l2 request
+        // Read a response on this L2 request
         ret = lt_l1_read(s2, TR01_L1_LEN_MAX, LT_L1_TIMEOUT_MS_DEFAULT);
         if (ret != LT_OK) {
             return ret;
@@ -178,28 +178,28 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
 lt_ret_t lt_l2_recv_encrypted_res(lt_l2_state_t *s2, uint8_t *buff, uint16_t max_len)
 {
     if (!s2
-        // Max len must be definitively smaller than size of l3 buffer
+        // Max len must be definitively smaller than size of L3 buffer
         || max_len > TR01_L3_PACKET_MAX_SIZE || !buff) {
         return LT_PARAM_ERR;
     }
 
     int ret = LT_FAIL;
-    // Setup a response pointer to l2 buffer, which is placed in handle
+    // Setup a response pointer to L2 buffer, which is placed in handle
     struct lt_l2_encrypted_cmd_rsp_t *resp = (struct lt_l2_encrypted_cmd_rsp_t *)s2->buff;
 
-    // Position into l3 buffer where processed l2 chunk will be copied into
+    // Position into L3 buffer where processed L2 chunk will be copied into
     uint16_t offset = 0;
     // Tropic can respond with various lengths of chunks, this loop should be limited
     uint16_t loops = 0;
 
     do {
-        /* Get one l2 frame of a device's response */
+        // Get one L2 frame of a device's response
         ret = lt_l1_read(s2, TR01_L1_LEN_MAX, LT_L1_TIMEOUT_MS_DEFAULT);
         if (ret != LT_OK) {
             return ret;
         }
 
-        // Prevent receiving more data then is compiled size of l3 buffer
+        // Prevent receiving more data than is the size of the provided L3 buffer.
         if (offset + resp->rsp_len > max_len) {
             return LT_L2_RSP_LEN_ERROR;
         }
@@ -208,17 +208,17 @@ lt_ret_t lt_l2_recv_encrypted_res(lt_l2_state_t *s2, uint8_t *buff, uint16_t max
         ret = lt_l2_frame_check(s2->buff);
         switch (ret) {
             case LT_L2_RES_CONT:
-                // Copy content of l2 into certain offset of l3 buffer
+                // Copy content of L2 into current offset of the L3 buffer
                 memcpy(buff + offset, (struct l2_encrypted_rsp_t *)resp->l3_chunk, resp->rsp_len);
                 offset += resp->rsp_len;
                 loops++;
                 break;
             case LT_OK:
-                // This was last l2 frame of l3 packet, copy it and return
+                // This was last L2 frame of L3 packet, copy it and return
                 memcpy(buff + offset, (struct l2_encrypted_rsp_t *)resp->l3_chunk, resp->rsp_len);
                 return LT_OK;
             default:
-                // Any other L2 packet's status is not expected
+                // Any other frame status is not expected
                 return ret;
         }
     } while (loops < LT_L2_RECV_ENC_RES_MAX_LOOPS);
