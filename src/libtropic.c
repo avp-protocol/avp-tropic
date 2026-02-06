@@ -445,7 +445,8 @@ lt_ret_t lt_session_start(lt_handle_t *h, const uint8_t *stpub, const lt_pkey_in
     struct lt_l2_handshake_rsp_t *p_l2_resp = (struct lt_l2_handshake_rsp_t *)h->l2.buff;
 
     if (TR01_L2_HANDSHAKE_RSP_LEN != (p_l2_resp->rsp_len)) {
-        return LT_L2_RSP_LEN_ERROR;
+        ret = LT_L2_RSP_LEN_ERROR;
+        goto cleanup;
     }
 
     ret = lt_in__session_start(h, stpub, pkey_index, shipriv, shipub, &host_eph_keys);
