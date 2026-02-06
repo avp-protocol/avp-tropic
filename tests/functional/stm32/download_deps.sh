@@ -54,3 +54,18 @@ fi
 tar -xjf "$SCRIPT_DIR/_deps/mbedtls.tar.bz2" -C "$SCRIPT_DIR/_deps"
 rm "$SCRIPT_DIR/_deps/mbedtls.tar.bz2"
 mv "$SCRIPT_DIR/_deps/mbedtls-4.0.0" "$SCRIPT_DIR/_deps/mbedtls_v4"
+
+echo "Downloading WolfSSL..."
+curl -L -o "$SCRIPT_DIR/_deps/wolfssl.zip" "https://github.com/wolfSSL/wolfssl/archive/refs/tags/v5.8.4-stable.zip"
+
+echo "Verifying wolfssl.zip checksum..."
+EXPECTED_WOLFSSL="9f52b92b2937acdbb03f2a731160d70f23f74a375f651de057214783c266fbeb"
+ACTUAL_WOLFSSL=$(sha256sum "$SCRIPT_DIR/_deps/wolfssl.zip" | awk '{print $1}')
+if [ "$EXPECTED_WOLFSSL" != "$ACTUAL_WOLFSSL" ]; then
+  echo "Checksum mismatch for wolfssl.zip: expected $EXPECTED_WOLFSSL, got $ACTUAL_WOLFSSL" >&2
+  exit 1
+fi
+
+unzip "$SCRIPT_DIR/_deps/wolfssl.zip" -d "$SCRIPT_DIR/_deps"
+mv "$SCRIPT_DIR/_deps/wolfssl-5.8.4-stable" "$SCRIPT_DIR/_deps/wolfssl"
+rm "$SCRIPT_DIR/_deps/wolfssl.zip"
