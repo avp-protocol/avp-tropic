@@ -229,7 +229,7 @@ struct lt_l2_encrypted_cmd_req_t {
     uint8_t req_id;  /**< Request ID byte */
     uint8_t req_len; /**< Length byte */
     /** Contains a chunk of encrypted command */
-    uint8_t l3_chunk[255];
+    uint8_t l3_chunk[TR01_L2_CHUNK_MAX_DATA_SIZE];
     uint8_t crc[2]; /**< Checksum */
 } __attribute__((packed));
 
@@ -260,7 +260,7 @@ struct lt_l2_encrypted_cmd_rsp_t {
      * The size of the RES_CIPHERTEXT L3 Field in bytes.
      */
     /** Contains a chunk of encrypted command */
-    uint8_t l3_chunk[255];
+    uint8_t l3_chunk[TR01_L2_CHUNK_MAX_DATA_SIZE];
     uint8_t crc[2]; /**< Checksum */
 } __attribute__((packed));
 
