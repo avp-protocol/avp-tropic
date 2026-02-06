@@ -373,6 +373,22 @@ void lt_test_rev_mac_and_destroy(lt_handle_t *h);
  */
 void lt_test_rev_get_log_req(lt_handle_t *h);
 
+/**
+ * @brief Tests calling lt_init after lt_deinit.
+ *
+ * Test steps:
+ *  1. Initialize the handle.
+ *  2. Start Secure Session with pairing key slot 0.
+ *  3. Generate random data and send a Ping command.
+ *  4. Compare sent and received message.
+ *  5. Abort Secure Session.
+ *  6. Deinitialize the handle.
+ *  7. Repeat steps 1-6 to test reinitialization after deinitialization.
+ *
+ * @param h     Handle for communication with TROPIC01
+ */
+void lt_test_rev_init_after_deinit(lt_handle_t *h);
+
 /** @} */  // end of libtropic_funct_tests group
 
 #ifdef __cplusplus
