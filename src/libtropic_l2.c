@@ -178,28 +178,28 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
 lt_ret_t lt_l2_recv_encrypted_res(lt_l2_state_t *s2, uint8_t *buff, uint16_t max_len)
 {
     if (!s2
-        // Max len must be definitively smaller than size of l3 buffer
+        // Max len must be definitively smaller than size of L3 buffer
         || max_len > TR01_L3_PACKET_MAX_SIZE || !buff) {
         return LT_PARAM_ERR;
     }
 
     int ret = LT_FAIL;
-    // Setup a response pointer to l2 buffer, which is placed in handle
+    // Setup a response pointer to L2 buffer, which is placed in handle
     struct lt_l2_encrypted_cmd_rsp_t *resp = (struct lt_l2_encrypted_cmd_rsp_t *)s2->buff;
 
-    // Position into l3 buffer where processed l2 chunk will be copied into
+    // Position into L3 buffer where processed L2 chunk will be copied into
     uint16_t offset = 0;
     // Tropic can respond with various lengths of chunks, this loop should be limited
     uint16_t loops = 0;
 
     do {
-        /* Get one l2 frame of a device's response */
+        // Get one L2 frame of a device's response
         ret = lt_l1_read(s2, TR01_L1_LEN_MAX, LT_L1_TIMEOUT_MS_DEFAULT);
         if (ret != LT_OK) {
             return ret;
         }
 
-        // Prevent receiving more data then is compiled size of l3 buffer
+        // Prevent receiving more data than is the size of the provided L3 buffer.
         if (offset + resp->rsp_len > max_len) {
             return LT_L2_RSP_LEN_ERROR;
         }
@@ -208,17 +208,17 @@ lt_ret_t lt_l2_recv_encrypted_res(lt_l2_state_t *s2, uint8_t *buff, uint16_t max
         ret = lt_l2_frame_check(s2->buff);
         switch (ret) {
             case LT_L2_RES_CONT:
-                // Copy content of l2 into certain offset of l3 buffer
+                // Copy content of L2 into current offset of the L3 buffer
                 memcpy(buff + offset, (struct l2_encrypted_rsp_t *)resp->l3_chunk, resp->rsp_len);
                 offset += resp->rsp_len;
                 loops++;
                 break;
             case LT_OK:
-                // This was last l2 frame of l3 packet, copy it and return
+                // This was last L2 frame of L3 packet, copy it and return
                 memcpy(buff + offset, (struct l2_encrypted_rsp_t *)resp->l3_chunk, resp->rsp_len);
                 return LT_OK;
             default:
-                // Any other L2 packet's status is not expected
+                // Any other frame status is not expected
                 return ret;
         }
     } while (loops < LT_L2_RECV_ENC_RES_MAX_LOOPS);
