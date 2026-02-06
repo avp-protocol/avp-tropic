@@ -153,7 +153,7 @@ lt_ret_t lt_l2_send_encrypted_cmd(lt_l2_state_t *s2, uint8_t *buff, uint16_t buf
         buff_offset += req->req_len;  // Move offset for next chunk
         add_crc(req);
 
-        // Send L2 request cointaining a chunk from L3 buff
+        // Send L2 request containing a chunk from L3 buff
         ret = lt_l1_write(s2, 2 + req->req_len + 2, LT_L1_TIMEOUT_MS_DEFAULT);
         if (ret != LT_OK) {
             return ret;
