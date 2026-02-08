@@ -12,8 +12,6 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#include "libtropic_port.h"
-
 /**
  * @brief Device structure for Arduino port.
  *

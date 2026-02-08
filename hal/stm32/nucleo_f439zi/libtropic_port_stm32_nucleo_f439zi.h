@@ -9,7 +9,6 @@
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
-#include "libtropic_port.h"
 #include "stm32f4xx_hal.h"
 
 /**
