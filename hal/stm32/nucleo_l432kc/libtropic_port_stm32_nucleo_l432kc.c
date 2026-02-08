@@ -27,13 +27,15 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     size_t bytes_left = count;
     uint8_t *buff_ptr = buff;
     int ret;
+    lt_ret_t lt_ret = LT_OK;
     uint32_t random_data;
 
     while (bytes_left) {
         ret = HAL_RNG_GenerateRandomNumber(device->rng_handle, &random_data);
         if (ret != HAL_OK) {
             LT_LOG_ERROR("HAL_RNG_GenerateRandomNumber failed, ret=%d", ret);
-            return LT_FAIL;
+            lt_ret = LT_FAIL;
+            goto cleanup;
         }
 
         size_t cpy_cnt = bytes_left < sizeof(random_data) ? bytes_left : sizeof(random_data);
@@ -42,7 +44,9 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
         buff_ptr += cpy_cnt;
     }
 
-    return LT_OK;
+cleanup:
+    explicit_bzero(&random_data, sizeof(random_data));
+    return lt_ret;
 }
 
 lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
