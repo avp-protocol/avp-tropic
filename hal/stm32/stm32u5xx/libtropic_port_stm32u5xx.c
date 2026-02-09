@@ -1,12 +1,12 @@
 /**
- * @file libtropic_port_stm32_nucleo_u5xx.c
- * @author Tropic Square s.r.o.
- * @brief Port for STM32 U5xx using native SPI HAL (and GPIO HAL for chip select).
+ * @file libtropic_port_stm32u5xx.c
+ * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
+ * @brief Port for STM32U5xx series using native SPI HAL (and GPIO HAL for chip select).
  *
- * @license For the license see file LICENSE.txt file in the root directory of this source tree.
+ * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
-#include "libtropic_port_stm32_nucleo_u5xx.h"
+#include "libtropic_port_stm32u5xx.h"
 
 #include <stdarg.h>
 #include <stdint.h>
@@ -20,11 +20,11 @@
 #include "main.h"
 #include "stm32u5xx_hal.h"
 
-#define LT_STM32_U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS 10
+#define LT_STM32U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS 10
 
 lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     size_t bytes_left = count;
     uint8_t *buff_ptr = buff;
     int ret;
@@ -48,11 +48,12 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
 
 lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_RESET);
 
-    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS;
+         read_attempts++) {
         if (!HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
@@ -64,11 +65,12 @@ lt_ret_t lt_port_spi_csn_low(lt_l2_state_t *s2)
 
 lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
 
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
 
-    for (uint8_t read_attempts = 0; read_attempts < LT_STM32_U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS; read_attempts++) {
+    for (uint8_t read_attempts = 0; read_attempts < LT_STM32U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS;
+         read_attempts++) {
         if (HAL_GPIO_ReadPin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin)) {
             return LT_OK;
         }
@@ -80,7 +82,7 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 
 lt_ret_t lt_port_init(lt_l2_state_t *s2)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     int ret;
 
     ret = HAL_RNG_Init(&device->rng_handle);
@@ -140,7 +142,7 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
 lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     int ret;
 
     ret = HAL_RNG_DeInit(&device->rng_handle);
@@ -158,16 +160,17 @@ lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
     return LT_OK;
 }
 
-lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length, uint32_t timeout_ms)
+lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_data_length,
+                              uint32_t timeout_ms)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
 
     if (offset + tx_data_length > TR01_L1_LEN_MAX) {
         LT_LOG_ERROR("Invalid data length!");
         return LT_L1_DATA_LEN_ERROR;
     }
-    int ret = HAL_SPI_TransmitReceive(&device->spi_handle, s2->buff + offset, s2->buff + offset, tx_data_length,
-                                      timeout_ms);
+    int ret = HAL_SPI_TransmitReceive(&device->spi_handle, s2->buff + offset, s2->buff + offset,
+                                      tx_data_length, timeout_ms);
     if (ret != HAL_OK) {
         LT_LOG_ERROR("HAL_SPI_TransmitReceive failed, ret=%d", ret);
         return LT_L1_SPI_ERROR;
@@ -188,7 +191,7 @@ lt_ret_t lt_port_delay(lt_l2_state_t *s2, uint32_t ms)
 #if LT_USE_INT_PIN
 lt_ret_t lt_port_delay_on_int(lt_l2_state_t *s2, uint32_t ms)
 {
-    lt_dev_stm32_nucleo_u5xx *device = (lt_dev_stm32_nucleo_u5xx *)(s2->device);
+    lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     uint32_t time_initial = HAL_GetTick();
     uint32_t time_actual;
 
