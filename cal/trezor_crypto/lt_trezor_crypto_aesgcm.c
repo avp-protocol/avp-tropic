@@ -23,6 +23,7 @@ static lt_ret_t lt_aesgcm_init(gcm_ctx *ctx, const uint8_t *key, const uint32_t 
 {
     int ret = gcm_init_and_key(key, key_len, ctx);
     if (ret != RETURN_GOOD) {
+        LT_LOG_ERROR("Failed to initialize AES-GCM context, ret=%d", ret);
         return LT_CRYPTO_ERR;
     }
     return LT_OK;
@@ -38,6 +39,7 @@ static lt_ret_t lt_aesgcm_deinit(gcm_ctx *ctx)
 {
     int ret = gcm_end(ctx);
     if (ret != RETURN_GOOD) {
+        LT_LOG_ERROR("Failed to deinitialize AES-GCM context, ret=%d", ret);
         return LT_CRYPTO_ERR;
     }
     return LT_OK;
@@ -65,6 +67,7 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
     if (plaintext_len != ciphertext_len - TR01_L3_TAG_SIZE) {
+        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length!");
         return LT_PARAM_ERR;
     }
 
@@ -75,6 +78,7 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
                                   ciphertext + plaintext_len, TR01_L3_TAG_SIZE,
                                   &_ctx->aesgcm_encrypt_ctx);
     if (ret != RETURN_GOOD) {
+        LT_LOG_ERROR("AES-GCM encryption failed, ret=%d", ret);
         return LT_CRYPTO_ERR;
     }
 
@@ -89,6 +93,7 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
     if (plaintext_len != ciphertext_len - TR01_L3_TAG_SIZE) {
+        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length!");
         return LT_PARAM_ERR;
     }
 
@@ -99,6 +104,7 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
                                   ciphertext + plaintext_len, TR01_L3_TAG_SIZE,
                                   &_ctx->aesgcm_decrypt_ctx);
     if (ret != RETURN_GOOD) {
+        LT_LOG_ERROR("AES-GCM decryption failed, ret=%d", ret);
         return LT_CRYPTO_ERR;
     }
 
