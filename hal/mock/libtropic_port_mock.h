@@ -9,7 +9,9 @@
  * @license For the license see file LICENSE.txt file in the root directory of this source tree.
  */
 
-#include "libtropic_port.h"
+#include <stddef.h>
+
+#include "libtropic_common.h"
 
 #ifdef __cplusplus
 extern "C" {
