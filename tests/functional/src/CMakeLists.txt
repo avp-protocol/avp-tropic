@@ -313,6 +313,7 @@ set(LIBTROPIC_TEST_LIST
     lt_test_rev_random_value_get
     lt_test_rev_mac_and_destroy
     lt_test_rev_get_log_req
+    lt_test_rev_init_after_deinit
 )
 
 # Export test list to parent project (usually platform-specific implementation)
@@ -365,6 +366,7 @@ set(TEST_SRCS
     ${PATH_LIBTROPIC}/tests/functional/src/lt_test_rev_random_value_get.c
     ${PATH_LIBTROPIC}/tests/functional/src/lt_test_rev_mac_and_destroy.c
     ${PATH_LIBTROPIC}/tests/functional/src/lt_test_rev_get_log_req.c
+    ${PATH_LIBTROPIC}/tests/functional/src/lt_test_rev_init_after_deinit.c
 )
 
 set(TEST_DIRS
