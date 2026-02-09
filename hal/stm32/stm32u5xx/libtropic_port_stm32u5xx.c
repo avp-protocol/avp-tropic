@@ -31,7 +31,7 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
     uint32_t random_data;
 
     while (bytes_left) {
-        ret = HAL_RNG_GenerateRandomNumber(&device->rng_handle, &random_data);
+        ret = HAL_RNG_GenerateRandomNumber(device->rng_handle, &random_data);
         if (ret != HAL_OK) {
             LT_LOG_ERROR("HAL_RNG_GenerateRandomNumber failed, ret=%d", ret);
             return LT_FAIL;
@@ -85,12 +85,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
     lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     int ret;
 
-    ret = HAL_RNG_Init(&device->rng_handle);
-    if (ret != HAL_OK) {
-        LT_LOG_ERROR("Failed to init RNG, ret=%d", ret);
-        return LT_FAIL;
-    }
-
     // Set the SPI parameters.
     device->spi_handle.Instance = device->spi_instance;
 
@@ -119,7 +113,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
     // GPIO for chip select.
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    LT_SPI_CS_CLK_ENABLE();
     HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
     GPIO_InitStruct.Pin = device->spi_cs_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -129,7 +122,6 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
 #if LT_USE_INT_PIN
     // GPIO for INT pin.
-    LT_INT_CLK_ENABLE();
     GPIO_InitStruct.Pin = device->int_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -144,12 +136,6 @@ lt_ret_t lt_port_deinit(lt_l2_state_t *s2)
 {
     lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
     int ret;
-
-    ret = HAL_RNG_DeInit(&device->rng_handle);
-    if (ret != HAL_OK) {
-        LT_LOG_ERROR("Failed to deinit RNG, ret=%d", ret);
-        return LT_FAIL;
-    }
 
     ret = HAL_SPI_DeInit(&device->spi_handle);
     if (ret != HAL_OK) {
