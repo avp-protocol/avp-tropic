@@ -82,7 +82,7 @@ int main(void) {
     // This should be done only once for a specific handle.
     // If you need to initialize the specific handle again, call lt_deinit()
     // first.
-    lt_ret_t ret = lt_init(h);
+    lt_ret_t ret = lt_init(&h);
     if (LT_OK != ret) {
         return -1;
     }
@@ -90,7 +90,7 @@ int main(void) {
     // 8. Do your stuff.
 
     // 9. Deinitialize the handle.
-    ret = lt_deinit(h);
+    ret = lt_deinit(&h);
     if (LT_OK != ret) {
         return -1;
     }
