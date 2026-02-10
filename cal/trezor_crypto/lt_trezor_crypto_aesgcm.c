@@ -5,6 +5,8 @@
  * @license For the license see LICENSE.md in the root directory of this source tree.
  */
 
+#include <inttypes.h>
+
 #include "aes/aes.h"
 #include "aes/aesgcm.h"
 #include "libtropic_common.h"
@@ -68,7 +70,8 @@ lt_ret_t lt_aesgcm_encrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
     if (plaintext_len != ciphertext_len - TR01_L3_TAG_SIZE) {
-        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length!");
+        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length: %" PRIu32 " != %" PRIu32,
+                     plaintext_len, ciphertext_len - TR01_L3_TAG_SIZE);
         return LT_PARAM_ERR;
     }
 
@@ -94,7 +97,8 @@ lt_ret_t lt_aesgcm_decrypt(void *ctx, const uint8_t *iv, const uint32_t iv_len, 
     lt_ctx_trezor_crypto_t *_ctx = (lt_ctx_trezor_crypto_t *)ctx;
 
     if (plaintext_len != ciphertext_len - TR01_L3_TAG_SIZE) {
-        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length!");
+        LT_LOG_ERROR("Invalid AES-GCM plaintext/ciphertext length: %" PRIu32 " != %" PRIu32,
+                     plaintext_len, ciphertext_len - TR01_L3_TAG_SIZE);
         return LT_PARAM_ERR;
     }
 
