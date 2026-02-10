@@ -1,4 +1,4 @@
-# 4. Separate API Example Tutorial
+# 5. Separate API Example Tutorial
 This example showcases the Libtropic's Separate API. It is functionally similar to the *Hello, World!* example, but it uses distinct API calls for incoming and outgoing data. This approach is useful for secure, tunneled communication, such as during chip provisioning in a factory.
 
 !!! success "Prerequisites"

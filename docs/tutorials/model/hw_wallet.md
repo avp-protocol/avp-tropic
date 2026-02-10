@@ -1,4 +1,4 @@
-# 2. Hardware Wallet Example Tutorial
+# 3. Hardware Wallet Example Tutorial
 This example demonstrates how to use configuration objects and different pairing keys to manage access to TROPIC01 features. A hardware wallet device scenario is used as a model for this example.
 
 !!! success "Prerequisites"

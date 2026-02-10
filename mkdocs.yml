@@ -57,10 +57,10 @@ nav:
       - Model:
         - tutorials/model/index.md
         - 1. Your First Steps: tutorials/model/first_steps.md
-        # - 2. Understanding Libtropic: tutorials/model/understanding_libtropic.md
-        - 2. HW Wallet: tutorials/model/hw_wallet.md
-        - 3. Mac-And-Destroy: tutorials/model/macandd.md
-        - 4. Separate API: tutorials/model/separate_api.md
+        - 2. Understanding Libtropic: tutorials/model/understanding_libtropic.md
+        - 3. HW Wallet: tutorials/model/hw_wallet.md
+        - 4. Mac-And-Destroy: tutorials/model/macandd.md
+        - 5. Separate API: tutorials/model/separate_api.md
       - Linux:
         - Linux SPI:
           - tutorials/linux/spi/index.md

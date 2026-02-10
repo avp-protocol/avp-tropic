@@ -93,4 +93,4 @@ If you see the output, congratulations! 🎉 You used Libtropic to send a *Ping*
 
 <!-- Continue with the next tutorial, where we discuss the functions used in this example and understand the basics of Libtropic's and TROPIC01's architectures. -->
 
-[Next tutorial :material-arrow-right:](hw_wallet.md){ .md-button }
+[Next tutorial :material-arrow-right:](understanding_libtropic.md){ .md-button }

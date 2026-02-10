@@ -1,4 +1,4 @@
-# 3. Mac-And-Destroy Example Tutorial
+# 4. Mac-And-Destroy Example Tutorial
 This example illustrates MAC-And-Destroy, the flagship feature of TROPIC01.
 
 !!! success "Prerequisites"
