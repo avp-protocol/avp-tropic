@@ -29,7 +29,7 @@ If you’re unsure which API call is L2 vs L3, the function naming and tutorial 
 At a high level:
 
 - **Public API functions** are in `include/libtropic.h` and implemented in `src/`.
-- **HAL (hardware abstration layer of the host platform)** lives in `hal/` and provides the low-level transport (SPI on embedded targets, TCP to the model, etc.).
+- **HAL (hardware abstraction layer for the host platform)** lives in `hal/` and provides the low-level transport (SPI on embedded targets, TCP to the model, etc.).
 - **CAL/CFP (crypto abstraction / provider)** lives in `cal/` and plugs in crypto implementations (e.g., MbedTLS/OpenSSL/WolfCrypt/Trezor Crypto).
 
 These are build-time choices when you integrate Libtropic:
@@ -40,12 +40,58 @@ These are build-time choices when you integrate Libtropic:
 
 ---
 
+## `lt_handle_t`: Your per-chip context
+Almost all Libtropic calls operate on an `lt_handle_t`. Think of it as a **context object** for one TROPIC01 instance.
+
+What it contains (simplified):
+
+- **L2 state** (including a pointer to your HAL device object at `h.l2.device`).
+- **L3 state** (Secure Session status, nonces/IVs, an L3 buffer, and a pointer to your CAL/CFP context at `h.l3.crypto_ctx`).
+- A few chip attributes discovered/used by the library.
+
+Practical rules:
+
+- Create **one handle per chip** (you can have multiple handles if you talk to multiple chips).
+- The handle stores **pointers** to your HAL device structure and CAL/CFP crypto context structure. These objects must stay alive for the whole lifetime of the handle (Libtropic does not copy them).
+- Set the pointers **before** calling `lt_init(&h)`.
+
+Also remember the basic lifecycle:
+
+1. Fill your HAL device struct + CAL/CFP crypto context struct.
+2. Point the handle to them (`h.l2.device = ...`, `h.l3.crypto_ctx = ...`).
+3. Call `lt_init(&h)` and check the return code.
+4. Use L2 requests and/or establish a Secure Session for L3.
+5. Call `lt_session_abort(&h)` when you are done with L3.
+6. Call `lt_deinit(&h)` at the end.
+
+Minimal initialization pattern (illustrative, not a full program):
+
+```c
+lt_handle_t h;
+lt_dev_<port>_t dev;
+lt_ctx_<cfp>_t crypto;
+
+h.l2.device = &dev;
+h.l3.crypto_ctx = &crypto;
+lt_init(&h);
+```
+
+!!! tip "Where do I see the real initialization?"
+	The contents of `lt_dev_<port>_t` (HAL device struct) depend on the host platform (SPI pins/speed, TCP host/port for the model, etc.).
+	The easiest way to learn what to fill in is to look at the corresponding example for your platform and find the code that prepares the handle right before `lt_init(&h)`.
+
+For a complete example (including which headers to include and what needs to be initialized inside the HAL device struct), see:
+
+- [How to Use](../../reference/integrating_libtropic/how_to_use/index.md)
+
+---
+
 ## Secure Session Basics (and Pairing Keys)
 Most interesting TROPIC01 features are accessed via **L3**, so you will frequently do this flow:
 
 1. Use L2 requests to read info or reboot to the right mode.
 2. Start a Secure Session with a selected **pairing key slot**.
-    - We recommend using our helper `lt_verify_chip_and_start_secure_session`, which will handle all L2 communication required to estabilish a Secure Session.
+	- We recommend using our helper `lt_verify_chip_and_start_secure_session`, which will handle all L2 communication required to establish a Secure Session.
 3. Execute L3 commands.
 4. Abort the session and deinitialize.
 
@@ -60,8 +106,8 @@ Key points:
     - It is also highly recommended to ensure that your TROPIC01 is genuine by verifying the certificate chain.
 
 !!! danger "Irreversible Actions"
-	Some operations are one-way. Invalidating pairing slots, erasing certain chip configuration, and similar actions are **not reversible on a real chip**.
-	On the model, you can recover by restarting the model server (fresh state), but do not rely on that behavior for real hardware.
+    Some operations are one-way. Invalidating pairing slots, erasing certain chip configuration, and similar actions are **not reversible on a real chip**.
+    On the model, you can recover by restarting the model server (fresh state), but do not rely on that behavior for real hardware.
 
 If Secure Session establishment fails, the two most common causes are wrong pairing keys or the chip being in Maintenance Mode:
 
@@ -96,7 +142,7 @@ If you suspect memory issues or need to step through code:
 On Linux, tests against the model can be run with AddressSanitizer or Valgrind (and you can attach `gdb`).
 
 !!! tip "Model + gdb"
-	If you want to debug a client binary against the model, run the **model server manually** (as in the first tutorial) and then run your binary under `gdb`.
+    If you want to debug a client binary against the model, run the **model server manually** (as in the first tutorial) and then run your binary under `gdb`.
 
 ---
 
@@ -110,7 +156,7 @@ Examples you will encounter in these tutorials:
 - Firmware update (interruption can brick the device; avoid power loss).
 
 !!! danger "When in doubt, use the model!"
-	If you are exploring commands you don’t fully understand yet, prefer using the **TROPIC01 Model** until you’re confident about the effects.
+    If you are exploring commands you don’t fully understand yet, prefer using the **TROPIC01 Model** until you’re confident about the effects.
 
 ---
 
