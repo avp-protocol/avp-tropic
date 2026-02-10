@@ -146,6 +146,23 @@ On Linux, tests against the model can be run with AddressSanitizer or Valgrind (
 
 ---
 
+## TROPIC01 Firmware: Keep it up to date
+On physical TROPIC01 chip, keeping TROPIC01 firmware current matters for reliability, security fixes, and compatibility with newer SDK features.
+
+What to remember:
+
+- Firmware runs on multiple execution engines (CPU FW + SPECT/ECC FW). Libtropic includes the low-level update commands and ships update files.
+- A failed or interrupted update can leave the chip in a state where parts of the API are unavailable (often showing up as “Maintenance Mode” symptoms).
+- Treat firmware update as a **sensitive operation**: avoid power loss/disconnects during update.
+
+Where to learn/do it:
+
+- Read: [TROPIC01 Firmware](../../reference/tropic01_fw.md)
+- If Secure Session / commands start failing unexpectedly, also check: [FAQ](../../faq.md#lt_l3_invalid_cmd-or-lt_l2_unknown_req)
+- Follow the firmware-update tutorials for your platform (for example on Linux USB devkit): [Tutorials](../../tutorials/index.md)
+
+---
+
 ## Safety: Operations that Can Change Chip State Permanently
 TROPIC01 exposes powerful commands; some of them intentionally make **permanent** changes.
 
