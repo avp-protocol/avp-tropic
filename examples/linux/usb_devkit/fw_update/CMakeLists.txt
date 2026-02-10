@@ -62,7 +62,7 @@ add_subdirectory("${PATH_LIBTROPIC}cal/mbedtls_v4" "mbedtls_v4_cal")
 target_sources(tropic PRIVATE ${LT_CAL_SRCS})
 target_include_directories(tropic PUBLIC ${LT_CAL_INC_DIRS})
 
-# Add SPI Linux HAL
+# Add USB DevKit POSIX HAL
 add_subdirectory("${PATH_LIBTROPIC}hal/posix/usb_dongle" "posix_usb_dongle")
 target_sources(tropic PRIVATE ${LT_HAL_SRCS})
 target_include_directories(tropic PUBLIC ${LT_HAL_INC_DIRS})
