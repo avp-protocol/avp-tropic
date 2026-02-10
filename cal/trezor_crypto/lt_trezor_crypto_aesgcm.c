@@ -8,6 +8,7 @@
 #include "aes/aes.h"
 #include "aes/aesgcm.h"
 #include "libtropic_common.h"
+#include "libtropic_logging.h"
 #include "libtropic_trezor_crypto.h"
 #include "lt_aesgcm.h"
 
