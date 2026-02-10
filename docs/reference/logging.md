@@ -3,7 +3,7 @@ Libtropic contains a logging functionality, which is disabled by default.
 
 You may find it useful to enable logging during Libtropic evaluation or integration. There are five logging levels:
 
-- None (default unless compiling *tests* or *examples*),
+- None (default unless compiling tests),
 - Error,
 - Warning,
 - Info,
