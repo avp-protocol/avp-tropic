@@ -11,13 +11,12 @@ int wolfcrypt_custom_seed_gen(unsigned char *output, unsigned int sz)
     HAL_StatusTypeDef hal_status = HAL_OK;
     uint32_t random_data;
     size_t bytes_left = sz;
-    int ret = 0;
 
     while (bytes_left) {
         hal_status = HAL_RNG_GenerateRandomNumber(&RNGHandle, &random_data);
         if (hal_status != HAL_OK) {
-            ret = RNG_FAILURE_E;
-            goto cleanup;
+            wc_ForceZero(&random_data, sizeof(random_data));
+            return RNG_FAILURE_E;
         }
 
         size_t cpy_cnt = bytes_left < sizeof(random_data) ? bytes_left : sizeof(random_data);
@@ -26,7 +25,6 @@ int wolfcrypt_custom_seed_gen(unsigned char *output, unsigned int sz)
         output += cpy_cnt;
     }
 
-cleanup:
     wc_ForceZero(&random_data, sizeof(random_data));
-    return ret;
+    return 0;
 }

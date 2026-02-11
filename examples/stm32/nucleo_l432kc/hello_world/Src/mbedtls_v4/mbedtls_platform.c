@@ -25,13 +25,12 @@ int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *e
     HAL_StatusTypeDef hal_status = HAL_OK;
     uint32_t random_data;
     size_t bytes_left = output_size;
-    int ret = 0;
 
     while (bytes_left) {
         hal_status = HAL_RNG_GenerateRandomNumber(&RNGHandle, &random_data);
         if (hal_status != HAL_OK) {
-            ret = PSA_ERROR_INSUFFICIENT_ENTROPY;
-            goto cleanup;
+            mbedtls_platform_zeroize(&random_data, sizeof(random_data));
+            return PSA_ERROR_INSUFFICIENT_ENTROPY;
         }
 
         size_t cpy_cnt = bytes_left < sizeof(random_data) ? bytes_left : sizeof(random_data);
@@ -42,7 +41,6 @@ int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *e
 
     *estimate_bits = 8 * output_size;
 
-cleanup:
     mbedtls_platform_zeroize(&random_data, sizeof(random_data));
-    return ret;
+    return 0;
 }
