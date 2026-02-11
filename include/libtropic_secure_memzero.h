@@ -13,6 +13,10 @@
 
 #include "libtropic_common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Securely overwrites the memory with zeros.
  * @note This function is primarily used for internal purposes.
@@ -21,5 +25,9 @@
  * @param count  Number of bytes to overwrite with zeros
  */
 void lt_secure_memzero(void *const ptr, size_t count);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // LIBTROPIC_SECURE_MEMZERO_H
