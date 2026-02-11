@@ -16,10 +16,10 @@
 #include "libtropic_common.h"
 #include "libtropic_l2.h"
 #include "libtropic_logging.h"
+#include "libtropic_secure_memzero.h"
 #include "lt_aesgcm.h"
 #include "lt_crypto_common.h"
 #include "lt_l1.h"
-#include "lt_secure_memzero.h"
 
 static lt_ret_t lt_l3_nonce_increase(uint8_t *nonce)
 {

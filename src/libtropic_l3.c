@@ -17,6 +17,7 @@
 #include "libtropic_common.h"
 #include "libtropic_l2.h"
 #include "libtropic_port.h"
+#include "libtropic_secure_memzero.h"
 #include "lt_aesgcm.h"
 #include "lt_hkdf.h"
 #include "lt_l1.h"
@@ -24,7 +25,6 @@
 #include "lt_l3_api_structs.h"
 #include "lt_l3_process.h"
 #include "lt_port_wrap.h"
-#include "lt_secure_memzero.h"
 #include "lt_sha256.h"
 #include "lt_x25519.h"
 

@@ -12,8 +12,8 @@
 #include <string.h>
 
 #include "libtropic_common.h"
+#include "libtropic_secure_memzero.h"
 #include "lt_hmac_sha256.h"
-#include "lt_secure_memzero.h"
 
 lt_ret_t lt_hkdf(const uint8_t *ck, const uint32_t ck_len, const uint8_t *input,
                  const uint32_t input_len, const uint8_t nouts, uint8_t *output_1, uint8_t *output_2)

@@ -1,8 +1,8 @@
-#ifndef LT_SECURE_MEMZERO_H
-#define LT_SECURE_MEMZERO_H
+#ifndef LIBTROPIC_SECURE_MEMZERO_H
+#define LIBTROPIC_SECURE_MEMZERO_H
 
 /**
- * @file lt_secure_memzero.h
+ * @file libtropic_secure_memzero.h
  * @brief Declarations for secure memory zeroing.
  * @copyright Copyright (c) 2020-2026 Tropic Square s.r.o.
  *
@@ -21,4 +21,4 @@
  */
 void lt_secure_memzero(void *const ptr, size_t count);
 
-#endif  // LT_SECURE_MEMZERO_H
+#endif  // LIBTROPIC_SECURE_MEMZERO_H
