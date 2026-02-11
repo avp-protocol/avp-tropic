@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.2.0]
 
 ### Changed
-- Renamed `lt_secure_memzero.h` to `libtropic_secure_memzero.h` and moved it to `include/`, so it is available in HAL. 
+- Renamed `lt_secure_memzero.h` to `libtropic_secure_memzero.h` and moved it to `include/`, so it is available in HAL.
 
 ### Added
 
