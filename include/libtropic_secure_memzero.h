@@ -15,6 +15,7 @@
 
 /**
  * @brief Securely overwrites the memory with zeros.
+ * @note This function is primarily used for internal purposes.
  *
  * @param ptr    Pointer to the memory
  * @param count  Number of bytes to overwrite with zeros
