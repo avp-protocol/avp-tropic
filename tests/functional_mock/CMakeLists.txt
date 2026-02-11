@@ -116,6 +116,7 @@ set(LIBTROPIC_MOCK_TEST_LIST
     lt_test_mock_attrs
     lt_test_mock_invalid_in_crc
     lt_test_mock_hardware_fail
+    lt_test_mock_invalid_app_fw_init
 )
 
 ###########################################################################
