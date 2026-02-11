@@ -4,6 +4,7 @@
 #include "main.h"
 #include "mbedtls/platform.h"
 #include "mbedtls/platform_time.h"
+#include "mbedtls/platform_util.h"
 #include "stm32f4xx_hal.h"
 
 mbedtls_ms_time_t mbedtls_ms_time(void)
@@ -28,6 +29,7 @@ int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *e
     while (bytes_left) {
         hal_status = HAL_RNG_GenerateRandomNumber(&RNGHandle, &random_data);
         if (hal_status != HAL_OK) {
+            mbedtls_platform_zeroize(&random_data, sizeof(random_data));
             return PSA_ERROR_INSUFFICIENT_ENTROPY;
         }
 
@@ -39,5 +41,6 @@ int mbedtls_platform_get_entropy(psa_driver_get_entropy_flags_t flags, size_t *e
 
     *estimate_bits = 8 * output_size;
 
+    mbedtls_platform_zeroize(&random_data, sizeof(random_data));
     return 0;
 }

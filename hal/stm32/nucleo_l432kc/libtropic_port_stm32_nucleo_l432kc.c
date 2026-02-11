@@ -17,6 +17,7 @@
 #include "libtropic_logging.h"
 #include "libtropic_macros.h"
 #include "libtropic_port.h"
+#include "libtropic_secure_memzero.h"
 #include "stm32l4xx_hal.h"
 
 #define LT_STM32_L432KC_GPIO_OUTPUT_CHECK_ATTEMPTS 10
@@ -33,6 +34,7 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
         ret = HAL_RNG_GenerateRandomNumber(device->rng_handle, &random_data);
         if (ret != HAL_OK) {
             LT_LOG_ERROR("HAL_RNG_GenerateRandomNumber failed, ret=%d", ret);
+            lt_secure_memzero(&random_data, sizeof(random_data));
             return LT_FAIL;
         }
 
@@ -42,6 +44,7 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
         buff_ptr += cpy_cnt;
     }
 
+    lt_secure_memzero(&random_data, sizeof(random_data));
     return LT_OK;
 }
 
