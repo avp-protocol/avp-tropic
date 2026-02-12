@@ -39,10 +39,6 @@ L3=$(openssl x509 -in "$T01_CERTS_DIR/t01_ese_cert.der" -inform DER -text | grep
 L2=$(openssl x509 -in "$T01_CERTS_DIR/t01_xxxx_ca_cert.der" -inform DER -text | grep URI | cut -d ':' -f 2-)
 L1=$(openssl x509 -in "$T01_CERTS_DIR/t01_ca_cert.der" -inform DER -text | grep URI | cut -d ':' -f 2-)
 
-echo "$L3"
-echo "$L2"
-echo "$L1"
-
 # Download CRLs
 curl --fail "$L3" -o "$TMPDIR/t01-Tv1.crl" # Downloads t01-Tv1.crl
 curl --fail "$L2" -o "$TMPDIR/t01v1.crl" # Downloads t01v1.crl
