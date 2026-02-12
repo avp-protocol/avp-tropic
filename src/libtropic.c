@@ -68,11 +68,34 @@ lt_ret_t lt_init(lt_handle_t *h)
         goto crypto_ctx_cleanup;
     }
 
-    // Initialize the TROPIC01 attributes based on its Application FW.
-    // We allow LT_REBOOT_UNSUCCESSFUL, because TROPIC01 might contain invalid Application FW, but
-    // should not be restricted from using Libtropic in Start-up Mode.
+    // Now, we need to initialize TROPIC01 attributes based on its Application FW:
+    // 1. Get current TROPIC01's mode.
+    lt_tr01_mode_t tr01_mode;
+    ret = lt_get_tr01_mode(h, &tr01_mode);
+    if (ret != LT_OK) {
+        goto crypto_ctx_cleanup;
+    }
+
+    // 2. Reboot if TROPIC01 is not executing Application FW.
+    if (tr01_mode != LT_TR01_APPLICATION) {
+        ret = lt_reboot(h, TR01_REBOOT);
+
+        if (ret == LT_REBOOT_UNSUCCESSFUL) {
+            // We allow this, because TROPIC01 might contain invalid Application FW, but should not be
+            // restricted from using Libtropic in Start-up Mode.
+            LT_LOG_WARN(
+                "TROPIC01's App FW attributes were not initialized. TROPIC01 will be usable in "
+                "Start-up Mode only until a successful FW update.");
+            return LT_OK;
+        }
+        if (ret != LT_OK) {
+            goto crypto_ctx_cleanup;
+        }
+    }
+
+    // 3. Initialize TROPIC01 attributes based on its Application FW version.
     ret = lt_init_tr01_attrs(h);
-    if (ret != LT_OK && ret != LT_REBOOT_UNSUCCESSFUL) {
+    if (ret != LT_OK) {
         goto crypto_ctx_cleanup;
     }
 

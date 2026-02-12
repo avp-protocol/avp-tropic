@@ -28,12 +28,12 @@ void lt_test_mock_invalid_app_fw_init(lt_handle_t *h)
 
     lt_mock_hal_reset(&h->l2);
 
-    // 1. Mock lt_init() -> lt_init_tr01_attrs() -> lt_get_tr01_mode() response.
+    // 1. Mock lt_init() -> lt_get_tr01_mode() response.
     LT_LOG_INFO("Mocking Get_Response response...");
     LT_TEST_ASSERT(LT_OK, lt_mock_hal_enqueue_response(&h->l2, lt_get_tr01_mode_mocked_response,
                                                        sizeof(lt_get_tr01_mode_mocked_response)));
 
-    // 2. Mock lt_init() -> lt_init_tr01_attrs() -> lt_reboot() response.
+    // 2. Mock lt_init() -> lt_reboot() response.
     LT_LOG_INFO("Mocking Startup_Req response...");
     struct lt_l2_startup_rsp_t startup_req_resp = {
         .chip_status = (TR01_L1_CHIP_MODE_READY_bit | TR01_L1_CHIP_MODE_STARTUP_bit),  // Start-up Mode
@@ -49,7 +49,7 @@ void lt_test_mock_invalid_app_fw_init(lt_handle_t *h)
     LT_TEST_ASSERT(LT_OK, lt_mock_hal_enqueue_response(&h->l2, (uint8_t *)&startup_req_resp,
                                                        calc_mocked_resp_len(&startup_req_resp)));
 
-    // 3. Mock lt_init() -> lt_init_tr01_attrs() -> lt_reboot() -> lt_get_tr01_mode() response.
+    // 3. Mock lt_init() -> lt_reboot() -> lt_get_tr01_mode() response.
     LT_LOG_INFO("Mocking Get_Response response...");
     LT_TEST_ASSERT(LT_OK, lt_mock_hal_enqueue_response(&h->l2, lt_get_tr01_mode_mocked_response,
                                                        sizeof(lt_get_tr01_mode_mocked_response)));

@@ -33,7 +33,8 @@ extern "C" {
  *
  * @param h           Handle for communication with TROPIC01
  *
- * @retval            LT_OK Function executed successfully
+ * @retval            LT_OK Function executed successfully and TROPIC01 is running Application FW, if
+ *                          it is valid.
  * @retval            other Function did not execute successully, you might use lt_ret_verbose() to get
  * verbose encoding of returned value
  *
