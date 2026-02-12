@@ -83,27 +83,31 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 lt_ret_t lt_port_init(lt_l2_state_t *s2)
 {
     lt_dev_stm32u5xx_t *device = (lt_dev_stm32u5xx_t *)(s2->device);
-    int ret;
+    HAL_StatusTypeDef ret;
 
-    // Set the SPI parameters.
+    // Configure SPI.
     device->spi_handle.Instance = device->spi_instance;
-
-    if (device->baudrate_prescaler == 0) {
-        device->spi_handle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
-    }
-    else {
-        device->spi_handle.Init.BaudRatePrescaler = device->baudrate_prescaler;
-    }
-
-    device->spi_handle.Init.Direction = SPI_DIRECTION_2LINES;
-    device->spi_handle.Init.CLKPhase = SPI_PHASE_1EDGE;
-    device->spi_handle.Init.CLKPolarity = SPI_POLARITY_LOW;
-    device->spi_handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-    device->spi_handle.Init.DataSize = SPI_DATASIZE_8BIT;
-    device->spi_handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
-    device->spi_handle.Init.NSS = SPI_NSS_HARD_OUTPUT;
-    device->spi_handle.Init.TIMode = SPI_TIMODE_DISABLE;
     device->spi_handle.Init.Mode = SPI_MODE_MASTER;
+    device->spi_handle.Init.Direction = SPI_DIRECTION_2LINES;
+    device->spi_handle.Init.DataSize = SPI_DATASIZE_8BIT;
+    device->spi_handle.Init.CLKPolarity = SPI_POLARITY_LOW;
+    device->spi_handle.Init.CLKPhase = SPI_PHASE_1EDGE;
+    device->spi_handle.Init.NSS = SPI_NSS_SOFT;
+    device->spi_handle.Init.BaudRatePrescaler = device->baudrate_prescaler;
+    device->spi_handle.Init.FirstBit = SPI_FIRSTBIT_MSB;
+    device->spi_handle.Init.TIMode = SPI_TIMODE_DISABLE;
+    device->spi_handle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+    device->spi_handle.Init.CRCPolynomial = 0x7;
+    device->spi_handle.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
+    device->spi_handle.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+    device->spi_handle.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
+    device->spi_handle.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+    device->spi_handle.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+    device->spi_handle.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+    device->spi_handle.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+    device->spi_handle.Init.IOSwap = SPI_IO_SWAP_DISABLE;
+    device->spi_handle.Init.ReadyMasterManagement = SPI_RDY_MASTER_MANAGEMENT_INTERNALLY;
+    device->spi_handle.Init.ReadyPolarity = SPI_RDY_POLARITY_HIGH;
 
     ret = HAL_SPI_Init(&device->spi_handle);
     if (ret != HAL_OK) {
@@ -111,17 +115,29 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
         return LT_L1_SPI_ERROR;
     }
 
-    // GPIO for chip select.
+    SPI_AutonomousModeConfTypeDef HAL_SPI_AutonomousMode_Cfg_Struct = {
+        .TriggerState = SPI_AUTO_MODE_DISABLE,
+        .TriggerSelection = SPI_GRP1_GPDMA_CH0_TCF_TRG,
+        .TriggerPolarity = SPI_TRIG_POLARITY_RISING};
+
+    ret = HAL_SPIEx_SetConfigAutonomousMode(&device->spi_handle, &HAL_SPI_AutonomousMode_Cfg_Struct);
+    if (ret != HAL_OK) {
+        LT_LOG_ERROR("Failed to configure SPI autonomous mode, ret=%d", ret);
+        HAL_SPI_DeInit(&device->spi_handle);
+        return LT_L1_SPI_ERROR;
+    }
+
+    // Configure GPIO for chip select and set default value.
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
     GPIO_InitStruct.Pin = device->spi_cs_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     HAL_GPIO_Init(device->spi_cs_gpio_bank, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
 
 #if LT_USE_INT_PIN
-    // GPIO for INT pin.
+    // Configure GPIO for INT pin.
     GPIO_InitStruct.Pin = device->int_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
