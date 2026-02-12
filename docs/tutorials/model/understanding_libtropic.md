@@ -30,7 +30,7 @@ At a high level:
 
 - **Public API functions** are in `include/libtropic.h` and implemented in `src/`.
 - **HAL (hardware abstraction layer for the host platform)** lives in `hal/` and provides the low-level transport (SPI on embedded targets, TCP to the model, etc.).
-- **CAL/CFP (crypto abstraction / provider)** lives in `cal/` and plugs in crypto implementations (e.g., MbedTLS/OpenSSL/WolfCrypt/Trezor Crypto).
+- **CAL/CFP (crypto abstraction / provider)** lives in `cal/` and plugs in crypto implementations (e.g., MbedTLS/OpenSSL/WolfCrypt/Trezor Crypto). We need cryptographic operations available in Libtropic to securely communicate with the TROPIC01 via the Secure Session, which is encrypted.
 
 These are build-time choices when you integrate Libtropic:
 
