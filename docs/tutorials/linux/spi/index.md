@@ -59,6 +59,7 @@ After that, setup your system:
 1. [Chip Identification](identify_chip.md)
 2. [FW Update](fw_update.md)
 3. [Hello, World!](hello_world.md)
+4. [Full Chain Verification](full_chain_verification.md)
 
 ## FAQ
 If you encounter any issues, please check the [FAQ](../../../faq.md) before filing an issue or reaching out to our [support](https://support.tropicsquare.com/).

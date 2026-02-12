@@ -42,6 +42,10 @@ jobs:
           cmake ./ -B build -G Ninja
           cd build && ninja
 
+          cd ../../full_chain_verification
+          cmake ./ -B build -G Ninja
+          cd build && ninja
+
       - name: Build USB Devkit examples
         run: |
           cd examples/linux/usb_devkit/hello_world
