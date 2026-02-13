@@ -21,14 +21,14 @@ Libtropic communicates with TROPIC01 using a layered protocol described in the r
 
 The practical takeaway:
 
-- **L1 (Layer 1) is raw SPI communication.** Part of this layer is implemented in Libtropic core, part in the Hardware Abstraction Layer (explained below) of the platform.
+- **L1 (Layer 1) is a raw communication.** Part of this layer is implemented in Libtropic core, part in the Hardware Abstraction Layer (explained below) of the platform.
     - You will normally never send raw L1 data manually when using Libtropic.
 - **L2 (Layer 2) is an unencrypted layer.** It is used for reading chip information and setup tasks (including setting up L3 and firmware update).
     - Unit of communication is a frame. Libtropic sends Requests and receives Responses from TROPIC01.
 - **L3 (Layer 3) is encrypted and requires an established Secure Channel Session.** Majority of TROPIC01 functionality is available over L3 only.
     - Unit of communication is a packet. Libtropic sends Commands and receives Results from TROPIC01.
 
-If you’re unsure which API call is L2 vs L3, the function naming and tutorial text usually hint at it (e.g., “L2 request”, “L3 command”), and the Doxygen API reference is the ultimate source.
+If you’re unsure which API call is L2 vs L3, the function naming and tutorial text usually hint at it (e.g., “L2 Request”, “L3 Command”), and the Doxygen API reference is the ultimate source.
 
 - Read: [API reference](../../doxygen/build/html/index.html)
 
