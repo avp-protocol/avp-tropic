@@ -97,9 +97,6 @@ int main(void)
     MX_RNG_Init();
     MX_USART1_UART_Init();
 
-    /* Initialize led */
-    BSP_LED_Init(LED2);
-
     /* libtropic related code BEGIN */
     /* libtropic related code BEGIN */
     /* libtropic related code BEGIN */
@@ -175,9 +172,9 @@ int main(void)
     }
 
     while (1) {
-        BSP_LED_On(LED2);
+        HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_SET);
         HAL_Delay(100);
-        BSP_LED_Off(LED2);
+        HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_RESET);
         HAL_Delay(500);
     }
 }
@@ -328,9 +325,21 @@ PUTCHAR_PROTOTYPE
  */
 static void MX_GPIO_Init(void)
 {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
     /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOA_CLK_ENABLE();  // GPIO ports for USART1, SPI1 (without CS)
-    __HAL_RCC_GPIOC_CLK_ENABLE();  // GPIO ports for TROPIC01's CS and GPO pin
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+
+    /*Configure GPIO pin Output Level */
+    HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_RESET);
+
+    /*Configure GPIO pin : MY_LED_Pin */
+    GPIO_InitStruct.Pin = MY_LED_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(MY_LED_GPIO_Port, &GPIO_InitStruct);
 }
 
 /**
@@ -340,7 +349,7 @@ static void MX_GPIO_Init(void)
 void Error_Handler(void)
 {
     __disable_irq();
-    BSP_LED_On(LED2);
+    HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_SET);
     while (1) {
     }
 }
