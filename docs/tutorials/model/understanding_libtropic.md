@@ -3,21 +3,30 @@
 This chapter is a short TL;DR that helps you orient quickly so you can continue with the next tutorials.
 It intentionally links to deeper reference pages instead of duplicating them.
 
-If you want the authoritative chip-level details (command semantics, memory layout, security model), refer to the **TROPIC01 documentation** in the [TROPIC01 repository](https://github.com/tropicsquare/tropic01).
+If you want the authoritative chip-level details (command semantics, memory layout, security model), refer to the [**TROPIC01 documentation**](https://github.com/tropicsquare/tropic01#documentation) in the [TROPIC01 repository](https://github.com/tropicsquare/tropic01).
 
 - In particular, look for the **Datasheet** and **User API** documents.
 
+??? question "Which version of the documents should I use?"
+    There are several versions of the documents. The version to use depends on the TROPIC01 Application Firmware version.
+    This is not relevant for the model (use the latest), but it is important for the real chip. You will learn
+    how to read the Application Firmware version in the tutorial for each platform.
+
 ---
 
-## Communication Layers: L2 vs L3
+## Communication Layers
 Libtropic communicates with TROPIC01 using a layered protocol described in the reference architecture page.
 
 - Read: [Libtropic Architecture](../../reference/libtropic_architecture.md)
 
 The practical takeaway:
 
-- **L2 (Layer 2) requests do not require a Secure Session.** L2 is unencrypted and is used for chip info and setup tasks (including setting up L3).
-- **L3 (Layer 3) commands require an established Secure Session.** L3 traffic is carried over an encrypted Secure Channel session (Noise-based, with forward secrecy).
+- **L1 (Layer 1) is raw SPI communication.** Part of this layer is implemented in Libtropic core, part in the Hardware Abstraction Layer (explained below) of the platform.
+    - You will normally never send raw SPI data directly when using Libtropic.
+- **L2 (Layer 2) is an unencrypted layer.** It is used for getting chip info and setup tasks (including setting up L3 and firmware update).
+    - Unit of communication is a frame. Libtropic sends Requests and receives Responses from TROPIC01.
+- **L3 (Layer 3) is encrypted and requires an established Secure Session.** Majority of TROPIC01 functionality is available over L3 only.
+    - Unit of communication is a packet. Libtropic sends Commands and receives Results from TROPIC01.
 
 If you’re unsure which API call is L2 vs L3, the function naming and tutorial text usually hints at it (e.g., “L2 request”, “L3 command”), and the doxygen API reference is the ultimate source.
 
@@ -28,15 +37,18 @@ If you’re unsure which API call is L2 vs L3, the function naming and tutorial 
 ## Libtropic Architecture in 30 Seconds
 At a high level:
 
-- **Public API functions** are in `include/libtropic.h` and implemented in `src/`.
+- **Core: Public API functions** are in `include/libtropic.h` and implemented in `src/`.
+    - Refer to: [API reference](../../doxygen/build/html/index.html)
 - **HAL (hardware abstraction layer for the host platform)** lives in `hal/` and provides the low-level transport (SPI on embedded targets, TCP to the model, etc.).
-- **CAL/CFP (crypto abstraction / provider)** lives in `cal/` and plugs in crypto implementations (e.g., MbedTLS/OpenSSL/WolfCrypt/Trezor Crypto). We need cryptographic operations available in Libtropic to securely communicate with the TROPIC01 via the Secure Session, which is encrypted.
+    - It allows us to run Libtropic on various hardware: from Linux computers to ESP32 microcontrollers.
+    - Supported platforms: read [Host Platforms](../../compatibility/host_platforms/index.md)
+- **CAL (cryptography abstraction layer)** lives in `cal/` and plugs in “Cryptographic Functionality Providers” (CFP).
+    - We need cryptographic operations available in Libtropic to securely communicate with the TROPIC01 on Layer 3 (via the Secure Session, which is encrypted).
+    - CAL allows us to support multiple “Cryptographic Functionality Providers”, which is our umbrella term for crypto libraries (e.g., MbedTLS, OpenSSL) and hardware crypto accelerators.
+    - Read more: [CFPs](../../compatibility/cfps/index.md)
 
-These are build-time choices when you integrate Libtropic:
-
-- How to build/configure/use: read [Integrating Libtropic](../../reference/integrating_libtropic/index.md)
-- Supported host platforms: read [Host Platforms](../../compatibility/host_platforms/index.md)
-- Supported crypto providers: read [CFPs](../../compatibility/cfps/index.md)
+CAL and HAL can be chosen during build-time:
+    - Read [Integrating Libtropic](../../reference/integrating_libtropic/index.md)
 
 ---
 
@@ -45,9 +57,9 @@ Almost all Libtropic calls operate on an `lt_handle_t`. Think of it as a **conte
 
 What it contains (simplified):
 
-- **L2 state** (including a pointer to your HAL device object at `h.l2.device`).
-- **L3 state** (Secure Session status, nonces/IVs, an L3 buffer, and a pointer to your CAL/CFP context at `h.l3.crypto_ctx`).
-- A few chip attributes discovered/used by the library.
+- **L2 state** (including a pointer to your HAL device context at `h.l2.device`).
+- **L3 state** (Secure Session status, an L3 buffer, and a pointer to your CAL/CFP context at `h.l3.crypto_ctx`).
+- A few metadata used by the library.
 
 Practical rules:
 
@@ -57,12 +69,13 @@ Practical rules:
 
 Also remember the basic lifecycle:
 
-1. Fill your HAL device struct + CAL/CFP crypto context struct.
-2. Point the handle to them (`h.l2.device = ...`, `h.l3.crypto_ctx = ...`).
-3. Call `lt_init(&h)` and check the return code.
-4. Use L2 requests and/or establish a Secure Session for L3.
-5. Call `lt_session_abort(&h)` when you are done with L3.
-6. Call `lt_deinit(&h)` at the end.
+1. Prepare hardware of your platform and selected CFP.
+2. Fill your HAL device struct and CAL crypto context struct.
+3. Point the handle to them (`h.l2.device = ...`, `h.l3.crypto_ctx = ...`).
+4. Call `lt_init(&h)` and check the return code.
+5. Use L2 requests and/or establish a Secure Session for L3.
+6. Call `lt_session_abort(&h)` when you are done with L3.
+7. Call `lt_deinit(&h)` at the end.
 
 Minimal initialization pattern (illustrative, not a full program):
 
@@ -104,6 +117,7 @@ Key points:
 - New chips come with a factory pairing public key in slot 0 and you use the corresponding private key to establish your *first* Secure Session.
 - A common production pattern is: **use slot 0 to bootstrap**, then write your own pairing public key to another slot and **invalidate slot 0**.
     - It is also highly recommended to ensure that your TROPIC01 is genuine by verifying the certificate chain.
+    - We provide tutorials for certificate verification for Linux: [USB DevKit](../linux/usb_devkit/full_chain_verification.md), [SPI](../linux/spi/full_chain_verification.md).
 
 !!! danger "Irreversible Actions"
     Some operations are one-way. Invalidating pairing slots, erasing certain chip configuration, and similar actions are **not reversible on a real chip**.
@@ -142,7 +156,7 @@ If you suspect memory issues or need to step through code:
 On Linux, tests against the model can be run with AddressSanitizer or Valgrind (and you can attach `gdb`).
 
 !!! tip "Model + gdb"
-    If you want to debug a client binary against the model, run the **model server manually** (as in the first tutorial) and then run your binary under `gdb`.
+    If you want to debug an example/your Libtropic binary against the model, run the **model server manually** (as in the first tutorial) and then run your binary under `gdb`.
 
 ---
 
@@ -169,7 +183,7 @@ TROPIC01 exposes powerful commands; some of them intentionally make **permanent*
 Examples you will encounter in these tutorials:
 
 - Pairing key writes/invalidations (used in the hardware-wallet tutorial).
-- R-config/R-memory erases.
+- I-config (I-memory) writes.
 - Firmware update (interruption can brick the device; avoid power loss).
 
 !!! danger "When in doubt, use the model!"
