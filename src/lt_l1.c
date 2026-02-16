@@ -20,20 +20,22 @@
 
 #ifdef LT_PRINT_SPI_DATA
 #include "libtropic_port.h"
-#define LT_L1_SPI_DIR_MISO 0
-#define LT_L1_SPI_DIR_MOSI 1
-static void print_spi_data_hex(const uint8_t *data, uint8_t len, uint8_t dir)
+enum lt_spi_dir_t {LT_L1_SPI_DIR_MISO, LT_L1_SPI_DIR_MOSI};
+static void print_spi_data_hex(const uint8_t *data, const size_t len, enum lt_spi_dir_t dir)
 {
     if ((!data) || (len == 0)) {
+        LT_LOG_ERROR("Can't print SPI data, invalid argument(s)!");
         return;
     }
-    lt_port_log("SPI     %s", dir ? ">> TX  " : "<< RX  ");
+
+    lt_port_log("SPI     %s", dir == LT_L1_SPI_DIR_MOSI ? ">> TX  " : "<< RX  ");
     for (size_t i = 0; i < len; i++) {
         lt_port_log("%02" PRIX8 " ", data[i]);
         if ((i + 1) % 32 == 0) {
             lt_port_log("\n               ");
         }
     }
+
     lt_port_log("\n");
 }
 #endif
