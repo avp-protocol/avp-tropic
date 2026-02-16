@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `hal/`: don't include `libtropic_port.h` in HAL headers if not used.
 - `lt_init()` is successful even if TROPIC01 has invalid Application FW, so Libtropic can be used in Start-up Mode.
 - STM32: securely wipe secrets when generating random numbers.
+- STM32: change type of `baudrate_prescaler` (inside `lt_dev_stm32_nucleo_f439zi_t` and `lt_dev_stm32_nucleo_l432kc_t`) to `uint32_t`.
 
 ### Removed
 
