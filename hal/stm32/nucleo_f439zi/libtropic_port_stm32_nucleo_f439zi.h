@@ -27,7 +27,7 @@ typedef struct lt_dev_stm32_nucleo_f439zi_t {
      *
      * @note If set to zero, it will default to SPI_BAUDRATEPRESCALER_32.
      */
-    uint16_t baudrate_prescaler;
+    uint32_t baudrate_prescaler;
 
     /** @brief @public GPIO pin used for chip select. Use STM32 macro (GPIO_PIN_XX). */
     uint16_t spi_cs_gpio_pin;
