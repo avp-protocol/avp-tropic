@@ -17,6 +17,7 @@
 #include "libtropic_logging.h"
 #include "libtropic_macros.h"
 #include "libtropic_port.h"
+#include "libtropic_secure_memzero.h"
 #include "stm32u5xx_hal.h"
 
 #define LT_STM32U5XX_GPIO_OUTPUT_CHECK_ATTEMPTS 10
