@@ -19,7 +19,7 @@
 #include "lt_port_wrap.h"
 
 #ifdef LT_PRINT_SPI_DATA
-#include "stdio.h"
+#include "libtropic_port.h"
 #define LT_L1_SPI_DIR_MISO 0
 #define LT_L1_SPI_DIR_MOSI 1
 static void print_hex_chunks(const uint8_t *data, uint8_t len, uint8_t dir)
@@ -27,14 +27,14 @@ static void print_hex_chunks(const uint8_t *data, uint8_t len, uint8_t dir)
     if ((!data) || (len == 0)) {
         return;
     }
-    printf("%s", dir ? "  >>  TX: " : "  <<  RX: ");
+    lt_port_log("SPI     %s", dir ? ">> TX  " : "<< RX  ");
     for (size_t i = 0; i < len; i++) {
-        printf("%02" PRIX8 " ", data[i]);
+        lt_port_log("%02" PRIX8 " ", data[i]);
         if ((i + 1) % 32 == 0) {
-            printf("\n          ");
+            lt_port_log("\n               ");
         }
     }
-    printf("\n");
+    lt_port_log("\n");
 }
 #endif
 
