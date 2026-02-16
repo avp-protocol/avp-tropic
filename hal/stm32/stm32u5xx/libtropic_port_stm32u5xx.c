@@ -34,6 +34,7 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
         ret = HAL_RNG_GenerateRandomNumber(device->rng_handle, &random_data);
         if (ret != HAL_OK) {
             LT_LOG_ERROR("HAL_RNG_GenerateRandomNumber failed, ret=%d", ret);
+            lt_secure_memzero(&random_data, sizeof(random_data));
             return LT_FAIL;
         }
 
@@ -43,6 +44,7 @@ lt_ret_t lt_port_random_bytes(lt_l2_state_t *s2, void *buff, size_t count)
         buff_ptr += cpy_cnt;
     }
 
+    lt_secure_memzero(&random_data, sizeof(random_data));
     return LT_OK;
 }
 
