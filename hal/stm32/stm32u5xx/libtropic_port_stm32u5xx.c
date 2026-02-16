@@ -129,12 +129,12 @@ lt_ret_t lt_port_init(lt_l2_state_t *s2)
 
     // Configure GPIO for chip select and set default value.
     GPIO_InitTypeDef GPIO_InitStruct = {0};
+    HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
     GPIO_InitStruct.Pin = device->spi_cs_gpio_pin;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     HAL_GPIO_Init(device->spi_cs_gpio_bank, &GPIO_InitStruct);
-    HAL_GPIO_WritePin(device->spi_cs_gpio_bank, device->spi_cs_gpio_pin, GPIO_PIN_SET);
 
 #if LT_USE_INT_PIN
     // Configure GPIO for INT pin.
