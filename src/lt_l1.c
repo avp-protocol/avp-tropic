@@ -21,7 +21,7 @@
 #ifdef LT_PRINT_SPI_DATA
 #include "libtropic_port.h"
 enum lt_spi_dir_t { LT_L1_SPI_DIR_MISO, LT_L1_SPI_DIR_MOSI };
-static void print_spi_data_hex(const uint8_t *data, const size_t len, enum lt_spi_dir_t dir)
+static void print_spi_data_hex(const uint8_t *data, const size_t len, const enum lt_spi_dir_t dir)
 {
     if ((!data) || (len == 0)) {
         LT_LOG_ERROR("Can't print SPI data, invalid argument(s)!");
