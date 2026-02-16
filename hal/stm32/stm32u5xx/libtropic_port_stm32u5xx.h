@@ -23,7 +23,7 @@ typedef struct lt_dev_stm32u5xx_t {
 
     /** @brief @public Baudrate prescaler value, used to set SPI speed. Use STM32 macro
      * (e.g.SPI_BAUDRATEPRESCALER_2). */
-    uint16_t baudrate_prescaler;
+    uint32_t baudrate_prescaler;
 
     /** @brief @public GPIO pin used for chip select. Use STM32 macro (GPIO_PIN_XX). */
     uint16_t spi_cs_gpio_pin;
