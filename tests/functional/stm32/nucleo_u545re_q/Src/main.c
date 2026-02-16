@@ -41,9 +41,6 @@
 #endif
 
 /* Private variables ---------------------------------------------------------*/
-
-__IO uint32_t BspButtonState = BUTTON_RELEASED;
-
 /* RNG handle declaration */
 RNG_HandleTypeDef hrng;
 
@@ -172,10 +169,6 @@ int main(void)
     }
 
     while (1) {
-        HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_SET);
-        HAL_Delay(100);
-        HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_RESET);
-        HAL_Delay(500);
     }
 }
 
@@ -299,6 +292,18 @@ static void MX_USART1_UART_Init(void)
 }
 
 /**
+ * @brief GPIO Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_GPIO_Init(void)
+{
+    /* GPIO Ports Clock Enable */
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+}
+
+/**
  * @brief  Retargets the C library printf function to the USART.
  * @param  None
  * @retval None
@@ -319,37 +324,12 @@ PUTCHAR_PROTOTYPE
 }
 
 /**
- * @brief GPIO Initialization Function
- * @param None
- * @retval None
- */
-static void MX_GPIO_Init(void)
-{
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-    /* GPIO Ports Clock Enable */
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-
-    /*Configure GPIO pin Output Level */
-    HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_RESET);
-
-    /*Configure GPIO pin : MY_LED_Pin */
-    GPIO_InitStruct.Pin = MY_LED_Pin;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(MY_LED_GPIO_Port, &GPIO_InitStruct);
-}
-
-/**
  * @brief  This function is executed in case of error occurrence.
  * @retval None
  */
 void Error_Handler(void)
 {
     __disable_irq();
-    HAL_GPIO_WritePin(MY_LED_GPIO_Port, MY_LED_Pin, GPIO_PIN_SET);
     while (1) {
     }
 }
