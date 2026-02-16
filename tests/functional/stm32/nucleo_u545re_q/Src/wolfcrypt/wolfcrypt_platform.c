@@ -13,7 +13,7 @@ int wolfcrypt_custom_seed_gen(unsigned char *output, unsigned int sz)
     size_t bytes_left = sz;
 
     while (bytes_left) {
-        hal_status = HAL_RNG_GenerateRandomNumber(&RNGHandle, &random_data);
+        hal_status = HAL_RNG_GenerateRandomNumber(&hrng, &random_data);
         if (hal_status != HAL_OK) {
             wc_ForceZero(&random_data, sizeof(random_data));
             return RNG_FAILURE_E;
