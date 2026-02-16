@@ -22,7 +22,7 @@
 #include "libtropic_port.h"
 #define LT_L1_SPI_DIR_MISO 0
 #define LT_L1_SPI_DIR_MOSI 1
-static void print_hex_chunks(const uint8_t *data, uint8_t len, uint8_t dir)
+static void print_spi_data_hex(const uint8_t *data, uint8_t len, uint8_t dir)
 {
     if ((!data) || (len == 0)) {
         return;
@@ -134,7 +134,7 @@ lt_ret_t lt_l1_read(lt_l2_state_t *s2, const uint32_t max_len, const uint32_t ti
                 return ret;
             }
 #ifdef LT_PRINT_SPI_DATA
-            print_hex_chunks(s2->buff, s2->buff[2] + 5, LT_L1_SPI_DIR_MISO);
+            print_spi_data_hex(s2->buff, s2->buff[2] + 5, LT_L1_SPI_DIR_MISO);
 #endif
             return LT_OK;
 
@@ -197,7 +197,7 @@ lt_ret_t lt_l1_write(lt_l2_state_t *s2, const uint16_t len, const uint32_t timeo
         return ret;
     }
 #ifdef LT_PRINT_SPI_DATA
-    print_hex_chunks(s2->buff, len, LT_L1_SPI_DIR_MOSI);
+    print_spi_data_hex(s2->buff, len, LT_L1_SPI_DIR_MOSI);
 #endif
     ret = lt_l1_spi_transfer(s2, 0, len, timeout_ms);
     if (ret != LT_OK) {
