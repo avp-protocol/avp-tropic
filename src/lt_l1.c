@@ -20,7 +20,7 @@
 
 #ifdef LT_PRINT_SPI_DATA
 #include "libtropic_port.h"
-enum lt_spi_dir_t {LT_L1_SPI_DIR_MISO, LT_L1_SPI_DIR_MOSI};
+enum lt_spi_dir_t { LT_L1_SPI_DIR_MISO, LT_L1_SPI_DIR_MOSI };
 static void print_spi_data_hex(const uint8_t *data, const size_t len, enum lt_spi_dir_t dir)
 {
     if ((!data) || (len == 0)) {
