@@ -91,11 +91,11 @@ trap 'cleanup' EXIT
 # ---- Flash the device ----
 if [ -z "$STLINK_SERIAL_NUMBER" ]; then
     echo "OpenOCD will autodiscover STLink programming interface."
-    openocd -f "$SCRIPT_DIR/nucleo-u545re.cfg" -c "program $BINARY_PATH verify reset exit"
+    openocd -f "$SCRIPT_DIR/nucleo-u5xx.cfg" -c "program $BINARY_PATH verify reset exit"
 else
     OPENOCD_SERIAL_NUMBER_ARG=
     echo "OpenOCD will use STLink serial number $STLINK_SERIAL_NUMBER for programming."
-    openocd -f "$SCRIPT_DIR/nucleo-u545re.cfg" -c "adapter serial $STLINK_SERIAL_NUMBER" -c "program $BINARY_PATH verify reset exit"
+    openocd -f "$SCRIPT_DIR/nucleo-u5xx.cfg" -c "adapter serial $STLINK_SERIAL_NUMBER" -c "program $BINARY_PATH verify reset exit"
 fi
 
 # ---- Wait for serial reader to finish ----

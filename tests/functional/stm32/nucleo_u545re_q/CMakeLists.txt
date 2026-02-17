@@ -14,7 +14,7 @@ include (FetchContent)
 # Specify stm32 device
 set(STM32_DEVICE "STM32U545xx")
 # Openocd config file for used nucleo board
-set(OPENOCD_CFG "/usr/share/openocd/scripts/target/stm32u5x.cfg")
+set(OPENOCD_CFG ${CMAKE_CURRENT_SOURCE_DIR}/nucleo-u5xx.cfg)
 # Path to linker script file
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/STM32U545RETXQ_FLASH.ld)
 # Path to toolchain file
