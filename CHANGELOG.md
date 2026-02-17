@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Examples: Added full certificate chain verification example for Linux SPI.
+- HAL: HAL for STM32U5xx series
 
 ### Fixed
 - Size of `l3_chunk` member of `lt_l2_encrypted_cmd_req_t` and `lt_l2_encrypted_cmd_rsp_t` structs to `TR01_L2_CHUNK_MAX_DATA_SIZE`.
