@@ -14,9 +14,15 @@ BAUD_FLASH="$4"
 BAUD_SERIAL_MONITOR="$5"
 
 SENTINEL_OK="TEST FINISHED"
-SENTINEL_FAIL_1="ASSERT FAIL"
-SENTINEL_FAIL_2="WARNING"
-SENTINEL_FAIL_3="ERROR"
+
+SENTINEL_FAIL=(
+    "ASSERT FAIL"
+    "WARNING"
+    "ERROR"
+    "panic"
+    "CPU halted."
+    "device disconnected"
+)
 
 MONITOR_PID=""
 LOGFILE="$(mktemp)"
@@ -66,15 +72,20 @@ python3 /tmp/esp32_monitor_wrapper.py "${SERIAL_FD}" "${BAUD_SERIAL_MONITOR}" "$
 MONITOR_PID=$!
 
 # Follow log until sentinel; no pipeline => no subshell
-TEST_FAILED=0
-while IFS= read -r line; do
+TEST_FAILED=2
+while IFS= read -t 60 -r line; do
     printf '%s\n' "$line"
 
-    if [[ "$line" == *"$SENTINEL_FAIL_1"* ]] \
-    || [[ "$line" == *"$SENTINEL_FAIL_2"* ]] \
-    || [[ "$line" == *"$SENTINEL_FAIL_3"* ]]; then
-        TEST_FAILED=1
-    elif [[ "$line" == *"$SENTINEL_OK"* ]]; then
+    # 1. Loop through all failure sentinels
+    for sentinel in "${SENTINEL_FAIL[@]}"; do
+        if [[ "$line" == *"$sentinel"* ]]; then
+            TEST_FAILED=1
+            break 2
+        fi
+    done
+
+    if [[ "$line" == *"$SENTINEL_OK"* ]]; then
+        TEST_FAILED=0
         break
     fi
 done < <(tail -n0 -F --pid="${MONITOR_PID}" "${LOGFILE}")
