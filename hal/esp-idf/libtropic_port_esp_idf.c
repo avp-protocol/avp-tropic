@@ -245,10 +245,14 @@ lt_ret_t lt_port_spi_csn_high(lt_l2_state_t *s2)
 
 lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len, uint32_t timeout_ms)
 {
+    LT_LOG_DEBUG("lt_port_spi_transfer: s2=%p, offset=%" PRIu8 ", tx_len=%" PRIu16
+                 ", timeout_ms=%" PRIu32,
+                 s2, offset, tx_len, timeout_ms);
     lt_dev_esp_idf_t *dev = (lt_dev_esp_idf_t *)(s2->device);
     esp_err_t ret;
     spi_transaction_t spi_transaction;
     TickType_t ticks_to_wait = pdMS_TO_TICKS(timeout_ms);
+    LT_LOG_DEBUG("ticks_to_wait=%u", ticks_to_wait);
 
     // If ticks==0, we wait indefinitely.
     if (ticks_to_wait == 0) {
@@ -269,6 +273,7 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
         LT_LOG_ERROR("spi_device_acquire_bus() failed: %s", esp_err_to_name(ret));
         return LT_FAIL;
     }
+    LT_LOG_DEBUG("spi_device_acquire_bus returned ESP_OK");
 
     // Queue the transaction and wait for its completion using the provided
     // timeout (converted to ticks). This avoids busy polling while still
@@ -279,6 +284,7 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
         spi_device_release_bus(dev->spi_handle);
         return LT_FAIL;
     }
+    LT_LOG_DEBUG("spi_device_queue_trans returned ESP_OK");
 
     spi_transaction_t *rtrans = NULL;
     ret = spi_device_get_trans_result(dev->spi_handle, &rtrans, ticks_to_wait);
@@ -288,19 +294,23 @@ lt_ret_t lt_port_spi_transfer(lt_l2_state_t *s2, uint8_t offset, uint16_t tx_len
         spi_device_release_bus(dev->spi_handle);
         return LT_FAIL;
     }
+    LT_LOG_DEBUG("spi_device_get_trans_result returned ESP_OK");
 
     // Release the SPI bus.
     spi_device_release_bus(dev->spi_handle);
+    LT_LOG_DEBUG("spi_device_release_bus returned");
 
     return LT_OK;
 }
 
 lt_ret_t lt_port_delay(lt_l2_state_t *s2, uint32_t ms)
 {
+    LT_LOG_DEBUG("lt_port_delay: s2=%p, ms=%" PRIu32, s2, ms);
     LT_UNUSED(s2);
     TickType_t ticks_to_wait = pdMS_TO_TICKS(ms);
 
     vTaskDelay(ticks_to_wait);
+    LT_LOG_DEBUG("vTaskDelay returned");
     return LT_OK;
 }
 
