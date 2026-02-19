@@ -1,60 +1,195 @@
-# Libtropic
+<p align="center">
+  <img src="https://raw.githubusercontent.com/avp-protocol/spec/main/assets/avp-shield.svg" alt="AVP Shield" width="80" />
+</p>
 
-![](https://github.com/tropicsquare/libtropic/actions/workflows/integration_tests.yml/badge.svg) ![](https://github.com/tropicsquare/libtropic/actions/workflows/build_docs_master.yml/badge.svg)
+<h1 align="center">avp-tropic</h1>
 
-TROPIC01's SDK written in C. Contributors, please follow [guidelines](https://github.com/tropicsquare/libtropic/blob/master/CONTRIBUTING.md).
+<p align="center">
+  <strong>TROPIC01 Hardware Abstraction Layer for AVP</strong><br>
+  Secure element SDK for Agent Vault Protocol hardware implementations
+</p>
 
-For more information about TROPIC01 chip and its **datasheet** or **User API**, check out developers resources in the [TROPIC01](https://github.com/tropicsquare/tropic01) repository.
+<p align="center">
+  <a href="https://github.com/avp-protocol/avp-tropic/actions"><img src="https://img.shields.io/github/actions/workflow/status/avp-protocol/avp-tropic/ci.yml?style=flat-square" alt="CI" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache_2.0-blue?style=flat-square" alt="License" /></a>
+  <a href="https://tropicsquare.com/tropic01"><img src="https://img.shields.io/badge/Secure%20Element-TROPIC01-00D4AA?style=flat-square" alt="TROPIC01" /></a>
+</p>
+
+---
+
+## Overview
+
+`avp-tropic` is the TROPIC01 Hardware Abstraction Layer (HAL) for the AVP ecosystem. It provides the low-level SDK for communicating with TROPIC01 secure elements, which power the hardware security backends in AVP implementations like [NexusClaw](https://github.com/avp-protocol/nexusclaw).
+
+This library is based on [Tropic Square's libtropic](https://github.com/tropicsquare/libtropic), adapted and extended for AVP protocol integration.
+
+## Role in the AVP Ecosystem
+
+```
++------------------+     +------------------+     +------------------+
+|   AI Agent       |     |   AVP Client     |     |   avp-tropic     |
+|  (LangChain,     | --> |  (avp-py,        | --> |  (This library)  |
+|   CrewAI, etc.)  |     |   avp-rs, etc.)  |     |                  |
++------------------+     +------------------+     +--------+---------+
+                                                          |
+                                                          | SPI
+                                                          v
+                                              +------------------+
+                                              |   TROPIC01       |
+                                              |   Secure Element |
+                                              +------------------+
+```
+
+**avp-tropic** handles:
+- SPI communication with TROPIC01 chips
+- Secure session establishment (L2 encrypted channel)
+- Key storage and retrieval commands
+- Cryptographic operations (sign, verify, encrypt)
+- Attestation and device authentication
+
+## Related Projects
+
+| Project | Description |
+|---------|-------------|
+| [NexusClaw](https://github.com/avp-protocol/nexusclaw) | Production USB hardware security key using avp-tropic |
+| [avp-hardware](https://github.com/avp-protocol/avp-hardware) | Reference hardware designs and firmware |
+| [AVP Specification](https://github.com/avp-protocol/spec) | Protocol specification for hardware extensions |
+
+## Supported Hardware
+
+### Development Boards
+
+| Board | MCU | Status |
+|-------|-----|--------|
+| [Secure Tropic Click](https://www.mikroe.com/secure-tropic-click) | Various (click board) | Supported |
+| [STM32U5 Discovery](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html) + Tropic Click | STM32U585 | Supported |
+| Custom NexusClaw PCB | STM32U535 | In Development |
+
+### Secure Element
+
+| Element | Features | Status |
+|---------|----------|--------|
+| TROPIC01 | 128 slots, ECC P-256/Ed25519, AES-256-GCM, SHA-3, TRNG | Supported |
+
+## Features
+
+- **Hardware Abstraction Layer** — Platform-independent HAL for host MCUs
+- **Crypto Abstraction Layer** — Pluggable cryptographic backends
+- **Secure Sessions** — Encrypted L2 communication with TROPIC01
+- **Multi-Platform** — STM32, nRF, ESP32, Linux, and more
+
+## Compatibility
+
+For the library to function correctly with TROPIC01, component versions must be compatible:
+
+| avp-tropic | Application FW | SPECT FW | Bootloader FW | Status |
+|:----------:|:--------------:|:--------:|:-------------:|:------:|
+| 3.1.0      | 1.0.0-2.0.0    | 1.0.0    | 2.0.1         | Current |
+| 3.0.0      | 1.0.0-2.0.0    | 1.0.0    | 2.0.1         | Supported |
+| 2.0.1      | 1.0.0-1.0.1    | 1.0.0    | 2.0.1         | Supported |
+
+> **Warning:** Using mismatched versions may result in unpredictable behavior. Always use compatible versions.
+
+## Repository Structure
+
+```
+avp-tropic/
+├── avp/                # AVP protocol layer (added for AVP integration)
+├── cal/                # Crypto Abstraction Layer implementations
+├── hal/                # Hardware Abstraction Layer implementations
+│   └── stm32/          # STM32 HAL
+├── include/            # Public API headers
+├── src/                # Core library source
+├── examples/           # Example projects
+│   └── stm32/          # STM32 examples
+├── tests/              # Functional tests
+├── docs/               # Documentation
+└── vendor/             # Third-party dependencies
+```
+
+## Getting Started
+
+### Prerequisites
+
+```bash
+# ARM toolchain
+apt install gcc-arm-none-eabi
+
+# CMake
+apt install cmake
+```
+
+### Building
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+```
+
+### Example: STM32U5 with Tropic Click
+
+```bash
+cd examples/stm32/stm32u5_tropic_click
+make
+```
+
+See the [examples README](examples/stm32/stm32u5_tropic_click/README.md) for detailed instructions.
+
+## AVP Integration
+
+To use avp-tropic in an AVP hardware implementation:
+
+```c
+#include "avp_tropic.h"
+
+// Initialize TROPIC01 interface
+lt_handle_t handle;
+lt_init(&handle);
+
+// Open secure session
+lt_open_session(&handle, pairing_key);
+
+// Store an AVP secret
+lt_slot_write(&handle, slot_id, secret_data, secret_len);
+
+// Retrieve an AVP secret
+lt_slot_read(&handle, slot_id, buffer, &buffer_len);
+
+// Sign data (key never leaves chip)
+lt_ecc_sign(&handle, key_slot, hash, signature);
+```
 
 ## Documentation
-We recommend using the [Libtropic documentation](https://tropicsquare.github.io/libtropic/latest/) as the source of truth for getting information about Libtropic.
 
-The documentation is generated only for the releases and the version can be switched via the version selector at the top of the page.
+- [API Reference](https://tropicsquare.github.io/libtropic/latest/) — Original libtropic documentation
+- [AVP Hardware Spec](https://github.com/avp-protocol/spec) — AVP hardware extension specification
+- [TROPIC01 Datasheet](https://github.com/tropicsquare/tropic01) — Secure element documentation
 
-## Compatibility with TROPIC01 firmware versions
+## Contributing
 
-For the Libtropic library to function correctly with the TROPIC01 secure element, the versions of four key components must be compatible:
+We welcome contributions! Areas where help is needed:
 
-1. **Libtropic SDK**: The version of this library.
-2. **Bootloader FW**: Bootloader firmware running on the TROPIC01's RISC-V CPU after power-up. It cannot be updated.
-2. **Application FW**: Application firmware running on the TROPIC01's RISC-V CPU. It can be updated.
-3. **SPECT FW**: Firmware running on the TROPIC01's SPECT co-processor. It can be updated.
+- **HAL ports** — New microcontroller platforms
+- **Testing** — Integration tests with different hardware
+- **Documentation** — Tutorials and examples
 
-For more information about each of these, refer to the [TROPIC01](https://github.com/tropicsquare/tropic01) repository.
-
-The following table outlines the tested and supported compatibility between released versions:
-
-| Libtropic | Application FW | SPECT FW | Bootloader FW |  Tests             |
-|:---------:|:--------------:|:--------:|:-------------:|:------------------:|
-| 1.0.0     | 1.0.0          | 1.0.0    | 1.0.1-2.0.1   | :white_check_mark: |
-| 2.0.0     | 1.0.0–1.0.1    | 1.0.0    | 2.0.1         | :white_check_mark: |
-| 2.0.1     | 1.0.0–1.0.1    | 1.0.0    | 2.0.1         | :white_check_mark: |
-| 3.0.0     | 1.0.0–2.0.0    | 1.0.0    | 2.0.1         | :white_check_mark: |
-| 3.1.0     | 1.0.0–2.0.0    | 1.0.0    | 2.0.1         | :white_check_mark: |
-
-> [!WARNING]
-> Using mismatched versions of the components may result in unpredictable behavior or errors. It is strongly advised to use the latest compatible versions of all components to ensure proper functionality. 
-
-For retrieving firmware versions from TROPIC01 and updating its firmware, refer to the [Tutorials](https://tropicsquare.github.io/libtropic/latest/tutorials/) and select your platform. Follow the instructions for **Chip Identification** and **Firmware Update** example.
-
-## Repository structure
-* `CMakeLists.txt` Root CMake project file
-* `cmake/` CMake related files
-* `cal/` Implementation of Crypto Abstraction Layers (CAL) for supported Cryptographic Functionality Providers (CFP)
-* `docs/` [MkDocs](https://www.mkdocs.org/) Documentation deployed [here](https://tropicsquare.github.io/libtropic/latest/)
-* `examples/` Example projects for each supported platform
-* `hal/` Implementation of Hardware Abstraction Layers (HAL) for supported host platforms
-* `include/` Public API header files
-* `scripts/` Build and config scripts
-* `src/` Library's source files
-* `tests/` Functional tests
-* `TROPIC01_fw_update_files/` Files used for updating TROPIC01's firmware
-* `vendor/` Third party libraries and tools
-
-## FAQ
-We provide the [FAQ](https://tropicsquare.github.io/libtropic/latest/faq/) section in our documentation with frequently asked questions and troubleshooting tips.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
-See the [LICENSE.md](LICENSE.md) file in the root of this repository or consult license information at [Tropic Square website](http:/tropicsquare.com/license).
+This project is licensed under Apache 2.0. See [LICENSE](LICENSE.md) for details.
 
+Original libtropic code is from [Tropic Square](https://tropicsquare.com), used under their open-source license.
+
+---
+
+<p align="center">
+  <a href="https://github.com/avp-protocol/spec">AVP Specification</a> ·
+  <a href="https://github.com/avp-protocol/nexusclaw">NexusClaw</a> ·
+  <a href="https://github.com/avp-protocol/avp-hardware">AVP Hardware</a>
+</p>
+
+<p align="center">
+  <sub>Part of the <a href="https://github.com/avp-protocol">Agent Vault Protocol</a> ecosystem</sub>
+</p>
